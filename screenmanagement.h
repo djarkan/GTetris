@@ -7,7 +7,8 @@
 #include "7-bag.h"
 #include "pieces.h"
 #include "board.h"
-#include "eventreader.h" 
+#include "eventreader.h"
+#include "game.hpp"
 
 class manageScreen{
 
@@ -17,7 +18,9 @@ public:
 void close();
 void render();
 void loadBitmapFile(const std::string title);
-void drawPlayGround();
+void loadFontFile(const std::string title);
+void displayText(const std::string textToDisplay, const int sizeText, const sf::Color color, const float x, const float y);
+void drawPlayGround(inGameData &inGameData);
 void rawRenderCopy(const sf::IntRect& sourceRectangle, const sf::Vector2f& destination, const sf::Texture& texturePiece, const sf::Uint8 alpha);
 void drawRectangle(const float x, const float y, const float h, const float w, sf::Color couleur);
 void drawNextPieces(bool enhanced, int nextPiecesNumber, int piecePositonInTheBag, int pieceGraphic, randomizer& random, thePieces& thePieces, const sf::Uint8 alpha);
@@ -27,11 +30,14 @@ void drawPiece(sf::IntRect& sourceRectangle, sf::Vector2f& destination, thePiece
 void drawCurrentPiece(currentPiece& currentPiece, thePieces& thePieces, const int pieceGraphic, const sf::Uint8 alpha);
 void shiftedLinesAnimation(pattern& pattern, board& board, int pieceGraphic);
 int pauseMenu(board& board, int pieceGraphic, eventReader& eventReader);
+std::string convertTimeToString(sf::Int32 elapsedTime);
 sf::RenderWindow m_window;
 
 private:
 sf::Texture m_texturePiece;
-sf::Texture m_textureMenu;                                                                              // another rectangle
+sf::Texture m_textureMenu;
+sf::Font m_font;
+sf::Text m_text;                                                                            // another rectangle
 
 void adjustxy(const int pieceToDraw, sf::Vector2f& destination);
 void drawEmptyBoard(const int pieceGraphic);

@@ -20,12 +20,16 @@ void manageScreen::render()
     m_window.display();
 }
 
-void manageScreen::drawPlayGround()
+void manageScreen::drawPlayGround(inGameData &inGameData)
 {                                                       //Draw boards (playung area, hold, next
     drawBoardArea();
     draw5NxetArea();
     drawHoldArea();
     drawNextArea();
+    displayText("NIVEAU", 24, sf::Color::White, 55, 460);
+    displayText("SCORE", 24, sf::Color::White, 55, 500);
+    displayText("LIGNES", 24, sf::Color::White, 55, 540);
+    displayText("TEMPS", 24, sf::Color::White, 55, 580);
 }
 void manageScreen::drawBoardArea()
 {
@@ -94,7 +98,7 @@ void manageScreen::loadBitmapFile(const std::string title)
 
 void manageScreen::drawEmptyBoard(const int pieceGraphic)
 {
-    drawPlayGround();
+//    drawPlayGround();
     sf::IntRect  sourceRectangle(11 * 32,(pieceGraphic - 1) * 32,30,30);
     sf::Vector2f destination(362, 70);
     for(auto i = 2; i < 23; i++) {
@@ -223,7 +227,7 @@ void manageScreen::drawTheBoard(board& board, const int pieceGraphic)
 {
     sf::IntRect sourceRectangle(0,(pieceGraphic - 1) * 32,30,30);
 sf::Vector2f destination(362,10);                         // temporaire pour voir TOUTE LA MATRICE
-for(int i = 0; i < 23; i++) {                             // i = 0 au lieu de 2  temporaire IDEM 
+for(int i = 0; i < 23; i++) {                             // i = 0 au lieu de 2  temporaire IDEM
          for(int j = 0; j < 10; j++) {
             int blockToDraw = board.getBlockToDraw((i*10) + j);
             sourceRectangle.left = blockToDraw * 32;
@@ -288,4 +292,52 @@ int manageScreen::pauseMenu(board& board, int pieceGraphic, eventReader& eventRe
                 break;
         }
     }
+}
+
+void manageScreen::loadFontFile(const std::string title)
+{
+    if (!m_font.loadFromFile(title)) {
+        std::cout << "erreur chargement du fichier: " << title << std::endl << "Veuillez réinstaller le programme." << std::endl;
+        m_window.close();
+    }
+    m_text.setFont(m_font);
+}
+
+void manageScreen::displayText(const std::string textToDisplay, const int sizeText, const sf::Color color, const float x, const float y)
+{
+    m_text.setCharacterSize(sizeText);
+    m_text.setFillColor(color);
+    const sf::Vector2f position(x,y);
+    m_text.setPosition(position);
+    m_text.setString(textToDisplay);
+    m_window.draw(m_text);
+}
+
+std::string manageScreen::convertTimeToString(sf::Int32 elapsedTime)
+{
+    sf::Int32 heures = elapsedTime / (1000 *60 * 60);
+    sf::Int32 resteHeures = elapsedTime % (1000 *60 * 60);
+    sf::Int32 minutes = resteHeures / (1000 * 60);
+    sf::Int32 resteMinutes = resteHeures % (1000 * 60);
+    sf::Int32 secondes = resteMinutes / (1000);
+    std::string timeToDisplay("");
+    if (heures < 10) {
+        timeToDisplay = "0" + std::to_string(heures) + ":";
+    }
+    else{
+        timeToDisplay = std::to_string(heures) + ":";
+    }
+    if (minutes < 10) {
+        timeToDisplay += "0" + std::to_string(minutes) + ":";
+    }
+    else{
+        timeToDisplay += std::to_string(minutes) + ":";
+    }
+    if (secondes < 10) {
+        timeToDisplay += "0" + std::to_string(secondes);
+    }
+    else{
+        timeToDisplay += std::to_string(secondes);
+    }
+    return timeToDisplay;
 }

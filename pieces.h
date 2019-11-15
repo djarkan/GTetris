@@ -3,9 +3,9 @@
 
 #include <array>
 
-struct currentPiece {                                                                   // Piece information: coord in board, kind of piece
-        float x{0};
-        float y{0};
+struct Piece {                                                                   // Piece information: coord in board, kind of piece
+        int x{0};
+        int y{0};
         int current{-1};
         int rotation{0};
 };

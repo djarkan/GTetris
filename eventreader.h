@@ -9,6 +9,8 @@ private:
 public:
     eventReader();
     ~eventReader();
-    sf::Keyboard::Key getEvent(sf::RenderWindow& window);                                         // gamer interaction reading, and return le next action to do
+	enum class gameControl { rotateLeft, rotateRight, shiftLeft, shiftRight, hardDrop, softDrop, pause, holdPiece, none };
+	gameControl getEvent(sf::RenderWindow& window);                                         // gamer interaction reading, and return le next action to do
+	
 };
 #endif

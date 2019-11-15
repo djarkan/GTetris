@@ -20,7 +20,7 @@ void manageScreen::render()
     m_window.display();
 }
 
-void manageScreen::drawPlayGround(inGameData &inGameData)
+void manageScreen::drawPlayGround()
 {                                                       //Draw boards (playung area, hold, next
     drawBoardArea();
     draw5NxetArea();
@@ -178,9 +178,9 @@ void manageScreen::adjustxy(const int pieceToDraw, sf::Vector2f& destination)
 
 void manageScreen::drawPiece(sf::IntRect& sourceRectangle, sf::Vector2f& destination, thePieces& thePieces,int pieceToDraw, int rotation, const sf::Uint8 alpha)
 {
-    int blockToDraw{0} , x{0};
+    int blockToDraw{0};
                                                                                                      // draw the piece
-    x = destination.x;
+    float x = destination.x;
     for(int i = 0; i < 4; ++i) {
         for(int j = 0; j < 4; ++j) {
             blockToDraw = thePieces.getBlock(pieceToDraw, rotation, j, i);
@@ -202,10 +202,10 @@ void manageScreen::rawRenderCopy(const sf::IntRect& sourceRectangle, const sf::V
     m_window.draw(sprite);
 }
 
-void manageScreen::drawCurrentPiece(currentPiece& currentPiece, thePieces& thePieces, const int pieceGraphic, const sf::Uint8 alpha)
+void manageScreen::drawCurrentPiece(Piece& currentPiece, thePieces& thePieces, const int pieceGraphic, const sf::Uint8 alpha)
 {
     sf::IntRect sourceRectangle(currentPiece.current * 32,(pieceGraphic - 1) * 32,30,30);
-    sf::Vector2f destination(362 + (currentPiece.x * 30),10 + (currentPiece.y * 30));
+    sf::Vector2f destination(362 + (currentPiece.x * 30), 10 + (currentPiece.y * 30));
     drawPiece(sourceRectangle, destination, thePieces, currentPiece.current, currentPiece.rotation, alpha);
 }
 
@@ -262,36 +262,9 @@ void manageScreen::shiftedLinesAnimation(pattern& pattern, board& board, int pie
     }
 }
 
-int manageScreen::pauseMenu(board& board, int pieceGraphic, eventReader& eventReader)
+int manageScreen::pauseMenu(board& board, int pieceGraphic)
 {
-    int option{1};
-    sf::Keyboard::Key event{sf::Keyboard::Unknown};
-    bool pause{true};
-    drawEmptyBoard(pieceGraphic);
-    while(pause) {
-        event = eventReader.getEvent(m_window);
-        switch (event) {
-            case sf::Keyboard::F1:                   // pause
-            case sf::Keyboard::Escape:
-                if(option < 3)
-                    option++;
-                break;
-            case sf::Keyboard::Down:
-                if(option > 1)
-                    option--;
-                break;
-//            case SDLK_RETURN:
-            case sf::Keyboard::Enter:
-                if(option == 1)
-                    return option;
-                else
-                {
-                    // refaire choix pour confirmation perte de la partie
-                }
-            default:
-                break;
-        }
-    }
+	return 0;
 }
 
 void manageScreen::loadFontFile(const std::string title)

@@ -22,11 +22,11 @@ public:
     ~board();
     void clearBoard();
     int getBlockToDraw(int index);
-    bool putNewPieceInBoard(currentPiece& currentPiece, thePieces& thePieces);
+    bool putNewPieceInBoard(Piece& currentPiece, thePieces& thePieces);
     bool testMovement(int virtualX, int virtualY, int virtualRotation,int pieceNumber, thePieces& thePieces);
-    void superRotationSystem(currentPiece& currentPiece, int virtualRotation, thePieces& thePieces);
-    void copyPieceInBoard(currentPiece& currentPiece, thePieces& thePieces);
-    bool patternSearch(pattern& pattern, currentPiece& currentPiece);
+    void superRotationSystem(Piece& currentPiece, int virtualRotation, thePieces& thePieces);
+    void copyPieceInBoard(Piece& currentPiece, thePieces& thePieces);
+    bool patternSearch(pattern& pattern, Piece& currentPiece);
     void shiftBlocksAfterLines(const pattern& pattern);
     void clearPattern(pattern& pattern);
     void IsThereClearBoard(pattern& pattern);
@@ -35,7 +35,7 @@ public:
 
 private:
     bool IsThereLines(pattern& pattern);
-    bool IsThereTspin(pattern& pattern, currentPiece& currentPiece);
+    bool IsThereTspin(pattern& pattern, Piece& currentPiece);
 
     std::array<int, 10 * 23> m_matrice;
 };

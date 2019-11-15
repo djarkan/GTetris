@@ -8,7 +8,7 @@ eventReader::~eventReader()
 {
 }
 
-sf::Keyboard::Key eventReader::getEvent(sf::RenderWindow& window)
+eventReader::gameControl eventReader::getEvent(sf::RenderWindow& window)
 {
     while(window.pollEvent(m_event)) {
         switch (m_event.type) {
@@ -19,43 +19,58 @@ sf::Keyboard::Key eventReader::getEvent(sf::RenderWindow& window)
                 switch (m_event.key.code)
                 {
                     case sf::Keyboard::Down:
+					case sf::Keyboard::Numpad2:
+						return gameControl::softDrop;
+						break;
+					case sf::Keyboard::Space:
+					case sf::Keyboard::Numpad8:
+						return gameControl::hardDrop;
+						break;
                     case sf::Keyboard::Left:
+					case sf::Keyboard::Numpad4:
+						return gameControl::shiftLeft;
+						break;
                     case sf::Keyboard::Right:
+					case sf::Keyboard::Numpad6:
+						return gameControl::shiftRight;
+						break;
                     case sf::Keyboard::RShift:
                     case sf::Keyboard::LShift:
-                    case sf::Keyboard::C:
-                    case sf::Keyboard::M:
-                    case sf::Keyboard::Space:
+                    case sf::Keyboard::C:                                      
                     case sf::Keyboard::Numpad0:
-                    case sf::Keyboard::Numpad2:
-                    case sf::Keyboard::Numpad4:
-                    case sf::Keyboard::Numpad6:
-                    case sf::Keyboard::Numpad8:
-                    case sf::Keyboard::Enter:
-                        return m_event.key.code;
+						return gameControl::holdPiece;
+						break;
                     default:
-                        return sf::Keyboard::Unknown;
+						return gameControl::none;
+						break;
                 }
             case sf::Event::KeyReleased:
                 switch (m_event.key.code) {
                     case sf::Keyboard::Numpad1:
                     case sf::Keyboard::Numpad5:
                     case sf::Keyboard::Numpad9:
+					case sf::Keyboard::Up:
+						return gameControl::rotateRight;
+						break;
                     case sf::Keyboard::RControl:
                     case sf::Keyboard::LControl:
                     case sf::Keyboard::Numpad3:
                     case sf::Keyboard::Numpad7:
                     case sf::Keyboard::Z:
+						return gameControl::rotateLeft;
+						break;
                     case sf::Keyboard::F1:
                     case sf::Keyboard::Escape:
-                    case sf::Keyboard::Up:
-                        return m_event.key.code;
+						return gameControl::pause;
+						break;
                     default:
-                        return sf::Keyboard::Unknown;
+						return gameControl::none;
+						break;
                 }
             default:
+				return gameControl::none;
                 break;
         }
     }
-    return sf::Keyboard::Unknown;
+	return gameControl::none;
 }

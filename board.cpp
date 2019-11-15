@@ -23,7 +23,7 @@ int board::getBlockToDraw(int index)
     return m_matrice[index];
 }
 
-bool board::putNewPieceInBoard(currentPiece& currentPiece, thePieces& thePieces)
+bool board::putNewPieceInBoard(Piece& currentPiece, thePieces& thePieces)
 {
     currentPiece.rotation = 0;
     currentPiece.x = 3;
@@ -60,7 +60,7 @@ bool board::testMovement(int virtualX, int virtualY, int virtualRotation, int pi
     return true;
 }
 
-void board::superRotationSystem(currentPiece& currentPiece, int virtualRotation, thePieces& thePieces)
+void board::superRotationSystem(Piece& currentPiece, int virtualRotation, thePieces& thePieces)
 {
     int offset{1};
     if(currentPiece.rotation == 1 || currentPiece.rotation == 3) {                    // SRS point 1 & 2
@@ -106,7 +106,7 @@ void board::superRotationSystem(currentPiece& currentPiece, int virtualRotation,
         }
 }
 
-void board::copyPieceInBoard(currentPiece& currentPiece, thePieces& thePieces)
+void board::copyPieceInBoard(Piece& currentPiece, thePieces& thePieces)
 {
     int boardBock{-1};
 
@@ -131,7 +131,7 @@ void  board::printMatrice()
     std::cout << std::endl;
 }
 
-bool board::patternSearch(pattern& pattern, currentPiece& currentPiece)
+bool board::patternSearch(pattern& pattern, Piece& currentPiece)
 {
     bool patternFound{false};
 
@@ -171,7 +171,7 @@ bool board::IsThereLines(pattern& pattern)
     return patternFound;
 }
 
-bool board::IsThereTspin(pattern& pattern, currentPiece& currentPiece)
+bool board::IsThereTspin(pattern& pattern, Piece& currentPiece)
 {
 std::cout << "recherche si Tsipn" << std::endl;
     bool a = m_matrice[(currentPiece.y * 10) + currentPiece.x] != 11;

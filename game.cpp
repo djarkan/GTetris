@@ -1,11 +1,6 @@
-/*#include <SFML/Graphics.hpp>
-#include <iostream>
-#include "screenmanagement.h"
-#include "7-bag.h"
-
-#include "board.h" */
-#include "game.h" 
+#include "game.h"
 #include "eventreader.h"
+#include "timer.h"
                                                                                             //Screen dimension constants
 const unsigned int SCREEN_WIDTH = 1024;
 const unsigned int SCREEN_HEIGHT = 768;
@@ -24,116 +19,19 @@ game::~game()
 
 int game::start()
 {
-    bool lockedout{false},holded{false};
-    int holdedPiece{-1};																								// store the N° of the holded piece
-
-    manageScreen screen;                                                                    
-    randomizer random;
-    eventReader eventReader;
-    thePieces thePieces;
-    board board;
-    Piece currentPiece, shadowPiece;
-    pattern pattern;
+    manageScreen screen;
 	setup setup;
+	inGameFlags inGameFlags;
 
-	    screen.loadBitmapFile("graphics/graphics.png");
-		screen.loadFontFile("font/arial.ttf");
-        bool jejoue(true);
-		eventReader::gameControl gameAction;
-        while(jejoue) {                          // debut prog : menu
-            bool gameOver{false};
-            bool fisrtShuffle{true};
-            while(fisrtShuffle) {
-                random.initTheBag(setup.enhanced, setup.sevenBag);
-                fisrtShuffle = random.testFirstShuffle(setup.enhanced);
-            }
-            board.clearBoard();
-            screen.drawTheBoard(board, setup.pieceGraphic);                                                             // begin the party
-            int piecePositonInTheBag = 0;
-            currentPiece.current = random.getPieceAtPosition(piecePositonInTheBag);
-            if(setup.nextPiecesNumber > 0)
-                screen.drawNextPieces(setup.enhanced, setup.nextPiecesNumber, piecePositonInTheBag, setup.pieceGraphic, random, thePieces, 255);
-            board.putNewPieceInBoard(currentPiece, thePieces);
-            while(!gameOver) {
-                int virtualRotation{0};
-				gameAction = eventReader.getEvent(screen.m_window);
-                switch (gameAction) {
-					case eventReader::gameControl::rotateRight:                     
-						rotateRight(currentPiece, board, thePieces, setup, pattern);
-                        break;
-                    case eventReader::gameControl::rotateLeft:                   
-						rotateLeft(currentPiece, board, thePieces, setup, pattern);
-                        break;
-                    case eventReader::gameControl::softDrop:                     
-                        if(board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces))
-                           currentPiece.y++;
-                        else
-                           if(setup.lockout)
-                                lockedout = true;   // SI LOCKOUT DISABLE TESTER SI PEUT DESCENDRE -> SI NON PASSE A PIECE SUIVANTE
-                            else
-                                lockedout = true;         // lancer le timer du lockout
-                        break;
-                    case eventReader::gameControl::hardDrop:                    // hard drop
-                        hardDrop(currentPiece, board, thePieces, setup, pattern,screen);
-						lockedout = true;
-                        break;
-                    case eventReader::gameControl::shiftLeft:              // move left
-                        if(board.testMovement(currentPiece.x - 1, currentPiece.y, currentPiece.rotation, currentPiece.current, thePieces))
-                           currentPiece.x--;
-                        break;
-                    case eventReader::gameControl::shiftRight:             // move right
-                        if(board.testMovement(currentPiece.x + 1, currentPiece.y, currentPiece.rotation, currentPiece.current, thePieces))
-                           currentPiece.x++;
-                        break;
-                    case eventReader::gameControl::holdPiece:            // hold
-                        if(!holded && setup.hold) {
-                            holded = true;
-                            if(holdedPiece < 0) {
-                                holdedPiece = currentPiece.current;                                             // if hold is empty hold is the current piece
-                                piecePositonInTheBag = random.incrementPiecePositonInTheBag(setup.enhanced, piecePositonInTheBag, setup.sevenBag);
-                                currentPiece.current = random.getPieceAtPosition(piecePositonInTheBag);
-                            }
-                            else {
-                                int swapper = holdedPiece;                                                      // swap hold and current piece
-                                holdedPiece = currentPiece.current;
-                                currentPiece.current = swapper;
-                            }
-                            if(!board.putNewPieceInBoard(currentPiece, thePieces))
-                                gameOver = true;
-                        }
-                        break;
-                    case eventReader::gameControl::pause:                   // pause
-                        screen.pauseMenu(board, setup.pieceGraphic);
-// arret des timers
-//
-// reprise des timers
-                        break;
-					case eventReader::gameControl::none:
-                    default:
-                        break;
-                }
-                if(lockedout) {                                                                                             // piece locked
-                    board.copyPieceInBoard(currentPiece, thePieces);
-                    if(board.patternSearch(pattern, currentPiece)) {
-                        screen.drawTheBoard(board, setup.pieceGraphic);
-                        screen.shiftedLinesAnimation(pattern, board, setup.pieceGraphic);
-                        board.shiftBlocksAfterLines(pattern);
-                        board.IsThereClearBoard(pattern);
-        // calcul des points
-                        board.clearPattern(pattern);
-                    }
-					piecePositonInTheBag = random.incrementPiecePositonInTheBag(setup.enhanced, piecePositonInTheBag, setup.sevenBag);
-					currentPiece.current = random.getPieceAtPosition(piecePositonInTheBag);
-					lockedout = false;
-					holded = false;
-					if (!board.putNewPieceInBoard(currentPiece, thePieces))
-						gameOver = true;
-                }
-				setShadowPiecePosition(currentPiece, shadowPiece, board, thePieces);
-				drawTheFrame(screen, board, setup, thePieces, holdedPiece, currentPiece, shadowPiece, random, piecePositonInTheBag);
-            }
-			holdedPiece = -1;
-        }
+    screen.loadBitmapFile("graphics/graphics.png");
+    screen.loadFontFile("font/arial.ttf");
+    inGameFlags.jejoue = true;
+    while(inGameFlags.jejoue) {
+
+            // debut prog : menu
+
+        launchParty(screen, setup, inGameFlags);
+    }
 	screen.m_window.close();
 	return 0;
 }
@@ -193,7 +91,7 @@ void game::setShadowPiecePosition(Piece &currentPiece, Piece &shadowPiece, board
 		shadowPiece.y++;
 }
 
-void game::drawTheFrame(manageScreen &screen, board &board, setup &setup, thePieces &thePieces, int holdedPiece, Piece &currentPiece, Piece &shadowPiece, randomizer &random, int piecePositonInTheBag)
+void game::drawTheFrame(manageScreen &screen, board &board, setup &setup, thePieces &thePieces, int holdedPiece, Piece &currentPiece, Piece &shadowPiece, randomizer &random, int piecePositonInTheBag, inGameFlags &inGameFlags)
 {
 	screen.drawPlayGround();
 	screen.drawTheBoard(board, setup.pieceGraphic);
@@ -204,5 +102,151 @@ void game::drawTheFrame(manageScreen &screen, board &board, setup &setup, thePie
 	screen.drawCurrentPiece(currentPiece, thePieces, setup.pieceGraphic, 255);
 	if (setup.shadow)
 		screen.drawCurrentPiece(shadowPiece, thePieces, setup.pieceGraphic, 64);
+	screen.printIndicators(inGameFlags.level, inGameFlags.score, inGameFlags.nbLines);
 	screen.render();
+}
+
+void game::holdPiece(randomizer &random, setup &setup, Piece &currentPiece, int &holdedPiece, int &piecePositonInTheBag)
+{
+    if(holdedPiece < 0) {
+        holdedPiece = currentPiece.current;                                             // if hold is empty hold is the current piece
+        piecePositonInTheBag = random.incrementPiecePositonInTheBag(setup.enhanced, piecePositonInTheBag, setup.sevenBag);
+        currentPiece.current = random.getPieceAtPosition(piecePositonInTheBag);
+    }
+    else {
+        int swapper = holdedPiece;                                                      // swap hold and current piece
+        holdedPiece = currentPiece.current;
+        currentPiece.current = swapper;
+    }
+}
+
+void game::lockoutPiece(board &board, pattern &pattern, manageScreen &screen, setup &setup, inGameFlags &inGameFlags, Piece &currentPiece, randomizer &random, thePieces &thePieces)
+{
+    board.copyPieceInBoard(currentPiece, thePieces);
+    if(board.patternSearch(pattern, currentPiece)) {
+        screen.drawTheBoard(board, setup.pieceGraphic);
+        screen.shiftedLinesAnimation(pattern, board, setup.pieceGraphic);
+        board.shiftBlocksAfterLines(pattern);
+        board.IsThereClearBoard(pattern);
+        if(pattern.nbLines > 0){
+            inGameFlags.nbLines += pattern.nbLines;
+            if(isLevelUp(inGameFlags.level, inGameFlags.nbLines))
+                ++inGameFlags.level;
+        }
+      // calcul score
+
+        board.clearPattern(pattern);        //n efface pas back to back
+    }
+    inGameFlags.piecePositonInTheBag = random.incrementPiecePositonInTheBag(setup.enhanced, inGameFlags.piecePositonInTheBag, setup.sevenBag);
+    currentPiece.current = random.getPieceAtPosition(inGameFlags.piecePositonInTheBag);
+    inGameFlags.lockedout = false;
+    inGameFlags.holded = false;
+    if (!board.putNewPieceInBoard(currentPiece, thePieces))
+        inGameFlags.gameOver = true;
+}
+
+void game::launchParty(manageScreen &screen, setup &setup, inGameFlags &inGameFlags)
+{
+        randomizer random;
+        timer fallingPieceTimer(calculateFallingPieceTimerDuration(inGameFlags.level));
+        inGameFlags.fisrtShuffle = true;
+        while(inGameFlags.fisrtShuffle) {
+            random.initTheBag(setup.enhanced, setup.sevenBag);
+            inGameFlags.fisrtShuffle = random.testFirstShuffle(setup.enhanced);
+        }
+        inGameFlags.piecePositonInTheBag = 0;
+        board board;
+        board.clearBoard();
+        screen.drawTheBoard(board, setup.pieceGraphic);
+        Piece currentPiece, shadowPiece;                                   // begin the party
+        currentPiece.current = random.getPieceAtPosition(inGameFlags.piecePositonInTheBag);
+        thePieces thePieces;
+        if(setup.nextPiecesNumber > 0)
+            screen.drawNextPieces(setup.enhanced, setup.nextPiecesNumber, inGameFlags.piecePositonInTheBag, setup.pieceGraphic, random, thePieces, 255);
+        board.putNewPieceInBoard(currentPiece, thePieces);
+        inGameFlags.gameOver = false;
+        pattern pattern;
+        eventReader eventReader;
+        fallingPieceTimer.startTimer();
+        while(!inGameFlags.gameOver) {
+            eventReader::gameControl gameAction;
+            gameAction = eventReader.getEvent(screen.m_window);
+            switch (gameAction) {
+                case eventReader::gameControl::rotateRight:
+                    rotateRight(currentPiece, board, thePieces, setup, pattern);
+                    break;
+                case eventReader::gameControl::rotateLeft:
+                    rotateLeft(currentPiece, board, thePieces, setup, pattern);
+                    break;
+                case eventReader::gameControl::softDrop:
+                    if(board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces))
+                        currentPiece.y++;
+                    else
+                        if(setup.lockout)
+                            inGameFlags.lockedout = true;   // SI LOCKOUT DISABLE TESTER SI PEUT DESCENDRE -> SI NON PASSE A PIECE SUIVANTE
+                        else
+                            inGameFlags.lockedout = true;         // lancer le timer du lockout
+                    break;
+                case eventReader::gameControl::hardDrop:                    // hard drop
+                    hardDrop(currentPiece, board, thePieces, setup, pattern,screen);
+                    inGameFlags.lockedout = true;
+                    break;
+                case eventReader::gameControl::shiftLeft:              // move left
+                    if(board.testMovement(currentPiece.x - 1, currentPiece.y, currentPiece.rotation, currentPiece.current, thePieces))
+                        currentPiece.x--;
+                    break;
+                case eventReader::gameControl::shiftRight:             // move right
+                    if(board.testMovement(currentPiece.x + 1, currentPiece.y, currentPiece.rotation, currentPiece.current, thePieces))
+                        currentPiece.x++;
+                    break;
+                case eventReader::gameControl::holdPiece:            // hold
+                    if(!inGameFlags.holded && setup.hold) {
+                        inGameFlags.holded = true;
+                        holdPiece(random, setup, currentPiece, inGameFlags.holdedPiece, inGameFlags.piecePositonInTheBag);
+                        if(!board.putNewPieceInBoard(currentPiece, thePieces))
+                            inGameFlags.gameOver = true;
+                    }
+                    break;
+                case eventReader::gameControl::pause:                   // pause
+                    screen.pauseMenu(board, setup.pieceGraphic);
+// arret des timers
+//
+// reprise des timers
+                    break;
+                case eventReader::gameControl::none:
+                default:
+                    break;
+            }
+            if(fallingPieceTimer.isTimeElapsed())
+            {
+if(board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces))
+    currentPiece.y++;
+else
+    if(setup.lockout)         // faire une fonction pour le softdrop
+        inGameFlags.lockedout = true;   // SI LOCKOUT DISABLE TESTER SI PEUT DESCENDRE -> SI NON PASSE A PIECE SUIVANTE
+    else
+        inGameFlags.lockedout = true;
+                fallingPieceTimer.startTimer();
+            }
+            if(inGameFlags.lockedout)                                                                                           // piece locked
+                lockoutPiece(board, pattern, screen, setup, inGameFlags, currentPiece, random, thePieces);
+            setShadowPiecePosition(currentPiece, shadowPiece, board, thePieces);
+            drawTheFrame(screen, board, setup, thePieces, inGameFlags.holdedPiece, currentPiece, shadowPiece, random, inGameFlags.piecePositonInTheBag, inGameFlags);
+        }
+        inGameFlags.holdedPiece = -1;
+}
+
+sf::Int32 game::calculateFallingPieceTimerDuration(const int level)
+{
+    return static_cast<sf::Int32>(pow((0.8 - ((level - 1) * 0.007)),level - 1) * 1000);
+}
+
+bool game::isLevelUp(int level, int nbLines)
+{
+    return false;
+}
+
+int calculateLevel(int level)
+{
+    return level;
 }

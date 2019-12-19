@@ -16,6 +16,8 @@ public:
      ~manageScreen();
 void close();
 void render();
+void clear();
+void printIndicators(const int level, const int score, const int nbLines);
 void loadBitmapFile(const std::string title);
 void loadFontFile(const std::string title);
 void displayText(const std::string textToDisplay, const int sizeText, const sf::Color color, const float x, const float y);
@@ -28,6 +30,7 @@ void drawTheBoard(board& board, const int pieceGraphic);
 void drawPiece(sf::IntRect& sourceRectangle, sf::Vector2f& destination, thePieces& thePieces,int pieceToDraw, int rotation, const sf::Uint8 alpha);
 void drawCurrentPiece(Piece& currentPiece, thePieces& thePieces, const int pieceGraphic, const sf::Uint8 alpha);
 void shiftedLinesAnimation(pattern& pattern, board& board, int pieceGraphic);
+
 int pauseMenu(board& board, int pieceGraphic);
 std::string convertTimeToString(sf::Int32 elapsedTime);
 sf::RenderWindow m_window;

@@ -20,8 +20,14 @@ void manageScreen::render()
     m_window.display();
 }
 
+void manageScreen::clear()
+{
+	m_window.clear();
+}
+
 void manageScreen::drawPlayGround()
-{                                                       //Draw boards (playung area, hold, next
+{														//Draw boards (playung area, hold, next
+	clear();
     drawBoardArea();
     draw5NxetArea();
     drawHoldArea();
@@ -205,7 +211,7 @@ void manageScreen::rawRenderCopy(const sf::IntRect& sourceRectangle, const sf::V
 void manageScreen::drawCurrentPiece(Piece& currentPiece, thePieces& thePieces, const int pieceGraphic, const sf::Uint8 alpha)
 {
     sf::IntRect sourceRectangle(currentPiece.current * 32,(pieceGraphic - 1) * 32,30,30);
-    sf::Vector2f destination(362 + (currentPiece.x * 30), 10 + (currentPiece.y * 30));
+    sf::Vector2f destination(362 + ((float)currentPiece.x * 30), 10 + ((float)currentPiece.y * 30));
     drawPiece(sourceRectangle, destination, thePieces, currentPiece.current, currentPiece.rotation, alpha);
 }
 
@@ -246,7 +252,7 @@ void manageScreen::shiftedLinesAnimation(pattern& pattern, board& board, int pie
     for(int k = 0; k < 48; k++) {
         sf::IntRect sourceRectangle(0,(pieceGraphic - 1) * 32,30,30);
         for(int i = 0; i < pattern.nbLines; i++) {
-            sf::Vector2f destination(362,(pattern.linesY[i] * 30) + 10);
+            sf::Vector2f destination(362,(float)(pattern.linesY[i] * 30) + 10);
             for(int j = 0; j < 10; j++) {
                 sourceRectangle.left = 11 * 32;
                 rawRenderCopy(sourceRectangle, destination, m_texturePiece, alpha);
@@ -258,7 +264,7 @@ void manageScreen::shiftedLinesAnimation(pattern& pattern, board& board, int pie
         }
         alpha -= 5;
         render();
-        sf::sleep(sf::milliseconds(8));
+        sf::sleep(sf::milliseconds(4));
     }
 }
 
@@ -284,6 +290,17 @@ void manageScreen::displayText(const std::string textToDisplay, const int sizeTe
     m_text.setPosition(position);
     m_text.setString(textToDisplay);
     m_window.draw(m_text);
+}
+
+void manageScreen::printIndicators(const int level, const int score, const int nbLines)
+{
+	std::string temp = std::to_string(level);
+	displayText(temp, 24, sf::Color::White, 250 - (((float)temp.size() - 1) * 12), 460);
+	temp = std::to_string(score);
+	displayText(temp, 24, sf::Color::White, 250 - (((float)temp.size() - 1) * 12), 500);
+	temp = std::to_string(nbLines);
+	displayText(temp, 24, sf::Color::White, 250 - (((float)temp.size() - 1) * 12), 540);
+	std::cout << 250 - (((float)temp.size() - 1) * 24) << "\n";
 }
 
 std::string manageScreen::convertTimeToString(sf::Int32 elapsedTime)
@@ -314,3 +331,4 @@ std::string manageScreen::convertTimeToString(sf::Int32 elapsedTime)
     }
     return timeToDisplay;
 }
+

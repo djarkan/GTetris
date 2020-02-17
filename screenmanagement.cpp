@@ -300,7 +300,6 @@ void manageScreen::printIndicators(const int level, const int score, const int n
 	displayText(temp, 24, sf::Color::White, 250 - (((float)temp.size() - 1) * 12), 500);
 	temp = std::to_string(nbLines);
 	displayText(temp, 24, sf::Color::White, 250 - (((float)temp.size() - 1) * 12), 540);
-	std::cout << 250 - (((float)temp.size() - 1) * 24) << "\n";
 }
 
 std::string manageScreen::convertTimeToString(sf::Int32 elapsedTime)

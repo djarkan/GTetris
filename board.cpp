@@ -133,23 +133,23 @@ void  board::printMatrice()
 
 bool board::patternSearch(pattern& pattern, Piece& currentPiece)
 {
-    bool patternFound{false};
-
-    if(IsThereLines(pattern))
-        patternFound = true;
-    if(pattern.TspinSearch)
-        if(IsThereTspin(pattern, currentPiece))
-			patternFound = true;
-    if(pattern.nbLines > 0 && pattern.nbLines < 4 && pattern.Tspin == false)
-        pattern.backToBack = 0;
-    else
-        if(pattern.nbLines > 3 || pattern.Tspin)
-            pattern.backToBack++;
-	if (patternFound)
+    bool lines{false};
+    if(IsThereLines(pattern)){
+        lines = true;
+    }
+    bool Tspin {false};
+    if(pattern.TspinSearch){
+        if(IsThereTspin(pattern, currentPiece)){
+			Tspin = true;
+        }
+    }
+	if ( lines || Tspin){
 		pattern.combo++;
-	else
+	}
+	else {
 		pattern.combo = 0;
-    return patternFound;
+	}
+    return lines || Tspin;
 }
 
 bool board::IsThereLines(pattern& pattern)
@@ -168,6 +168,21 @@ bool board::IsThereLines(pattern& pattern)
         }
         counter = 0;
     }
+    switch(pattern.nbLines){
+        case 1: pattern.singleLine = true;
+                pattern.backToBack = 0;
+                break;
+        case 2: pattern.doubleLine = true;
+                pattern.backToBack = 0;
+                break;
+        case 3: pattern.tripleLine = true;
+                pattern.backToBack = 0;
+                break;
+        case 4: pattern.tetris = true;
+                pattern.backToBack++;
+                break;
+        default: break;
+        }
     return patternFound;
 }
 
@@ -180,27 +195,57 @@ std::cout << "recherche si Tsipn" << std::endl;
     bool d = m_matrice[((currentPiece.y + 2) * 10) + (currentPiece.x + 2)] != 11;
     switch(currentPiece.rotation){
         case 0:
-            pattern.Tspin = c && d && (a || b);
-            pattern.miniTspin = (c || d) && a && b;
+            pattern.miniTspin = c && d && (a || b);
+            pattern.Tspin = (c || d) && a && b;
             break;
         case 1:
-            pattern.Tspin =  a && c && ( b || d);
-            pattern.miniTspin = ( a || c ) && b && d;
+            pattern.miniTspin =  a && c && ( b || d);
+            pattern.Tspin = ( a || c ) && b && d;
             break;
         case 2:
-            pattern.Tspin =  a && b && ( c || d);
-            pattern.miniTspin = ( a || b ) && c && d;
+            pattern.miniTspin =  a && b && ( c || d);
+            pattern.Tspin = ( a || b ) && c && d;
             break;
         case 3:
-            pattern.Tspin =  b && d  && ( a || c);
-            pattern.miniTspin = ( b || d ) &&  a && c;
+            pattern.miniTspin =  b && d  && ( a || c);
+            pattern.Tspin = ( b || d ) &&  a && c;
             break;
+    }
+    if(pattern.Tspin){
+        switch(pattern.nbLines){
+            case 1: pattern.TspinSingle = true;
+                    pattern.Tspin = false;
+                    pattern.backToBack++;
+                    break;
+            case 2: pattern.TspinDouble = true;
+                    pattern.backToBack++;
+                    pattern.Tspin = false;
+                    break;
+            case 3: pattern.TspinTriple = true;
+                    pattern.backToBack++;
+                    pattern.Tspin = false;
+                    break;
+            default: break;
+        }
+    }
+    if(pattern.miniTspin){
+        switch(pattern.nbLines){
+            case 1: pattern.miniTspinSingle = true;
+                    pattern.miniTspin = false;
+                    pattern.backToBack++;
+                    break;
+            case 2: pattern.miniTspinDouble = true;
+                    pattern.miniTspin = false;
+                    pattern.backToBack++;
+                    break;
+        }
     }
 	pattern.TspinSearch = false;
 std::cout << currentPiece.x << " : " << currentPiece.y << std::endl;
 std::cout << "a: " << a << std::endl << "b: " << b << std::endl << "c: " << c << std::endl << "d: " << d << std::endl;
 std::cout << "Tspin: " << pattern.Tspin << std::endl << "miniTspin: " << pattern.miniTspin << std::endl;
-	return(pattern.Tspin || pattern.miniTspin);
+	return pattern.Tspin || pattern.miniTspin || pattern.TspinSingle ||  pattern.TspinDouble || pattern.TspinTriple
+	|| pattern.miniTspinSingle || pattern.miniTspinDouble;
 }
 
 void board::IsThereClearBoard(pattern& pattern)
@@ -224,7 +269,18 @@ void board::clearPattern(pattern& pattern)
     for(int i  = 0; i < pattern.nbLines; i++)
         pattern.linesY.pop_back();
     pattern.nbLines = 0;
+    pattern.singleLine = false;
+    pattern.doubleLine = false;
+    pattern.tripleLine = false;
+    pattern.tetris = false;
     pattern.miniTspin = false;
     pattern.Tspin = false;
     pattern.ClearBoard = false;
+    pattern.TspinSingle = false;
+    pattern.TspinDouble = false;
+    pattern.TspinTriple = false;
+    pattern.miniTspinSingle = false;
+    pattern.miniTspinDouble = false;
+
 }
+

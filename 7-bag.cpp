@@ -78,10 +78,8 @@ void randomizer::initTheBag(bool enhanced, bool sevenBag)
 
 bool randomizer::testFirstShuffle(bool enhanced)
 {
-    if(m_theBag[0] == 4 || m_theBag[0] == 5 || m_theBag[0] == 6)
+    if(m_theBag[0] == 4 || m_theBag[0] == 5 || m_theBag[0] == 6 || (enhanced == true && m_theBag[0] == 9))
             return true;
-    if(enhanced == true && m_theBag[0] == 9)
-        return true;
     else
         return false;
 }
@@ -110,4 +108,11 @@ int randomizer::incrementPiecePositonInTheBag(bool enhanced, int piecePositonInT
         else
             piecePositonInTheBag++;
     return piecePositonInTheBag;
+}
+
+void randomizer::printTheBag()
+{
+    for(auto x : m_theBag)
+        std::cout << x << " ";
+    std::cout << std::endl;
 }

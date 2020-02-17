@@ -1,6 +1,4 @@
 #include "game.h"
-#include "eventreader.h"
-#include "timer.h"
                                                                                             //Screen dimension constants
 const unsigned int SCREEN_WIDTH = 1024;
 const unsigned int SCREEN_HEIGHT = 768;
@@ -31,6 +29,8 @@ int game::start()
             // debut prog : menu
 
         launchParty(screen, setup, inGameFlags);
+
+        clearInGameFlags(inGameFlags);
     }
 	screen.m_window.close();
 	return 0;
@@ -70,15 +70,18 @@ void game::rotateLeft(Piece &currentPiece, board &board, thePieces &thePieces, s
 			board.superRotationSystem(currentPiece, virtualRotation, thePieces);
 }
 
-void game::hardDrop(Piece &currentPiece, board &board, thePieces &thePieces, setup &setup, pattern &pattern, manageScreen &screen)
+int game::hardDrop(Piece &currentPiece, board &board, thePieces &thePieces, setup &setup, pattern &pattern, manageScreen &screen)
 {
+    int cpt{0};
 	while (board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces)) {
-		currentPiece.y++;
+		++currentPiece.y;
+		++cpt;
 		screen.drawTheBoard(board, setup.pieceGraphic);
 		screen.drawCurrentPiece(currentPiece, thePieces, setup.pieceGraphic, 255);
 		screen.render();
 		sf::sleep(sf::milliseconds(2));
 	}
+	return cpt;
 }
 
 void game::setShadowPiecePosition(Piece &currentPiece, Piece &shadowPiece, board &board, thePieces &thePieces)
@@ -120,7 +123,7 @@ void game::holdPiece(randomizer &random, setup &setup, Piece &currentPiece, int 
     }
 }
 
-void game::lockoutPiece(board &board, pattern &pattern, manageScreen &screen, setup &setup, inGameFlags &inGameFlags, Piece &currentPiece, randomizer &random, thePieces &thePieces)
+void game::lockoutPiece(board &board, pattern &pattern, manageScreen &screen, setup &setup, inGameFlags &inGameFlags, Piece &currentPiece, randomizer &random, thePieces &thePieces, timer &fallingPieceTimer)
 {
     board.copyPieceInBoard(currentPiece, thePieces);
     if(board.patternSearch(pattern, currentPiece)) {
@@ -130,11 +133,13 @@ void game::lockoutPiece(board &board, pattern &pattern, manageScreen &screen, se
         board.IsThereClearBoard(pattern);
         if(pattern.nbLines > 0){
             inGameFlags.nbLines += pattern.nbLines;
-            if(isLevelUp(inGameFlags.level, inGameFlags.nbLines))
+            if(isLevelUp(inGameFlags.level, inGameFlags.nbLines)){
                 ++inGameFlags.level;
+                fallingPieceTimer.setTimerDuration(calculateFallingPieceTimerDuration(inGameFlags.level));
+            }
         }
       // calcul score
-
+        inGameFlags.score = calculateScore(pattern, inGameFlags.score, inGameFlags.level);
         board.clearPattern(pattern);        //n efface pas back to back
     }
     inGameFlags.piecePositonInTheBag = random.incrementPiecePositonInTheBag(setup.enhanced, inGameFlags.piecePositonInTheBag, setup.sevenBag);
@@ -171,6 +176,7 @@ void game::launchParty(manageScreen &screen, setup &setup, inGameFlags &inGameFl
         while(!inGameFlags.gameOver) {
             eventReader::gameControl gameAction;
             gameAction = eventReader.getEvent(screen.m_window);
+            int hardDropHigthFall{0};
             switch (gameAction) {
                 case eventReader::gameControl::rotateRight:
                     rotateRight(currentPiece, board, thePieces, setup, pattern);
@@ -186,9 +192,11 @@ void game::launchParty(manageScreen &screen, setup &setup, inGameFlags &inGameFl
                             inGameFlags.lockedout = true;   // SI LOCKOUT DISABLE TESTER SI PEUT DESCENDRE -> SI NON PASSE A PIECE SUIVANTE
                         else
                             inGameFlags.lockedout = true;         // lancer le timer du lockout
+                    ++inGameFlags.score;
                     break;
                 case eventReader::gameControl::hardDrop:                    // hard drop
-                    hardDrop(currentPiece, board, thePieces, setup, pattern,screen);
+                    hardDropHigthFall = hardDrop(currentPiece, board, thePieces, setup, pattern,screen);
+                    inGameFlags.score += hardDropHigthFall * 2;
                     inGameFlags.lockedout = true;
                     break;
                 case eventReader::gameControl::shiftLeft:              // move left
@@ -219,8 +227,9 @@ void game::launchParty(manageScreen &screen, setup &setup, inGameFlags &inGameFl
             }
             if(fallingPieceTimer.isTimeElapsed())
             {
-if(board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces))
-    currentPiece.y++;
+if(board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces)){
+    ++currentPiece.y;
+}
 else
     if(setup.lockout)         // faire une fonction pour le softdrop
         inGameFlags.lockedout = true;   // SI LOCKOUT DISABLE TESTER SI PEUT DESCENDRE -> SI NON PASSE A PIECE SUIVANTE
@@ -229,7 +238,7 @@ else
                 fallingPieceTimer.startTimer();
             }
             if(inGameFlags.lockedout)                                                                                           // piece locked
-                lockoutPiece(board, pattern, screen, setup, inGameFlags, currentPiece, random, thePieces);
+                lockoutPiece(board, pattern, screen, setup, inGameFlags, currentPiece, random, thePieces,fallingPieceTimer);
             setShadowPiecePosition(currentPiece, shadowPiece, board, thePieces);
             drawTheFrame(screen, board, setup, thePieces, inGameFlags.holdedPiece, currentPiece, shadowPiece, random, inGameFlags.piecePositonInTheBag, inGameFlags);
         }
@@ -243,10 +252,36 @@ sf::Int32 game::calculateFallingPieceTimerDuration(const int level)
 
 bool game::isLevelUp(int level, int nbLines)
 {
-    return false;
+    return ((nbLines / 10) + 1) > level;
 }
 
-int calculateLevel(int level)
+int game::calculateScore(const pattern &pattern, int score, const int level)
 {
-    return level;
+    int scoreAction = ((pattern.singleLine * level * 100) + (pattern.doubleLine * level * 300) +
+                    (pattern.tripleLine * level * 500) + (pattern.tetris * level * 800) +
+                    (pattern.miniTspin * level *100) + (pattern.miniTspinSingle * level *200) +
+                    (pattern.miniTspinDouble * level *400) +
+                    (pattern.Tspin * level *400) + (pattern.TspinSingle * level *800) +
+                    (pattern.TspinDouble * level *1200) + (pattern.TspinTriple * level *1600)) +
+                    (50 * (pattern.combo - 1) * level);
+    if(pattern.backToBack > 1){
+        return score + scoreAction + (scoreAction * 0.5);
+    }
+    else {
+        return score + scoreAction;
+    }
+}
+
+void game::clearInGameFlags(inGameFlags &inGameFlags)
+{
+	inGameFlags.lockedout = false;
+    inGameFlags.holded = false;
+    inGameFlags.holdedPiece = -1;
+    inGameFlags.jejoue = true;
+    inGameFlags.gameOver = false;
+    inGameFlags.fisrtShuffle = true;
+    inGameFlags.piecePositonInTheBag = 0;								// store the N° of the holded piece
+    inGameFlags.level = 1;
+    inGameFlags.nbLines = 0;
+	inGameFlags.score = 0 ;
 }

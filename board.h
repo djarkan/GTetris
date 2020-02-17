@@ -7,13 +7,22 @@
 
 struct pattern {
     int nbLines{0};
+    bool singleLine = false;
+    bool doubleLine = false;;
+    bool tripleLine = false;
+    bool tetris = false;
     std::vector<int> linesY;
-    bool miniTspin{false};
     bool Tspin{false};
+    bool TspinSingle = false;
+    bool TspinDouble = false;
+    bool TspinTriple = false;
+    bool miniTspin{false};
+    bool miniTspinSingle = false;
+    bool miniTspinDouble = false;
+    bool TspinSearch{false};
     bool ClearBoard{false};
     int backToBack{0};
 	int combo{0};
-    bool TspinSearch{false};
 };
 
 class board{
@@ -30,6 +39,7 @@ public:
     void shiftBlocksAfterLines(const pattern& pattern);
     void clearPattern(pattern& pattern);
     void IsThereClearBoard(pattern& pattern);
+    bool IsTherePattern(pattern& pattern);
 
     void  printMatrice(); //pour test
 

@@ -20,6 +20,7 @@ public:
     bool testFirstShuffle(bool enhanced);
     int  getPieceAtPosition(int pos);
     int incrementPiecePositonInTheBag(bool enhanced, int piecePositonInTheBag, int sevenBag);
+    void printTheBag();
 
 private:
     std::array<int, 22> m_theBag;

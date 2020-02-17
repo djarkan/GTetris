@@ -8,9 +8,11 @@
 #include "eventreader.h"
 #include "board.h"
 #include "pieces.h"
+#include "eventreader.h"
+#include "timer.h"
 
 struct setup {
-	bool enhanced = true;                                       // 11 or 7 pieces game
+	bool enhanced = false;                                       // 11 or 7 pieces game
 	bool sevenBag = true;                                       // randow method : 7-bag or random
 	bool shadow = true;                                         // display shadow piece ON/OFF
 	bool superRotationSystem{ true };                           // system de ration avancee ON/OFF
@@ -53,14 +55,17 @@ private:
 	void setShadowPiecePosition(Piece &currentPiece, Piece &shadowPiece, board &board, thePieces &thePieces);
 	void rotateRight(Piece &currentPiece, board &board, thePieces &thePieces, setup &setup, pattern &pattern);
 	void rotateLeft(Piece &currentPiece, board &board, thePieces &thePieces, setup &setup, pattern &pattern);
-	void hardDrop(Piece &currentPiece, board &board, thePieces &thePieces, setup &setup, pattern &pattern, manageScreen &screen);
+	int hardDrop(Piece &currentPiece, board &board, thePieces &thePieces, setup &setup, pattern &pattern, manageScreen &screen);
 	void softDrop();
 	void holdPiece(randomizer &random, setup &setup, Piece &currentPiece, int &holdedPiece, int &piecePositonInTheBag);
-	void lockoutPiece(board &board, pattern &pattern, manageScreen &screen, setup &setup, inGameFlags &inGameFlags, Piece &currentPiece, randomizer &random, thePieces &thePieces);
+	void lockoutPiece(board &board, pattern &pattern, manageScreen &screen, setup &setup, inGameFlags &inGameFlags, Piece &currentPiece, randomizer &random, thePieces &thePieces, timer &fallingPieceTimer);
     void launchParty(manageScreen &screen, setup &setup, inGameFlags &inGameFlags);
     sf::Int32 calculateFallingPieceTimerDuration(const int level);
     bool isLevelUp(int level, int nbLines);
     int calculateLevel(int level);
+    int calculateScore(const pattern &pattern, int score, const int level);
+    void clearInGameFlags(inGameFlags &inGameFlags);
+
 };
 
 #endif // __game__

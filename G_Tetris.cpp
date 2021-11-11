@@ -5,6 +5,7 @@
 #include "eventreader.h"
 #include "board.h"
 #include "pieces.h"
+#include "game.h"
                                                                                             //Screen dimension constants
 const unsigned int SCREEN_WIDTH = 1024;
 const unsigned int SCREEN_HEIGHT = 768;
@@ -13,22 +14,7 @@ const int playGroundheigth = 600;
 
 int main( int argc, char* args[] )
 {
-    struct setup{
-        bool enhanced = true;                                                               // 11 or 7 pieces game
-        bool sevenBag = true;                                                               // randow method : 7-bag or random
-        bool shadow = true;                                                                 // display shadow piece ON/OFF
-        bool superRotationSystem{true};                                                     // system de ration avancee ON/OFF
-        bool nextPiece = true;                                                              // viewing the next piece ON/OFF
-        bool music = true;                                                                  // play music ON/OFF
-        int musicVolume = 100;                                                              // music volume 0-100
-        bool sound = true;                                                                  // game sound ON/OFF
-        int soundVolume = 100;                                                              // game sound 0-100
-        int pieceGraphic = 3;                                                               // graphics types : 1 to x
-        int nextPiecesNumber = 5;                                                           // number of next pieces viewable 0 up to 5
-        int gameType = 1;                                                                   // 1 : marathon  2: sprint  3 limited time  ...
-        bool lockout = true;                                                                // lockout ON/OFF
-        bool hold = true;                                                                   // hold piece ON/OFF
-    }setup;
+
 
     bool lockedout{false},holded{false};
     int holdedPiece{-1};
@@ -40,15 +26,19 @@ int main( int argc, char* args[] )
     board board;
     currentPiece currentPiece, shadowPiece;
     pattern pattern;
+    setup setup;
 
     screen.render();
 	    screen.loadBitmapFile("graphics/graphics.png");
         bool jejoue(true);
         sf::Keyboard::Key eventKey;
-        while(jejoue) {                          // debut prog : menu
+        while(jejoue)                           // debut prog : menu
+        {
             bool gameOver{false};
             bool fisrtShuffle{true};
-            while(fisrtShuffle) {
+            bool TspinSearch{false};
+            while(fisrtShuffle)
+            {
                 random.initTheBag(setup.enhanced, setup.sevenBag);
                 fisrtShuffle = random.testFirstShuffle(setup.enhanced);
             }
@@ -59,10 +49,12 @@ int main( int argc, char* args[] )
             if(setup.nextPiecesNumber > 0)
                 screen.drawNextPieces(setup.enhanced, setup.nextPiecesNumber, piecePositonInTheBag, setup.pieceGraphic, random, thePieces, 255);
             board.putNewPieceInBoard(currentPiece, thePieces);
-            while(!gameOver) {
+            while(!gameOver)
+            {
                 int virtualRotation{0};
                 eventKey = eventReader.getEvent(screen.m_window);
-                switch (eventKey) {
+                switch (eventKey)
+                {
                     case sf::Keyboard::Numpad1:                     // rotation clockwise
                     case sf::Keyboard::Numpad5:
                     case sf::Keyboard::Numpad9:
@@ -72,10 +64,11 @@ int main( int argc, char* args[] )
                             virtualRotation = 0;
                         else
                             virtualRotation++;
-                        if(board.testMovement(currentPiece.x, currentPiece.y, virtualRotation, currentPiece.current, thePieces)) {
+                        if(board.testMovement(currentPiece.x, currentPiece.y, virtualRotation, currentPiece.current, thePieces))
+                        {
                             currentPiece.rotation = virtualRotation;
-							if (currentPiece.current == 3 && !board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces))
-								pattern.TspinSearch = true;
+                            if(currentPiece.current == 3 && !board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces))
+                                TspinSearch = true;
                         }
                         else
                             if(setup.superRotationSystem)
@@ -91,10 +84,11 @@ int main( int argc, char* args[] )
                             virtualRotation = 3;
                         else
                             virtualRotation--;
-                        if(board.testMovement(currentPiece.x, currentPiece.y, virtualRotation, currentPiece.current, thePieces)) {
+                        if(board.testMovement(currentPiece.x, currentPiece.y, virtualRotation, currentPiece.current, thePieces))
+                        {
                             currentPiece.rotation = virtualRotation;
                             if(currentPiece.current == 3 && !board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces))
-								pattern.TspinSearch = true;
+                                TspinSearch = true;
                         }
                         else
                             if(setup.superRotationSystem)
@@ -113,12 +107,13 @@ int main( int argc, char* args[] )
                         break;
                     case sf::Keyboard::Space:                    // hard drop
                     case sf::Keyboard::Numpad8:
-                        while(board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces)) {
+                        while(board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces))
+                        {
                             currentPiece.y++;
                             screen.drawTheBoard(board, setup.pieceGraphic);
                             screen.drawCurrentPiece(currentPiece, thePieces, setup.pieceGraphic, 255);
                             screen.render();
-                            sf::sleep(sf::milliseconds(2));
+                            sf::sleep(sf::milliseconds(5));
                         }
                         if(setup.lockout)
                             lockedout = true;   // à remplacer par lancement timer du lockout
@@ -139,14 +134,17 @@ int main( int argc, char* args[] )
                     case sf::Keyboard::LShift:
                     case sf::Keyboard::Numpad0:
                     case sf::Keyboard::C:
-                        if(!holded && setup.hold) {
+                        if(!holded && setup.hold)
+                        {
                             holded = true;
-                            if(holdedPiece < 0) {
+                            if(holdedPiece < 0)
+                            {
                                 holdedPiece = currentPiece.current;                                             // if hold is empty hold is the current piece
                                 piecePositonInTheBag = random.incrementPiecePositonInTheBag(setup.enhanced, piecePositonInTheBag, setup.sevenBag);
                                 currentPiece.current = random.getPieceAtPosition(piecePositonInTheBag);
                             }
-                            else {
+                            else
+                            {
                                 int swapper = holdedPiece;                                                      // swap hold and current piece
                                 holdedPiece = currentPiece.current;
                                 currentPiece.current = swapper;
@@ -165,9 +163,17 @@ int main( int argc, char* args[] )
                     default:
                         break;
                 }
-                if(lockedout) {                                                                                             // piece locked
+                if(lockedout)                                                                                              // piece locked
+                {
                     board.copyPieceInBoard(currentPiece, thePieces);
-                    if(board.patternSearch(pattern, currentPiece)) {
+                    piecePositonInTheBag = random.incrementPiecePositonInTheBag(setup.enhanced, piecePositonInTheBag, setup.sevenBag);
+                    currentPiece.current = random.getPieceAtPosition(piecePositonInTheBag);
+                    lockedout = false;
+                    holded = false;
+                    if(!board.putNewPieceInBoard(currentPiece, thePieces))
+                        gameOver = true;
+                    if(board.patternSearch(pattern, TspinSearch, currentPiece))
+                    {
                         screen.drawTheBoard(board, setup.pieceGraphic);
                         screen.shiftedLinesAnimation(pattern, board, setup.pieceGraphic);
                         board.shiftBlocksAfterLines(pattern);
@@ -175,12 +181,6 @@ int main( int argc, char* args[] )
         // calcul des points
                         board.clearPattern(pattern);
                     }
-					piecePositonInTheBag = random.incrementPiecePositonInTheBag(setup.enhanced, piecePositonInTheBag, setup.sevenBag);
-					currentPiece.current = random.getPieceAtPosition(piecePositonInTheBag);
-					lockedout = false;
-					holded = false;
-					if (!board.putNewPieceInBoard(currentPiece, thePieces))
-						gameOver = true;
                 }
                 screen.drawPlayGround();
                 if(setup.nextPiecesNumber > 0)
@@ -189,7 +189,8 @@ int main( int argc, char* args[] )
                     screen.drawPieceToHold(holdedPiece, setup.pieceGraphic, thePieces, 255);        // draw the holded piece
                 screen.drawTheBoard(board, setup.pieceGraphic);
                 screen.drawCurrentPiece(currentPiece, thePieces, setup.pieceGraphic, 255);
-                if(setup.shadow) {
+                if(setup.shadow)
+                {
                     shadowPiece.x = currentPiece.x;
                     shadowPiece.y = currentPiece.y;
                     shadowPiece.current = currentPiece.current;

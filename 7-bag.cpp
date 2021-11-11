@@ -1,13 +1,20 @@
 #include "7-bag.h"
 
-#include <iostream>
-
 randomizer::randomizer():m_theBag {0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10,0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 {
 }
 
 randomizer::~randomizer()
 {
+}
+int randomizer::randomNumber(int mini, int maxi)
+{
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::seed_seq sseq{seed};
+    std::mt19937 gen{sseq};
+    std::uniform_int_distribution<int> dis(mini, maxi);
+    sf::sleep(sf::milliseconds(3));
+    return dis(gen);
 }
 
 void randomizer::shuffleTheBag(bool enhanced, bool sevenBag)
@@ -30,12 +37,12 @@ void randomizer::shuffleTheBag(bool enhanced, bool sevenBag)
     }
     else {
         if(enhanced) {
-            std::uniform_int_distribution<> dis(0, 10);
+            std::uniform_int_distribution<int> dis(0, 10);
             for(int i = 11; i < 22; i++)
                 m_theBag[i] = dis(gen);
         }
         else {
-            std::uniform_int_distribution<> dis(0, 6);
+            std::uniform_int_distribution<int> dis(0, 6);
             for(int i = 11; i < 22; i++)
                 m_theBag[i] = dis(gen);
         }
@@ -64,12 +71,12 @@ void randomizer::initTheBag(bool enhanced, bool sevenBag)
     }
     else {
         if(enhanced) {
-            std::uniform_int_distribution<> dis(0, 10);
+            std::uniform_int_distribution<int> dis(0, 10);
             for(int i = 0; i < 22; i++)
                 m_theBag[i] = dis(gen);
         }
         else {
-            std::uniform_int_distribution<> dis(0, 6);
+            std::uniform_int_distribution<int> dis(0, 6);
             for(int i = 0; i < 22; i++)
                 m_theBag[i] = dis(gen);
         }

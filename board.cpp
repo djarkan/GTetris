@@ -83,10 +83,8 @@ void board::superRotationSystem(Piece& currentPiece, int virtualRotation, thePie
                 return;
             }
             else {                                                                     // SRS point 4 & 5
-                if(currentPiece.current == 2)
-                    offset = 3;
-                else
-                    offset = 2;
+                if(currentPiece.current == 2) { offset = 3; }
+                else { offset = 2; }
                 if(testMovement(currentPiece.x, currentPiece.y - offset, virtualRotation, currentPiece.current, thePieces)) {
                     currentPiece.y -= offset;
                     currentPiece.rotation = virtualRotation;
@@ -96,8 +94,7 @@ void board::superRotationSystem(Piece& currentPiece, int virtualRotation, thePie
     }
     else
         if(currentPiece.rotation == 0 || currentPiece.rotation == 2) {                   // SRS point 3
-            if(currentPiece.current == 2 && currentPiece.rotation == 2)
-                offset = 2;
+            if(currentPiece.current == 2 && currentPiece.rotation == 2) { offset = 2; }
             if(testMovement(currentPiece.x, currentPiece.y - offset, virtualRotation, currentPiece.current, thePieces)) {
                 currentPiece.y -= offset;
                 currentPiece.rotation = virtualRotation;
@@ -133,22 +130,16 @@ void  board::printMatrice()
 
 bool board::patternSearch(pattern& pattern, Piece& currentPiece)
 {
-    bool lines{false};
-    if(IsThereLines(pattern)){
-        lines = true;
-    }
+    bool lines = IsThereLines(pattern);
     bool Tspin {false};
     if(pattern.TspinSearch){
         if(IsThereTspin(pattern, currentPiece)){
 			Tspin = true;
         }
     }
-	if ( lines || Tspin){
-		pattern.combo++;
-	}
-	else {
-		pattern.combo = 0;
-	}
+    if((Tspin && !lines) || (pattern.nbLines > 0 && pattern.nbLines < 4)) { pattern.backToBack = -1; }
+	if ( lines || Tspin) { pattern.combo++; }
+	else { pattern.combo = -1; }
     return lines || Tspin;
 }
 
@@ -170,13 +161,10 @@ bool board::IsThereLines(pattern& pattern)
     }
     switch(pattern.nbLines){
         case 1: pattern.singleLine = true;
-                pattern.backToBack = 0;
                 break;
         case 2: pattern.doubleLine = true;
-                pattern.backToBack = 0;
                 break;
         case 3: pattern.tripleLine = true;
-                pattern.backToBack = 0;
                 break;
         case 4: pattern.tetris = true;
                 pattern.backToBack++;
@@ -195,33 +183,41 @@ std::cout << "recherche si Tsipn" << std::endl;
     bool d = m_matrice[((currentPiece.y + 2) * 10) + (currentPiece.x + 2)] != 11;
     switch(currentPiece.rotation){
         case 0:
-            pattern.miniTspin = c && d && (a || b);
-            pattern.Tspin = (c || d) && a && b;
+            pattern.miniTspin = (c && d) && (a || b);
+            pattern.Tspin = (c || d) && (a && b);
             break;
         case 1:
-            pattern.miniTspin =  a && c && ( b || d);
+            pattern.miniTspin =  (a && c) && ( b || d);
             pattern.Tspin = ( a || c ) && b && d;
             break;
         case 2:
-            pattern.miniTspin =  a && b && ( c || d);
-            pattern.Tspin = ( a || b ) && c && d;
+            pattern.miniTspin =  (a && b) && ( c || d);
+            pattern.Tspin = ( a || b ) && (c && d);
             break;
         case 3:
             pattern.miniTspin =  b && d  && ( a || c);
-            pattern.Tspin = ( b || d ) &&  a && c;
+            pattern.Tspin = ( b || d ) &&  (a && c);
             break;
     }
+
+std::cout << currentPiece.x << " : " << currentPiece.y << std::endl;
+std::cout << "a: " << a << std::endl << "b: " << b << std::endl << "c: " << c << std::endl << "d: " << d << std::endl;
+std::cout << "Tspin: " << pattern.Tspin << std::endl << "miniTspin: " << pattern.miniTspin << std::endl;
+
     if(pattern.Tspin){
         switch(pattern.nbLines){
             case 1: pattern.TspinSingle = true;
+                    pattern.singleLine = false;
                     pattern.Tspin = false;
                     pattern.backToBack++;
                     break;
             case 2: pattern.TspinDouble = true;
+                    pattern.doubleLine = false;
                     pattern.backToBack++;
                     pattern.Tspin = false;
                     break;
             case 3: pattern.TspinTriple = true;
+                    pattern.tripleLine = false;
                     pattern.backToBack++;
                     pattern.Tspin = false;
                     break;
@@ -231,19 +227,18 @@ std::cout << "recherche si Tsipn" << std::endl;
     if(pattern.miniTspin){
         switch(pattern.nbLines){
             case 1: pattern.miniTspinSingle = true;
+                    pattern.singleLine = false;
                     pattern.miniTspin = false;
                     pattern.backToBack++;
                     break;
             case 2: pattern.miniTspinDouble = true;
+                    pattern.doubleLine = false;
                     pattern.miniTspin = false;
                     pattern.backToBack++;
                     break;
         }
     }
 	pattern.TspinSearch = false;
-std::cout << currentPiece.x << " : " << currentPiece.y << std::endl;
-std::cout << "a: " << a << std::endl << "b: " << b << std::endl << "c: " << c << std::endl << "d: " << d << std::endl;
-std::cout << "Tspin: " << pattern.Tspin << std::endl << "miniTspin: " << pattern.miniTspin << std::endl;
 	return pattern.Tspin || pattern.miniTspin || pattern.TspinSingle ||  pattern.TspinDouble || pattern.TspinTriple
 	|| pattern.miniTspinSingle || pattern.miniTspinDouble;
 }
@@ -266,8 +261,7 @@ void board::shiftBlocksAfterLines(const pattern& pattern)
 
 void board::clearPattern(pattern& pattern)
 {
-    for(int i  = 0; i < pattern.nbLines; i++)
-        pattern.linesY.pop_back();
+    pattern.linesY.resize(0);
     pattern.nbLines = 0;
     pattern.singleLine = false;
     pattern.doubleLine = false;
@@ -281,6 +275,23 @@ void board::clearPattern(pattern& pattern)
     pattern.TspinTriple = false;
     pattern.miniTspinSingle = false;
     pattern.miniTspinDouble = false;
+}
+
+void board::insertBricks(randomizer& random)
+{
+    for(int i = 1; i < 23; i++) {
+        for(int j = 0; j < 10; j++) {
+            m_matrice[j + (i * 10)] = m_matrice[j + (i * 10) + 10];
+        }
+    }
+    for(int i = 0; i < 10; i++) {
+        m_matrice[220 + i] = 11;
+    }
+    int number = random.randomNumber(5, 9);
+    for(int i = 0; i < number; i++) {
+        m_matrice[220 + random.randomNumber(0, 9)] = 12;
+    }
 
 }
+
 

@@ -6,6 +6,7 @@
 #include <iterator>
 #include <iostream>
 #include <array>
+#include <SFML/Graphics.hpp>
 
 #if defined(__MINGW32__)
 #include <chrono>
@@ -15,6 +16,7 @@ class randomizer{
 public:
     randomizer();
     ~randomizer();
+    int randomNumber(int mini, int maxi);
     void initTheBag(bool enhanced, bool sevenBag);
     void shuffleTheBag(bool enhanced, bool sevenBag);
     bool testFirstShuffle(bool enhanced);

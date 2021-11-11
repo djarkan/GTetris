@@ -4,11 +4,12 @@
 #include <array>
 #include <vector>
 #include "pieces.h"
+#include "7-bag.h"
 
 struct pattern {
     int nbLines{0};
     bool singleLine = false;
-    bool doubleLine = false;;
+    bool doubleLine = false;
     bool tripleLine = false;
     bool tetris = false;
     std::vector<int> linesY;
@@ -21,8 +22,8 @@ struct pattern {
     bool miniTspinDouble = false;
     bool TspinSearch{false};
     bool ClearBoard{false};
-    int backToBack{0};
-	int combo{0};
+    int backToBack{-1};
+	int combo{-1};
 };
 
 class board{
@@ -40,6 +41,7 @@ public:
     void clearPattern(pattern& pattern);
     void IsThereClearBoard(pattern& pattern);
     bool IsTherePattern(pattern& pattern);
+    void insertBricks(randomizer& random);
 
     void  printMatrice(); //pour test
 

@@ -10,23 +10,7 @@
 #include "pieces.h"
 #include "eventreader.h"
 #include "timer.h"
-
-struct setup {
-	bool enhanced = false;                                       // 11 or 7 pieces game
-	bool sevenBag = true;                                       // randow method : 7-bag or random
-	bool shadow = true;                                         // display shadow piece ON/OFF
-	bool superRotationSystem{ true };                           // system de ration avancee ON/OFF
-	bool nextPiece = true;                                      // viewing the next piece ON/OFF
-	bool music = true;                                          // play music ON/OFF
-	int musicVolume = 100;                                      // music volume 0-100
-	bool sound = true;                                          // game sound ON/OFF
-	int soundVolume = 100;                                      // game sound 0-100
-	int pieceGraphic = 3;                                       // graphics types : 1 to x
-	int nextPiecesNumber = 5;                                   // number of next pieces viewable 0 up to 5
-	int gameType = 1;                                           // 1 : marathon  2: sprint  3 limited time  ...
-	bool lockout = true;                                        // lockout ON/OFF
-	bool hold = true;                                           // hold piece ON/OFF
-};
+#include "setup.hpp"
 
 struct inGameFlags{
     bool lockedout{false};
@@ -34,6 +18,7 @@ struct inGameFlags{
     int holdedPiece{-1};
     bool jejoue{true};
     bool gameOver{false};
+    bool goalReached{false};
     bool fisrtShuffle{true};
     int piecePositonInTheBag{0};								// store the N° of the holded piece
     int level{1};
@@ -47,24 +32,25 @@ class game {
 public:
 	 game();
 	 ~game();
-	int  start();
+//	int  start();
 
-
-private:
-	void drawTheFrame(manageScreen &screen, board &board, setup &setup, thePieces &thePieces, int holdedPiece, Piece &currentPiece, Piece &shadowPiece, randomizer &random, int piecePositonInTheBag, inGameFlags &inGameFlags);
+	void drawTheFrame(bool allowDrawAll, manageScreen &screen, board &board, setup &setup, thePieces &thePieces, int holdedPiece, Piece &currentPiece, Piece &shadowPiece, randomizer &random, int piecePositonInTheBag, inGameFlags &inGameFlags, std::string elapsedTime);
 	void setShadowPiecePosition(Piece &currentPiece, Piece &shadowPiece, board &board, thePieces &thePieces);
 	void rotateRight(Piece &currentPiece, board &board, thePieces &thePieces, setup &setup, pattern &pattern);
 	void rotateLeft(Piece &currentPiece, board &board, thePieces &thePieces, setup &setup, pattern &pattern);
 	int hardDrop(Piece &currentPiece, board &board, thePieces &thePieces, setup &setup, pattern &pattern, manageScreen &screen);
 	void softDrop();
 	void holdPiece(randomizer &random, setup &setup, Piece &currentPiece, int &holdedPiece, int &piecePositonInTheBag);
-	void lockoutPiece(board &board, pattern &pattern, manageScreen &screen, setup &setup, inGameFlags &inGameFlags, Piece &currentPiece, randomizer &random, thePieces &thePieces, timer &fallingPieceTimer);
+	void lockoutPiece(board &board, pattern &pattern, manageScreen &screen, setup &setup, inGameFlags &inGameFlags, Piece &currentPiece, randomizer &random, thePieces &thePieces, timer &fallingPieceTimer, sf::Int32& underPreasureTime);
     void launchParty(manageScreen &screen, setup &setup, inGameFlags &inGameFlags);
     sf::Int32 calculateFallingPieceTimerDuration(const int level);
     bool isLevelUp(int level, int nbLines);
     int calculateLevel(int level);
     int calculateScore(const pattern &pattern, int score, const int level);
     void clearInGameFlags(inGameFlags &inGameFlags);
+    std::string convertTimeToString(sf::Int32 elapsedTime);
+
+    private:
 
 };
 

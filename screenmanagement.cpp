@@ -25,17 +25,16 @@ void manageScreen::clear()
 	m_window.clear();
 }
 
-void manageScreen::drawPlayGround()
+void manageScreen::drawPlayGround(std::string levelLabel, std::string  scoreLabel, std::string lineLabel, std::string timeLabel)
 {														//Draw boards (playung area, hold, next
-	clear();
     drawBoardArea();
     draw5NxetArea();
     drawHoldArea();
     drawNextArea();
-    displayText("NIVEAU", 24, sf::Color::White, 55, 460);
-    displayText("SCORE", 24, sf::Color::White, 55, 500);
-    displayText("LIGNES", 24, sf::Color::White, 55, 540);
-    displayText("TEMPS", 24, sf::Color::White, 55, 580);
+    displayText(levelLabel, 24, sf::Color::White, 55, 460);
+    displayText(scoreLabel, 24, sf::Color::White, 55, 500);
+    displayText(lineLabel, 24, sf::Color::White, 55, 540);
+    displayText(timeLabel, 24, sf::Color::White, 55, 580);
 }
 void manageScreen::drawBoardArea()
 {
@@ -104,18 +103,16 @@ void manageScreen::loadBitmapFile(const std::string title)
 
 void manageScreen::drawEmptyBoard(const int pieceGraphic)
 {
-//    drawPlayGround();
-    sf::IntRect  sourceRectangle(11 * 32,(pieceGraphic - 1) * 32,30,30);
-    sf::Vector2f destination(362, 70);
-    for(auto i = 2; i < 23; i++) {
+    sf::IntRect  sourceRectangle(11 * 32,pieceGraphic * 32,30,30);
+    sf::Vector2f destination(362, 100);
+    for(auto i = 3; i < 23; i++) {
         for(auto j = 0; j < 10; j++) {
-            rawRenderCopy(sourceRectangle, destination, m_texturePiece, 255);
+            rawRenderCopy(sourceRectangle, destination, 255);
             destination.x +=30;
         }
         destination.y += 30;
         destination.x = 362;
     }
-    render();
 }
 
 void manageScreen::drawNextPieces(bool enhanced, int nextPiecesNumber, int piecePositonInTheBag, int pieceGraphic, randomizer& random, thePieces& thePieces, const sf::Uint8 alpha)
@@ -130,7 +127,7 @@ void manageScreen::drawNextPieces(bool enhanced, int nextPiecesNumber, int piece
     rectangle.setSize(sf::Vector2f(180, 110));
     rectangle.setFillColor(sf::Color(sf::Color::Black));
     m_window.draw(rectangle);
-    sf::IntRect sourceRectangle(pieceToDraw * 32,(pieceGraphic - 1) * 32,30,30);
+    sf::IntRect sourceRectangle(pieceToDraw * 32,pieceGraphic * 32,30,30);
     sf::Vector2f destination(774,100);                                                                     // clear next piece zone
     adjustxy(pieceToDraw, destination);
     drawPiece(sourceRectangle, destination, thePieces, pieceToDraw, 0, alpha);
@@ -146,7 +143,7 @@ void manageScreen::drawNextPieces(bool enhanced, int nextPiecesNumber, int piece
             offset = 4 + i;
         pieceToDraw = random.getPieceAtPosition(piecePositonInTheBag + offset);
         ++offset;
-        sf::IntRect sourceRectangle(pieceToDraw * 32,(pieceGraphic - 1) * 32,30,30);
+        sf::IntRect sourceRectangle(pieceToDraw * 32,pieceGraphic * 32,30,30);
         destination.x = 774;
         destination.y = 110;
         destination.y += (100 * i);
@@ -191,7 +188,7 @@ void manageScreen::drawPiece(sf::IntRect& sourceRectangle, sf::Vector2f& destina
         for(int j = 0; j < 4; ++j) {
             blockToDraw = thePieces.getBlock(pieceToDraw, rotation, j, i);
             if(blockToDraw > -1)
-                rawRenderCopy(sourceRectangle, destination, m_texturePiece, alpha);
+                rawRenderCopy(sourceRectangle, destination, alpha);
             destination.x += 30;
 		}
         destination.x = x;
@@ -199,9 +196,9 @@ void manageScreen::drawPiece(sf::IntRect& sourceRectangle, sf::Vector2f& destina
     }
 }
 
-void manageScreen::rawRenderCopy(const sf::IntRect& sourceRectangle, const sf::Vector2f& destination, const sf::Texture& texturePiece, const sf::Uint8 alpha)
+void manageScreen::rawRenderCopy(const sf::IntRect& sourceRectangle, const sf::Vector2f& destination, const sf::Uint8 alpha)
 {
-    sf::Sprite sprite(texturePiece);
+    sf::Sprite sprite(m_texturePiece);
     sprite.setTextureRect(sourceRectangle);
     sprite.setPosition(destination);
     sprite.setColor(sf::Color(255,255,255,alpha));                                                          // 4 eme couleur pour transaparance  0 transparant, 255 opaque
@@ -210,7 +207,7 @@ void manageScreen::rawRenderCopy(const sf::IntRect& sourceRectangle, const sf::V
 
 void manageScreen::drawCurrentPiece(Piece& currentPiece, thePieces& thePieces, const int pieceGraphic, const sf::Uint8 alpha)
 {
-    sf::IntRect sourceRectangle(currentPiece.current * 32,(pieceGraphic - 1) * 32,30,30);
+    sf::IntRect sourceRectangle(currentPiece.current * 32,pieceGraphic * 32,30,30);
     sf::Vector2f destination(362 + ((float)currentPiece.x * 30), 10 + ((float)currentPiece.y * 30));
     drawPiece(sourceRectangle, destination, thePieces, currentPiece.current, currentPiece.rotation, alpha);
 }
@@ -223,7 +220,7 @@ void manageScreen::drawPieceToHold(int currentPiece, int pieceGraphic, thePieces
     rectangle.setSize(sf::Vector2f(180, 110));
     rectangle.setFillColor(sf::Color(sf::Color::Black));
     m_window.draw(rectangle);                                                                               // clear hold piece zone
-    sf::IntRect sourceRectangle(currentPiece * 32,(pieceGraphic - 1) * 32,30,30);
+    sf::IntRect sourceRectangle(currentPiece * 32,pieceGraphic * 32,30,30);
     sf::Vector2f destination(105,100);
     adjustxy(currentPiece, destination);
     drawPiece(sourceRectangle, destination, thePieces, currentPiece, 0, alpha);                             // draw the hold piece
@@ -231,13 +228,13 @@ void manageScreen::drawPieceToHold(int currentPiece, int pieceGraphic, thePieces
 
 void manageScreen::drawTheBoard(board& board, const int pieceGraphic)
 {
-    sf::IntRect sourceRectangle(0,(pieceGraphic - 1) * 32,30,30);
-sf::Vector2f destination(362,10);                         // temporaire pour voir TOUTE LA MATRICE
-for(int i = 0; i < 23; i++) {                             // i = 0 au lieu de 2  temporaire IDEM
+    sf::IntRect sourceRectangle(0,pieceGraphic * 32,30,30);
+    sf::Vector2f destination(362,100);
+    for(int i = 3; i < 23; i++) {
          for(int j = 0; j < 10; j++) {
             int blockToDraw = board.getBlockToDraw((i*10) + j);
             sourceRectangle.left = blockToDraw * 32;
-            rawRenderCopy(sourceRectangle, destination, m_texturePiece, 255);
+            rawRenderCopy(sourceRectangle, destination, 255);
             destination.x +=30;
 		 }
         destination.x = 362;
@@ -250,27 +247,40 @@ void manageScreen::shiftedLinesAnimation(pattern& pattern, board& board, int pie
     sf::Uint8 alpha{250};
 
     for(int k = 0; k < 48; k++) {
-        sf::IntRect sourceRectangle(0,(pieceGraphic - 1) * 32,30,30);
+        sf::IntRect sourceRectangle(0,pieceGraphic * 32,30,30);
         for(int i = 0; i < pattern.nbLines; i++) {
             sf::Vector2f destination(362,(float)(pattern.linesY[i] * 30) + 10);
             for(int j = 0; j < 10; j++) {
                 sourceRectangle.left = 11 * 32;
-                rawRenderCopy(sourceRectangle, destination, m_texturePiece, alpha);
+                rawRenderCopy(sourceRectangle, destination, alpha);
                 int blockToDraw = board.getBlockToDraw((pattern.linesY[i]*10) + j);
                 sourceRectangle.left = blockToDraw * 32;
-                rawRenderCopy(sourceRectangle, destination, m_texturePiece, alpha);
+                rawRenderCopy(sourceRectangle, destination, alpha);
                 destination.x += 30;
             }
         }
         alpha -= 5;
-        render();
-        sf::sleep(sf::milliseconds(4));
+
+if(pattern.backToBack > 0){
+    displayText("BACK TO", 72, sf::Color::White, 405, 300);
+    displayText("BACK !!", 72, sf::Color::White, 405, 380);
+    if(pattern.backToBack > 1){
+        std::string comboNumber = "X " + std::to_string(pattern.backToBack);
+        displayText(comboNumber, 72, sf::Color::White, 465, 460);
     }
 }
 
-int manageScreen::pauseMenu(board& board, int pieceGraphic)
-{
-	return 0;
+if(pattern.combo > 0 && pattern.backToBack < 1){
+    displayText("COMBO !!", 72, sf::Color::White, 390, 300);
+    if(pattern.combo > 1){
+        std::string comboNumber = "X " + std::to_string(pattern.combo);
+        displayText(comboNumber, 72, sf::Color::White, 465, 380);
+    }
+}
+
+        render();
+   //     sf::sleep(sf::milliseconds(4));
+    }
 }
 
 void manageScreen::loadFontFile(const std::string title)
@@ -292,7 +302,7 @@ void manageScreen::displayText(const std::string textToDisplay, const int sizeTe
     m_window.draw(m_text);
 }
 
-void manageScreen::printIndicators(const int level, const int score, const int nbLines)
+void manageScreen::printIndicators(const int level, const int score, const int nbLines, std::string timeElapsed)
 {
 	std::string temp = std::to_string(level);
 	displayText(temp, 24, sf::Color::White, 250 - (((float)temp.size() - 1) * 12), 460);
@@ -300,34 +310,29 @@ void manageScreen::printIndicators(const int level, const int score, const int n
 	displayText(temp, 24, sf::Color::White, 250 - (((float)temp.size() - 1) * 12), 500);
 	temp = std::to_string(nbLines);
 	displayText(temp, 24, sf::Color::White, 250 - (((float)temp.size() - 1) * 12), 540);
+	displayText(timeElapsed, 24, sf::Color::White, 260 - (((float)timeElapsed.size() - 1) * 12), 580);
 }
 
-std::string manageScreen::convertTimeToString(sf::Int32 elapsedTime)
+void manageScreen::drawButton(const int x, const int y, const int width, const int higth, const int textureNumber, const int buttonState)
 {
-    sf::Int32 heures = elapsedTime / (1000 *60 * 60);
-    sf::Int32 resteHeures = elapsedTime % (1000 *60 * 60);
-    sf::Int32 minutes = resteHeures / (1000 * 60);
-    sf::Int32 resteMinutes = resteHeures % (1000 * 60);
-    sf::Int32 secondes = resteMinutes / (1000);
-    std::string timeToDisplay("");
-    if (heures < 10) {
-        timeToDisplay = "0" + std::to_string(heures) + ":";
-    }
-    else{
-        timeToDisplay = std::to_string(heures) + ":";
-    }
-    if (minutes < 10) {
-        timeToDisplay += "0" + std::to_string(minutes) + ":";
-    }
-    else{
-        timeToDisplay += std::to_string(minutes) + ":";
-    }
-    if (secondes < 10) {
-        timeToDisplay += "0" + std::to_string(secondes);
-    }
-    else{
-        timeToDisplay += std::to_string(secondes);
-    }
-    return timeToDisplay;
+    sf::IntRect sourceRectangle(0 + (width * buttonState), 250 + (100 * textureNumber), width, higth); //100 = width, higth of biggest button
+    sf::Vector2f destination(x, y);
+    rawRenderCopy(sourceRectangle, destination, 255);
+}
+
+void manageScreen::drawGameName()
+{
+    sf::IntRect sourceRectangle(0, 1000, 850, 275);
+    sf::Vector2f destination(75, 50);
+    rawRenderCopy(sourceRectangle, destination, 255);
+
+}
+
+void manageScreen::drawBlock( int blockNumber)
+{
+    sf::IntRect sourceRectangle(64, 0 + (blockNumber * 32), 30, 30);
+    sf::Vector2f destination (750,150);
+
+    rawRenderCopy(sourceRectangle, destination, 255);
 }
 

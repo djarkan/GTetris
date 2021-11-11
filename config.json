@@ -1,0 +1,193 @@
+{
+    "setUpButtons" : [
+        {"x" : 550, "y" : 110, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 3, "textureNumber" : 3, "state" : 0},
+        {"x" : 950, "y" : 110, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 4, "textureNumber" : 4, "state" : 0},
+        {"x" : 550, "y" : 150, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 5, "textureNumber" : 3, "state" : 0},
+        {"x" : 950, "y" : 150, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 6, "textureNumber" : 4, "state" : 0},
+        {"x" : 550, "y" : 190, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 7, "textureNumber" : 3, "state" : 0},
+        {"x" : 950, "y" : 190, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 8, "textureNumber" : 4, "state" : 0},
+        {"x" : 550, "y" : 230, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 9, "textureNumber" : 3, "state" : 0},
+        {"x" : 950, "y" : 230, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 10, "textureNumber" : 4, "state" : 0},
+        {"x" : 550, "y" : 270, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 11, "textureNumber" : 3, "state" : 0},
+        {"x" : 950, "y" : 270, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 12, "textureNumber" : 4, "state" : 0},
+        {"x" : 550, "y" : 310, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 13, "textureNumber" : 3, "state" : 0},
+        {"x" : 950, "y" : 310, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 14, "textureNumber" : 4, "state" : 0},
+        {"x" : 550, "y" : 350, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 15, "textureNumber" : 3, "state" : 0},
+        {"x" : 950, "y" : 350, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 16, "textureNumber" : 4, "state" : 0},
+        {"x" : 550, "y" : 390, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 17, "textureNumber" : 3, "state" : 0},
+        {"x" : 950, "y" : 390, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 18, "textureNumber" : 4, "state" : 0},
+        {"x" : 550, "y" : 430, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 19, "textureNumber" : 3, "state" : 0},
+        {"x" : 950, "y" : 430, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 20, "textureNumber" : 4, "state" : 0},
+        {"x" : 550, "y" : 470, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 21, "textureNumber" : 3, "state" : 0},
+        {"x" : 950, "y" : 470, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 22, "textureNumber" : 4, "state" : 0},
+        {"x" : 550, "y" : 510, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 23, "textureNumber" : 3, "state" : 0},
+        {"x" : 950, "y" : 510, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 24, "textureNumber" : 4, "state" : 0},
+        {"x" : 550, "y" : 550, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 25, "textureNumber" : 3, "state" : 0},
+        {"x" : 950, "y" : 550, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 26, "textureNumber" : 4, "state" : 0},
+        {"x" : 550, "y" : 590, "width" : 30, "higth" : 30, "buttonType" : 1, "buttonId" : 27, "textureNumber" : 3, "state" : 0},
+        {"x" : 950, "y" : 590, "width" : 30, "higth" : 30, "buttonType" : 1, "buttonId" : 28, "textureNumber" : 4, "state" : 0},
+        {"x" : 550, "y" : 630, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 29, "textureNumber" : 3, "state" : 0},
+        {"x" : 950, "y" : 630, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 30, "textureNumber" : 4, "state" : 0},
+        {"x" : 550, "y" : 670, "width" : 30, "higth" : 30, "buttonType" : 1, "buttonId" : 31, "textureNumber" : 3, "state" : 0},
+        {"x" : 950, "y" : 670, "width" : 30, "higth" : 30, "buttonType" : 1, "buttonId" : 32, "textureNumber" : 4, "state" : 0},
+        {"x" : 45, "y" : 20, "width" : 205, "higth" : 50, "buttonType" : 2, "buttonId" : 33, "textureNumber" : 5, "state" : 0},
+        {"x" : 780, "y" : 20, "width" : 205, "higth" : 50, "buttonType" : 2, "buttonId" : 34, "textureNumber" : 5, "state" : 0}
+    ],
+    "playButton" : [
+        {"x" : 150, "y" : 450, "width" : 100, "higth" : 100, "buttonType" : 0, "buttonId" : 0, "textureNumber" : 0, "state" : 0},
+        {"x" : 350, "y" : 450, "width" : 100, "higth" : 100, "buttonType" : 2, "buttonId" : 1, "textureNumber" : 1, "state" : 0},
+        {"x" : 550, "y" : 450, "width" : 100, "higth" : 100, "buttonType" : 2, "buttonId" : 36, "textureNumber" : 0, "state" : 0},
+        {"x" : 750, "y" : 450, "width" : 100, "higth" : 100, "buttonType" : 2, "buttonId" : 2, "textureNumber" : 2, "state" : 0},
+        {"x" : 95, "y" : 670, "width" : 250, "higth" : 45, "buttonType" : 2, "buttonId" : 35, "textureNumber" : 6, "state" : 0}
+    ],
+    "maxValue" : {
+        "maxLanguage" : 4,
+        "maxPieceGraphic" : 4,
+        "maxGameType" : 6,
+        "MaxNextPieces" : 5
+
+    },
+    "pseudobutton" : [
+        "changer de joueur",
+        "change player",
+        "cambiar de jugador",
+        "Wechselspieler"
+    ],
+    "pause" : [
+        ["Pause", "Pressez", "Echap"],
+        ["Pause", "Press", "Escape"],
+        ["Pausa", "Prensa", "Escapar"],
+        ["Pause", "Drücken Sie", "Flucht"]
+        ],
+    "save" : [
+        "sauver",
+        "save",
+        "salvar",
+        "spare"
+        ],
+    "quit" : [
+        "Quitter",
+        "Quit",
+        "dejar",
+        "verlassen"
+        ],
+    "welcome" : [
+        "Bienvenue, ",
+        "Welcome, ",
+        "Bienvenido, ",
+        "Willkommen, "
+    ],
+    "single" : [
+        "Simple",
+        "Single",
+        "único",
+        "Single"
+        ],
+    "double" : [
+        "Double",
+        "Double",
+        "Doble",
+        "Doppelt"
+        ],
+    "triple" : [
+        "Triple",
+        "Triple",
+        "Triple",
+        "Dreifach"
+        ],
+    "tetris" : [
+        "Tetris",
+        "Tetris",
+        "Tetris",
+        "Tetris"
+        ],
+    "gameIndicator" : {
+        "score" : ["Score", "Score", "Puntuación", "Ergebnis"],
+        "lines" : ["Lignes", "Lines", "lìneas", "lignen"],
+        "time" : ["Temps", "Time", "tiempo", "Zeit"]
+        },
+    "setupSelector" : {
+        "enhanced" : [
+            ["original", "etendu"],
+            ["original", "extended"],
+            ["original", "extendido"],
+            ["original", "erweitert"]
+            ],
+        "sevenBag" : [
+            ["aleatoire", "sac"],
+            ["random", "bag"],
+            ["aleatorio", "bolsa"],
+            ["random", "bag"]
+            ],
+        "shadow" : [
+            ["non", "oui"],
+            ["no", "yes"],
+            ["no", "si"],
+            ["nein", "ya"]
+            ],
+        "superRotationSystem" : [
+            ["Original", "Rotation intelligente"],
+            ["Original", "Smart Rotation"],
+            ["Original", "Rotacion inteligente"],
+            ["Original", "Intelligente rotation"]
+            ],
+        "nextPiece" : [
+            ["non", "oui"],
+            ["no", "yes"],
+            ["no", "si"],
+            ["nein", "ya"]
+            ],
+        "nextPiecesNumber" : ["1", "2", "3", "4"],
+        "music" : [
+            ["non", "oui"],
+            ["no", "yes"],
+            ["no", "si"],
+            ["nein", "ya"]
+            ],
+        "musicVolume" : 100,
+        "sound" : [
+            ["muet", "oui"],
+            ["mute", "yes"],
+            ["mudo", "si"],
+            ["stumm", "ya"]
+            ],
+        "soundVolume" : 100,
+        "gameType" : [
+            ["marathon", "sprint", "40 lignes", "fantome", "inclusion", "sous pression"],
+            ["marathon", "sprint", "40 lines", "phantom", "inclusion", "under preasure"],
+            ["maratòn", "sprint", "40 lìneas", "fantasma", "inclusiòn", "sous pression"],
+            ["marathon", "sprint", "40 lignen", "phantom", "aufnahmen", "sous pression"]
+            ],
+        "hold" : [
+            ["non", "oui"],
+            ["no", "yes"],
+            ["no", "si"],
+            ["nein", "ya"]
+            ],
+        "lockout" : [
+            ["non", "oui"],
+            ["no", "yes"],
+            ["no", "si"],
+            ["nein", "ya"]
+            ],
+        "language" : ["francais", "english", "español", "deutsch"],
+        },
+        "paramtersTitles" : {
+            "title" :               ["Parametres", "Parameters" ,"Parámetros" , "Parameters"],
+            "language" :            ["Langue", "Language" ,"Idioma" , "Sprache"],
+            "pieceGraphic" :        ["Visuel des pieces", "Piece graphic" ,"Gráfico de pieza" , "Stück Grafik"],
+            "gameType" :            ["Mode de jeu", "Game mode" ,"Modo de juego" , "Spielmodus"],
+            "enhanced" :            ["Nombre de pieces", "Pieces number" ,"Número de piezas" , "Stückzahl"],
+            "sevenBag" :            ["Mode aleatoire", "Random mode" ,"Modo aleatorio" , "Zufallsmodus"],
+            "superRotationSystem" : ["Mode rotation", "Rotate mode" ,"Modo de rotación" , "Modus drehen"],
+            "shadow" :              ["Piece fantome", "Phantom piece" ,"Pieza fantasma" , "Phantomstück"],
+            "hold" :                ["Piece retenue", "Hold piece" ,"Sostener pieza" , "Stück halten"],
+            "lockout" :             ["delais avant verrouillage", "delay before lockout" ,"retraso antes del bloqueo" , "Verzögerung vor der Sperrung"],
+            "nextPiece" :           ["Pieces suivantes", "Next pieces" ,"próximas piezas" , "nächste Stücke"],
+            "nextPiecesNumber" :    ["nombre de pieces suivantes", "Next pieces number" ,"Número de piezas siguientes" , "Nummer der nächsten Stücke"],
+            "music" :               ["Musique", "Music" ,"Música" , "Musik"],
+            "musicVolume" :         ["volume musique", "Music volume" ,"Volumen de la música" , "Musiklautstärke"],
+            "sound" :               ["Bruitages", "Sounds" ,"Sonidos" , "Geräusche"],
+            "soundVolume" :         ["volume bruitage", "Sound volume" ,"Volumen de sonido" , "Lautstärke"]
+            }
+}

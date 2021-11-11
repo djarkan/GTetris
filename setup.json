@@ -1,0 +1,21 @@
+{
+	"setUp" : 
+	{
+		"enhanced" : true,
+		"gameType" : 0,
+		"hold" : true,
+		"language" : 0,
+		"lockout" : true,
+		"music" : true,
+		"musicVolume" : 57,
+		"nextPiece" : true,
+		"nextPiecesNumber" : 5,
+		"pieceGraphic" : 0,
+		"pseudo" : "djarkan",
+		"sevenBag" : true,
+		"shadow" : true,
+		"sound" : true,
+		"soundVolume" : 79,
+		"superRotationSystem" : true
+	}
+}

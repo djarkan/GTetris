@@ -9,8 +9,10 @@ private:
 public:
     eventReader();
     ~eventReader();
-	enum class gameControl { rotateLeft, rotateRight, shiftLeft, shiftRight, hardDrop, softDrop, pause, holdPiece, none };
-	gameControl getEvent(sf::RenderWindow& window);                                         // gamer interaction reading, and return le next action to do
-	
+	enum class gameControl { rotateLeft, rotateRight, shiftLeft, shiftRight, hardDrop, softDrop, pause, holdPiece, leftMouseButtonPressed, leftMouseButtonReleased, leftMouseButtonHeld, none };
+
+	gameControl getEvent(sf::RenderWindow &window);
+	bool pseudoChar(sf::RenderWindow &window, std::string& pseudo, int language);                                     // gamer interaction reading, and return le next action to do
+
 };
 #endif

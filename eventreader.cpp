@@ -1,4 +1,4 @@
-#include "eventreader.h"
+#include "eventreader.hpp"
 #include <SFML/window/mouse.hpp>
 
 #include <iostream>
@@ -653,4 +653,22 @@ bool eventReader::pseudoChar(sf::RenderWindow &window, std::string& pseudo, int 
         }
     }
     return true;
+}
+
+bool eventReader::getSpace(sf::RenderWindow &window)
+{
+    while(window.pollEvent(m_event)) {
+            switch (m_event.type) {
+                case sf::Event::KeyReleased:
+                    switch (m_event.key.code) {
+                        case 57 :
+                            m_event.key.code = sf::Keyboard::K;
+                            return true;
+                            break;
+                        default:
+                            return false;
+                            break;
+                    }
+            }
+    }
 }

@@ -30,6 +30,7 @@ public:
     void checkButtons(sf::RenderWindow &window);
     void checkmouseWheel(sf::RenderWindow &window);
     void checkMouseEvents(sf::RenderWindow &window);
+    void checkmouseCoord(sf::RenderWindow &window);
 
 private:
     sf::Event   m_event;

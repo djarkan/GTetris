@@ -1,14 +1,14 @@
-#include "button.h"
+#include "button.hpp"
 
 button::button()
 {
 }
 
-//   int buttonType
+//    buttonType
 //  0: bouton lance 1 action quand pressé
-//  1: bouton lance 1 action quand relaché
-//  2: bouton lance 1 action tant que pressé
-button::button(const int x, const int y, const int width, const int higth, const buttonType buttonType, const unsigned int ButtonId, const unsigned int textureNumber, int state)
+//  1: bouton lance 1 action tant que pressé
+//  2: bouton lance 1 action  quand relaché
+button::button(const float x, const float y, const int width, const int higth, const buttonType buttonType, const unsigned int ButtonId, const unsigned int textureNumber, int state)
 {
     m_x = x;
     m_y = y;
@@ -24,40 +24,39 @@ button::~button()
 {
 }
 
-button::buttonState button::whatButtonState(mouseEvent& mouseEvent)
+button::buttonState button::whatButtonState(sf::RenderWindow &window)
 {
-
+    mouseEvent.checkmouseCoord(window);
     bool mouseOver = isMouseOver(mouseEvent.state.mouseX, mouseEvent.state.mouseY);
     if(!mouseOver ) {
         m_state = 0;
         return buttonState::noAction;
     }
+    mouseEvent.checkMouseEvents(window);
     if(mouseOver && mouseEvent.state.mouseLeftButton == mouseEvent::mouseButtonAction::leftUp){
         m_state = 1;
         return buttonState::mouseOver;
     }
     if(mouseOver && mouseEvent.state.mouseLeftButton == mouseEvent::mouseButtonAction::leftPressed){
+        m_state = 2;
         if(m_buttonType == buttonType::pushedButton) {
-            m_state = 2;
             return buttonState::buttonPressed;
-    }
+        }
         else {
-                m_state = 2;
-                return buttonState::mouseOver;
+            return buttonState::mouseOver;
         }
     }
     if(mouseOver && mouseEvent.state.mouseLeftButton == mouseEvent::mouseButtonAction::leftDown){
+        m_state = 2;
         if(m_buttonType == buttonType::heldButton) {
-                m_state = 2;
                 return buttonState::buttonHeld;
         }
         else {
-                m_state = 2;
                 return buttonState::mouseOver;
         }
     }
     if(mouseOver && mouseEvent.state.mouseLeftButton == mouseEvent::mouseButtonAction::leftReleased){
-        if(m_buttonType == buttonType::releasedButton) {
+        if(m_buttonType == buttonType::releasedButton && m_state == 2) {
                 m_state = 0;
                 return buttonState::buttonReleased;
         }
@@ -72,6 +71,6 @@ button::buttonState button::whatButtonState(mouseEvent& mouseEvent)
 
 bool button::isMouseOver(const int mouseX, const int mouseY)
 {
-    return mouseX >= m_x && mouseX <= m_x + m_width && mouseY >= m_y && mouseY <= m_y + m_higth;
+    return static_cast<float>(mouseX) >= m_x && static_cast<float>(mouseX) <= m_x + static_cast<float>(m_width) && static_cast<float>(mouseY) >= m_y && static_cast<float>(mouseY) <= m_y + static_cast<float>(m_higth);
 }
 

@@ -1,4 +1,4 @@
-#include "pieces.h"
+#include "pieces.hpp"
 
 thePieces::thePieces():m_allPieces  {
         -1,-1, 0,-1,            // piece 0 : L

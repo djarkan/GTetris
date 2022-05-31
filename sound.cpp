@@ -1,32 +1,46 @@
-/* #include "sound.h"
+#include "sound.hpp"
+#include <array>
+#include <iostream>
 
-sound::sound()
+bool sound::loadFileSounds()
 {
-
+    bool flag = m_soundBuffer[0].loadFromFile("sound\\harddrop.ogg");
+    flag |= m_soundBuffer[1].loadFromFile("sound\\rotation.ogg");
+    flag |= m_soundBuffer[2].loadFromFile("sound\\softdrop.ogg");
+    flag |= m_soundBuffer[3].loadFromFile("sound\\ouverturemenu.ogg");
+    flag |= m_soundBuffer[4].loadFromFile("sound\\levelchgt.ogg");
+    flag |= m_soundBuffer[5].loadFromFile("sound\\complitedlines.ogg");
+    flag |= m_soundBuffer[6].loadFromFile("sound\\departfinpartie.ogg");
+//flag |= m_soundBuffer[7].loadFromFile("sound\\A Theme.ogg");
+    return flag;
 }
 
-sound::~sound()
+void sound::assignSoundsToBuffers()
 {
-
+    for(auto i = 0; i < 15; ++i){
+        m_sound[i].setBuffer(m_soundBuffer[i]);
+    }
 }
 
-void sound::loadSoundInVector(std::string title)
+void sound::initSounds()
 {
-    soundVector.push_back(std::make_unique<Mix_Chunk>(Mix_LoadWAV("toto.wav")));
+    loadFileSounds();
+    assignSoundsToBuffers();
 }
 
-void sound::loadMusicInVector(std::string title)
+void sound::setSoundLoop(int soundNumber, bool yes)
 {
-    MusicVector.push_back(std::make_unique<Mix_Music>(Mix_LoadMUS("toto.mp3")));
+    m_sound[soundNumber].setLoop(yes);
 }
 
-void sound::playSoundInVector(int soundNB)
+void sound::setSoundVolume(const float volume)
 {
-    Mix_PlayChannel( -1, &soundVector[soundNB], 0 );
+    for(auto i = 0; i < 15; ++i){
+        m_sound[i].setVolume(volume);
+    }
 }
 
-void sound::playMusicInVector(int soundNB)
+void sound::playSound(const int thatSound)
 {
-    Mix_PlayMusic( &MusicVector[soundNB], -1 );
+    m_sound[thatSound].play();
 }
-*/

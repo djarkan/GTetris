@@ -10,44 +10,52 @@
 #include <fstream>
 #include <memory>
 #include<clocale>
-#include "button.h"
-#include "screenmanagement.h"
+#include "button.hpp"
+#include "screenmanagement.hpp"
 #include "mouseevent.hpp"
 #include "setup.hpp"
-#include "timer.h"
-#include "game.h"
+#include "timer.hpp"
+#include "game.hpp"
+#include "jsonfile.hpp"
+#include "eventreader.hpp"
+#include "sound.hpp"
+#include "music.hpp"
 
 class menu{
 
 public:
     menu();
-    bool loadJsonFiles(const std::string fileName1, const std::string fileName2);
+    bool initMenu();
     void loadButtons(std::string buttonConfig);
-    void drawAllButtons(manageScreen& screen);
-    int  checkButtonsAction(sf::RenderWindow &window);
-    bool launchAction(int buttonID, manageScreen& screen);
-    void setPlayMenu(manageScreen& screen);
-    void parametersMenu(manageScreen& screen);
+    void drawAllButtons();
+    int  checkButtonsAction();
+    bool launchAction(int buttonID);
+    void setPlayMenu();
+    void parametersMenu();
     void saveSetUp();
     void savePseudo();
-    void playMenu(manageScreen& screen);
+    void playMenu();
 
     setup m_setup;
     game game;
     manageScreen screen;
+    sound gameSound;
+    music gameMusic;
     std::vector<std::unique_ptr<button>> m_buttonList;
 
 private:
     void saveJsonSetup(const std::string fileName);
     void setSetUp();
-    void printLabels(manageScreen& screen);
-    void printParameters(manageScreen& screen);
-    int setxParam(int labelSize);
+    void printLabels();
+    void printParameters();
     void setLocale(int language);
+    void setSoundVolume(float soundVolume);
+    void setMusicVolume(float musicVolume);
 
-    Json::Value m_configRoot;
-    Json::Value m_setupRoot;
+    jsonFile m_jsonConfig;
+    jsonFile m_jsonSetup;
     mouseEvent mouseEvent;
+    eventReader eventReader;
 
 };
 #endif

@@ -63,9 +63,9 @@ void mouseEvent::checkButtons(sf::RenderWindow &window)
             default : break;
         }
     }
-    sf::Vector2i pos = sf::Mouse::getPosition(window);
-    state.mouseX = pos.x;
-    state.mouseY = pos.y;
+ //   sf::Vector2i pos = sf::Mouse::getPosition(window);
+ //   state.mouseX = pos.x;
+ //   state.mouseY = pos.y;
     if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)){ state.mouseLeftButton = mouseEvent::mouseButtonAction::leftDown; }
     else { state.mouseLeftButton = mouseEvent::mouseButtonAction::leftUp; }
     if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)){ state.mouseRightButton = mouseEvent::mouseButtonAction::rightDown; }
@@ -100,8 +100,16 @@ void mouseEvent::checkmouseWheel(sf::RenderWindow &window)
     }
 }
 
+void mouseEvent::checkmouseCoord(sf::RenderWindow &window)
+{
+    sf::Vector2i pos = sf::Mouse::getPosition(window);
+    state.mouseX = pos.x;
+    state.mouseY = pos.y;
+}
+
 void mouseEvent::checkMouseEvents(sf::RenderWindow &window)
 {
+    checkmouseCoord(window);
     checkButtons(window);
     checkmouseWheel(window);
 }

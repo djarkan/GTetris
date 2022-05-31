@@ -1,0 +1,7 @@
+{
+    "gameIndicator" : {
+        "score" : ["Score", "Score", "Puntuación", "Ergebnis"],
+        "lines" : ["Lignes", "Lines", "lìneas", "lignen"],
+        "time" : ["Temps", "Time", "tiempo", "Zeit"]
+        }
+}

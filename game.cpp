@@ -1,5 +1,5 @@
-#include "game.h"
-#include "menu.h"
+#include "game.hpp"
+#include "menu.hpp"
                                                                                             //Screen dimension constants
 const unsigned int SCREEN_WIDTH = 1024;
 const unsigned int SCREEN_HEIGHT = 768;
@@ -19,38 +19,66 @@ game::~game()
 void game::rotateRight(Piece &currentPiece, board &board, thePieces &thePieces, setup &setup, pattern &pattern)
 {
 	int virtualRotation = currentPiece.rotation;
-	if (virtualRotation == 3)
-		virtualRotation = 0;
-	else
-		virtualRotation++;
-	if (board.testMovement(currentPiece.x, currentPiece.y, virtualRotation, currentPiece.current, thePieces)) {
-		currentPiece.rotation = virtualRotation;
-		if (currentPiece.current == 3 && !board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces))
-			pattern.TspinSearch = true;
-	}
-	else
-		if (setup.superRotationSystem)
-			board.superRotationSystem(currentPiece, virtualRotation, thePieces);
+	if (virtualRotation == 3) { virtualRotation = 0; }
+	else { virtualRotation++; }
+    bool rotationOK{false};
+    int testNumber{0};
+    std::pair<int, int> offsetCoordToTest;
+    do {
+        if(currentPiece.current == 2) { offsetCoordToTest = srs.getoffsetRightRotationI(virtualRotation, testNumber); }
+        else { offsetCoordToTest = srs.getoffsetRightRotation(virtualRotation, testNumber); }
+std::cout << "offset: (" << offsetCoordToTest.first << " , " << offsetCoordToTest.second << ")" << std::endl;
+        rotationOK = board.testMovement(offsetCoordToTest.first + currentPiece.x, offsetCoordToTest.second + currentPiece.y, virtualRotation, currentPiece.current, thePieces);
+std::cout << "rotation OK ? " ;
+if(rotationOK) { std::cout << "oui" << std::endl; }
+else  { std::cout << "non" << std::endl; }
+        if(rotationOK) {
+            currentPiece.x += offsetCoordToTest.first;
+            currentPiece.y += offsetCoordToTest.second;
+        }
+        ++testNumber;
+        if (!setup.superRotationSystem) { testNumber = 5; }
+    } while (testNumber < 5 && !rotationOK);
+    if(rotationOK) {
+        currentPiece.rotation = virtualRotation;
+        if (currentPiece.current == 3 && !board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces)){
+            pattern.TspinSearch = true;
+        }
+    }
 }
 
 void game::rotateLeft(Piece &currentPiece, board &board, thePieces &thePieces, setup &setup, pattern &pattern)
 {
 	int virtualRotation = currentPiece.rotation;
-	if (virtualRotation == 0)
-		virtualRotation = 3;
-	else
-		virtualRotation--;
-	if (board.testMovement(currentPiece.x, currentPiece.y, virtualRotation, currentPiece.current, thePieces)) {
-		currentPiece.rotation = virtualRotation;
-		if (currentPiece.current == 3 && !board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces))
-			pattern.TspinSearch = true;
-	}
-	else
-		if (setup.superRotationSystem)
-			board.superRotationSystem(currentPiece, virtualRotation, thePieces);
+	if (virtualRotation == 3) { virtualRotation = 0; }
+	else { virtualRotation++; }
+    bool rotationOK{false};
+    int testNumber{0};
+    std::pair<int, int> offsetCoordToTest;
+    do {
+        if(currentPiece.current == 2) { offsetCoordToTest = srs.getoffsetLeftRotationI(virtualRotation, testNumber); }
+        else { offsetCoordToTest = srs.getoffsetLeftRotation(virtualRotation, testNumber); }
+std::cout << "offset: (" << offsetCoordToTest.first << " , " << offsetCoordToTest.second << ")" << std::endl;
+        rotationOK = board.testMovement(offsetCoordToTest.first + currentPiece.x, offsetCoordToTest.second + currentPiece.y, virtualRotation, currentPiece.current, thePieces);
+std::cout << "rotation OK ? " ;
+if(rotationOK) { std::cout << "oui" << std::endl; }
+else  { std::cout << "non" << std::endl; }
+        if(rotationOK) {
+            currentPiece.x += offsetCoordToTest.first;
+            currentPiece.y += offsetCoordToTest.second;
+        }
+        ++testNumber;
+        if (!setup.superRotationSystem) { testNumber = 5; }
+    } while (testNumber < 5 && !rotationOK);
+    if(rotationOK) {
+        currentPiece.rotation = virtualRotation;
+        if (currentPiece.current == 3 && !board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces)){
+            pattern.TspinSearch = true;
+        }
+    }
 }
 
-int game::hardDrop(Piece &currentPiece, board &board, thePieces &thePieces, setup &setup, pattern &pattern, manageScreen &screen)
+int game::hardDrop(Piece &currentPiece, board &board, thePieces &thePieces, setup &setup, manageScreen &screen)
 {
     int cpt{0};
 	while (board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces)) {
@@ -60,7 +88,7 @@ int game::hardDrop(Piece &currentPiece, board &board, thePieces &thePieces, setu
             screen.drawTheBoard(board, setup.pieceGraphic);
             screen.drawCurrentPiece(currentPiece, thePieces, setup.pieceGraphic, 255);
             screen.render();
-          //  sf::sleep(sf::milliseconds(2));
+            sf::sleep(sf::milliseconds(3));
 		}
 	}
 	return cpt;
@@ -82,7 +110,7 @@ void game::drawTheFrame(bool allowDrawAll, manageScreen &screen, board &board, s
 	screen.drawPlayGround("NIVEAU", "SCORE", "LIGNES", "TEMPS");
 	if(allowDrawAll){
         screen.drawTheBoard(board, setup.pieceGraphic);
-        if (setup.nextPiecesNumber > 0)
+        if (setup.nextPiece)
             screen.drawNextPieces(setup.enhanced, setup.nextPiecesNumber, piecePositonInTheBag, setup.pieceGraphic, random, thePieces, 255);
         if (holdedPiece > -1)
             screen.drawPieceToHold(holdedPiece, setup.pieceGraphic, thePieces, 255);
@@ -110,21 +138,23 @@ void game::holdPiece(randomizer &random, setup &setup, Piece &currentPiece, int 
     }
 }
 
-void game::lockoutPiece(board &board, pattern &pattern, manageScreen &screen, setup &setup, inGameFlags &inGameFlags, Piece &currentPiece, randomizer &random, thePieces &thePieces, timer &fallingPieceTimer, sf::Int32& underPreasureTime)
+void game::lockoutPiece(board &board, pattern &pattern, manageScreen &screen, setup &setup, inGameFlags &inGameFlags, Piece &currentPiece, randomizer &random, thePieces &thePieces, timer &fallingPieceTimer, sf::Int32& underPreasureTime, sound& gameSound)
 {
     board.copyPieceInBoard(currentPiece, thePieces);
     if(board.patternSearch(pattern, currentPiece)) {
         screen.drawTheBoard(board, setup.pieceGraphic);
-        screen.shiftedLinesAnimation(pattern, board, setup.pieceGraphic);
+        screen.drawPatternAnimation(pattern, board, setup.pieceGraphic);
         board.shiftBlocksAfterLines(pattern);
         board.IsThereClearBoard(pattern);
         if(pattern.nbLines > 0){
-            if(setup.gameType == 5) { underPreasureTime += pattern.nbLines * 5000; }
+            if(setup.gameType == 5) { underPreasureTime += pattern.nbLines * 4000; }
             inGameFlags.nbLines += pattern.nbLines;
             if(isLevelUp(inGameFlags.level, inGameFlags.nbLines)){
                 ++inGameFlags.level;
                 fallingPieceTimer.setTimerDuration(calculateFallingPieceTimerDuration(inGameFlags.level));
+                gameSound.playSound(4);
             }
+            gameSound.playSound(5);
         }
         inGameFlags.score = calculateScore(pattern, inGameFlags.score, inGameFlags.level);
         board.clearPattern(pattern);
@@ -137,9 +167,11 @@ void game::lockoutPiece(board &board, pattern &pattern, manageScreen &screen, se
         inGameFlags.gameOver = true;
 }
 
-void game::launchParty(manageScreen &screen, setup &setup, inGameFlags &inGameFlags)
+void game::launchParty(manageScreen &screen, setup &setup, sound& gameSound)
 {
         randomizer random;
+        inGameFlags inGameFlags;
+        inGameFlags.level = setup.startLevel;
         inGameFlags.fisrtShuffle = true;
         while(inGameFlags.fisrtShuffle) {
             random.initTheBag(setup.enhanced, setup.sevenBag);
@@ -162,28 +194,35 @@ void game::launchParty(manageScreen &screen, setup &setup, inGameFlags &inGameFl
         timer fallingPieceTimer(calculateFallingPieceTimerDuration(inGameFlags.level));
         fallingPieceTimer.startTimer();
         sf::Clock timePlayed;
+        sf::Time timeElapsed;
+        sf::Int32 elapsedTime;
         timer underPreasureTimer(1000);
-        sf::Int32 underPreasureTime{20000};
+        sf::Int32 underPreasureTime{15000};
         if(setup.gameType == 5) {
             underPreasureTimer.restartTimer();
         }
         else { timePlayed.restart(); }
         timer inclusionTimer(25000);
         if(setup.gameType == 4) { inclusionTimer.startTimer(); }
+        eventReader::gameControl gameEvent;
+        gameSound.playSound(6);
         while(!inGameFlags.gameOver && !inGameFlags.goalReached) {
-            eventReader::gameControl gameEvent;
             gameEvent = eventReader.getEvent(screen.m_window);
             int hardDropHigthFall{0};
             switch (gameEvent) {
                 case eventReader::gameControl::rotateRight:
                     rotateRight(currentPiece, board, thePieces, setup, pattern);
+                    gameSound.playSound(1);
                     break;
                 case eventReader::gameControl::rotateLeft:
                     rotateLeft(currentPiece, board, thePieces, setup, pattern);
+                    gameSound.playSound(1);
                     break;
                 case eventReader::gameControl::softDrop:
-                    if(board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces))
+                    if(board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces)){
                         currentPiece.y++;
+                        gameSound.playSound(2);
+                    }
                     else
                         if(setup.lockout)
                             inGameFlags.lockedout = true;   // SI LOCKOUT DISABLE TESTER SI PEUT DESCENDRE -> SI NON PASSE A PIECE SUIVANTE
@@ -192,9 +231,10 @@ void game::launchParty(manageScreen &screen, setup &setup, inGameFlags &inGameFl
                     ++inGameFlags.score;
                     break;
                 case eventReader::gameControl::hardDrop:                    // hard drop
-                    hardDropHigthFall = hardDrop(currentPiece, board, thePieces, setup, pattern,screen);
+                    hardDropHigthFall = hardDrop(currentPiece, board, thePieces, setup, screen);
                     inGameFlags.score += hardDropHigthFall * 2;
                     inGameFlags.lockedout = true;
+                    gameSound.playSound(0);
                     break;
                 case eventReader::gameControl::shiftLeft:              // move left
                     if(board.testMovement(currentPiece.x - 1, currentPiece.y, currentPiece.rotation, currentPiece.current, thePieces))
@@ -231,12 +271,12 @@ void game::launchParty(manageScreen &screen, setup &setup, inGameFlags &inGameFl
                                     underPreasureTimer.restartTimer();
                                 }
                             }
-                            timeString = convertTimeToString(underPreasureTime);
+                            timeString = convertTimeToStringMinuteSecond(underPreasureTime);
                         }
                         else {
                             timeElapsedPlayed = timePlayed.getElapsedTime();
                             elapsedTimePlayed = timeElapsedPlayed.asMilliseconds();
-                            timeString = convertTimeToString(elapsedTimePlayed);
+                            timeString = convertTimeToStringMinuteSecond(elapsedTimePlayed);
                         }
                         screen.printIndicators(inGameFlags.level, inGameFlags.score, inGameFlags.nbLines, timeString);
                         screen.render();                   // pause
@@ -259,22 +299,22 @@ void game::launchParty(manageScreen &screen, setup &setup, inGameFlags &inGameFl
                 fallingPieceTimer.startTimer();
             }
             if(inGameFlags.lockedout) {
-                lockoutPiece(board, pattern, screen, setup, inGameFlags, currentPiece, random, thePieces,fallingPieceTimer, underPreasureTime);
+                lockoutPiece(board, pattern, screen, setup, inGameFlags, currentPiece, random, thePieces,fallingPieceTimer, underPreasureTime, gameSound);
                 allowDrawAll = true;
             }
             setShadowPiecePosition(currentPiece, shadowPiece, board, thePieces);
-            sf::Time timeElapsed = timePlayed.getElapsedTime();
-            sf::Int32 elapsedTime = timeElapsed.asMilliseconds();
-            std::string timeStr = convertTimeToString(elapsedTime);
-            if(timeStr == "03:00" && setup.gameType == 2){
+            timeElapsed = timePlayed.getElapsedTime();
+            elapsedTime = timeElapsed.asMilliseconds();
+            std::string timeStr = convertTimeToStringMinuteSecond(elapsedTime);
+            if(timeStr == "03:00" && setup.gameType == 1){
                 inGameFlags.goalReached = true;
             }
-            if(inGameFlags.nbLines >= 40 && setup.gameType == 1){
+            if(inGameFlags.nbLines >= 40 && setup.gameType == 2){
                 inGameFlags.goalReached = true;
             }
             if(inclusionTimer.isTimeElapsed() && setup.gameType == 4){
                 inclusionTimer.restartTimer();
-                board.insertBricks(random);
+                board.insertBricks();
             }
             if(setup.gameType == 5){
                 if(underPreasureTimer.isTimeElapsed()) {
@@ -282,12 +322,35 @@ void game::launchParty(manageScreen &screen, setup &setup, inGameFlags &inGameFl
                     underPreasureTimer.restartTimer();
                     if(underPreasureTime < 0) { inGameFlags.gameOver = true; }
                 }
-                timeStr = convertTimeToString(underPreasureTime);
+                timeStr = convertTimeToStringMinuteSecond(underPreasureTime);
             }
             drawTheFrame(allowDrawAll, screen, board, setup, thePieces, inGameFlags.holdedPiece, currentPiece, shadowPiece, random, inGameFlags.piecePositonInTheBag, inGameFlags, timeStr);
             if(setup.gameType == 3) { allowDrawAll = false; }
         }
+        gameSound.playSound(6);
         inGameFlags.holdedPiece = -1;
+        endOfParty(screen, eventReader, inGameFlags.gameOver);
+        scoreList scoreList;
+        scoreList.buildScoreList(setup.gameType, setup.enhanced);
+        if(setup.gameType == 2 && !inGameFlags.gameOver) {
+            inGameFlags.score = static_cast<int>(elapsedTime);
+        }
+        if(setup.gameType == 2 && inGameFlags.gameOver) { return; }
+        if(scoreList.isScoreEnterInScoreList(inGameFlags.score,setup.gameType)){
+            int ranking = scoreList.enterScoreInList(setup.pseudo, inGameFlags.score, setup.gameType, setup.enhanced);
+            screen.drawScoreList(scoreList.m_scoreArray, ranking, setup.gameType);
+            while(!eventReader.getSpace(screen.m_window)){}
+        }
+}
+
+void game::endOfParty(manageScreen &screen, eventReader &eventReader, bool gameOver)
+{
+        screen.render();
+        if(gameOver) { screen.displayText("PERDU", 60 , sf::Color::White, 445, 320); }
+        else { screen.displayText("FINI", 60, sf::Color::White, 455, 320); }
+        screen.displayText("Pressez Espace", 35, sf::Color::White, 400, 390);
+        screen.render();
+        while(!eventReader.getSpace(screen.m_window)){}
 }
 
 sf::Int32 game::calculateFallingPieceTimerDuration(const int level)
@@ -310,7 +373,7 @@ int game::calculateScore(const pattern &pattern, int score, const int level)
                     (pattern.TspinDouble * level *1200) + (pattern.TspinTriple * level *1600)) +
                     (50 * (pattern.combo - 1) * level);
     if(pattern.backToBack > 1){
-        return score + scoreAction + (scoreAction * 0.5);
+        return score + scoreAction + (static_cast<int>(scoreAction * 0.5));
     }
     else {
         return score + scoreAction;
@@ -330,35 +393,4 @@ void game::clearInGameFlags(inGameFlags &inGameFlags)
     inGameFlags.nbLines = 0;
 	inGameFlags.score = 0 ;
 	inGameFlags.goalReached = false;
-}
-
-std::string game::convertTimeToString(sf::Int32 elapsedTime)
-{
-    sf::Int32 heures = elapsedTime / (1000 *60 * 60);
-    sf::Int32 resteHeures = elapsedTime % (1000 *60 * 60);
-    sf::Int32 minutes = resteHeures / (1000 * 60);
-    sf::Int32 resteMinutes = resteHeures % (1000 * 60);
-    sf::Int32 secondes = resteMinutes / (1000);
-    std::string timeToDisplay{""};
-    if (heures > 0) {
-        if (heures < 10) {
-            timeToDisplay = "0" + std::to_string(heures) + ":";
-        }
-        else{
-            timeToDisplay = std::to_string(heures) + ":";
-        }
-    }
-    if (minutes < 10) {
-        timeToDisplay += "0" + std::to_string(minutes) + ":";
-    }
-    else{
-        timeToDisplay += std::to_string(minutes) + ":";
-    }
-    if (secondes < 10) {
-        timeToDisplay += "0" + std::to_string(secondes);
-    }
-    else{
-        timeToDisplay += std::to_string(secondes);
-    }
-    return timeToDisplay;
 }

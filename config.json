@@ -1,193 +1,794 @@
 {
-    "setUpButtons" : [
-        {"x" : 550, "y" : 110, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 3, "textureNumber" : 3, "state" : 0},
-        {"x" : 950, "y" : 110, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 4, "textureNumber" : 4, "state" : 0},
-        {"x" : 550, "y" : 150, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 5, "textureNumber" : 3, "state" : 0},
-        {"x" : 950, "y" : 150, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 6, "textureNumber" : 4, "state" : 0},
-        {"x" : 550, "y" : 190, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 7, "textureNumber" : 3, "state" : 0},
-        {"x" : 950, "y" : 190, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 8, "textureNumber" : 4, "state" : 0},
-        {"x" : 550, "y" : 230, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 9, "textureNumber" : 3, "state" : 0},
-        {"x" : 950, "y" : 230, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 10, "textureNumber" : 4, "state" : 0},
-        {"x" : 550, "y" : 270, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 11, "textureNumber" : 3, "state" : 0},
-        {"x" : 950, "y" : 270, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 12, "textureNumber" : 4, "state" : 0},
-        {"x" : 550, "y" : 310, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 13, "textureNumber" : 3, "state" : 0},
-        {"x" : 950, "y" : 310, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 14, "textureNumber" : 4, "state" : 0},
-        {"x" : 550, "y" : 350, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 15, "textureNumber" : 3, "state" : 0},
-        {"x" : 950, "y" : 350, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 16, "textureNumber" : 4, "state" : 0},
-        {"x" : 550, "y" : 390, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 17, "textureNumber" : 3, "state" : 0},
-        {"x" : 950, "y" : 390, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 18, "textureNumber" : 4, "state" : 0},
-        {"x" : 550, "y" : 430, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 19, "textureNumber" : 3, "state" : 0},
-        {"x" : 950, "y" : 430, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 20, "textureNumber" : 4, "state" : 0},
-        {"x" : 550, "y" : 470, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 21, "textureNumber" : 3, "state" : 0},
-        {"x" : 950, "y" : 470, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 22, "textureNumber" : 4, "state" : 0},
-        {"x" : 550, "y" : 510, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 23, "textureNumber" : 3, "state" : 0},
-        {"x" : 950, "y" : 510, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 24, "textureNumber" : 4, "state" : 0},
-        {"x" : 550, "y" : 550, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 25, "textureNumber" : 3, "state" : 0},
-        {"x" : 950, "y" : 550, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 26, "textureNumber" : 4, "state" : 0},
-        {"x" : 550, "y" : 590, "width" : 30, "higth" : 30, "buttonType" : 1, "buttonId" : 27, "textureNumber" : 3, "state" : 0},
-        {"x" : 950, "y" : 590, "width" : 30, "higth" : 30, "buttonType" : 1, "buttonId" : 28, "textureNumber" : 4, "state" : 0},
-        {"x" : 550, "y" : 630, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 29, "textureNumber" : 3, "state" : 0},
-        {"x" : 950, "y" : 630, "width" : 30, "higth" : 30, "buttonType" : 2, "buttonId" : 30, "textureNumber" : 4, "state" : 0},
-        {"x" : 550, "y" : 670, "width" : 30, "higth" : 30, "buttonType" : 1, "buttonId" : 31, "textureNumber" : 3, "state" : 0},
-        {"x" : 950, "y" : 670, "width" : 30, "higth" : 30, "buttonType" : 1, "buttonId" : 32, "textureNumber" : 4, "state" : 0},
-        {"x" : 45, "y" : 20, "width" : 205, "higth" : 50, "buttonType" : 2, "buttonId" : 33, "textureNumber" : 5, "state" : 0},
-        {"x" : 780, "y" : 20, "width" : 205, "higth" : 50, "buttonType" : 2, "buttonId" : 34, "textureNumber" : 5, "state" : 0}
-    ],
-    "playButton" : [
-        {"x" : 150, "y" : 450, "width" : 100, "higth" : 100, "buttonType" : 0, "buttonId" : 0, "textureNumber" : 0, "state" : 0},
-        {"x" : 350, "y" : 450, "width" : 100, "higth" : 100, "buttonType" : 2, "buttonId" : 1, "textureNumber" : 1, "state" : 0},
-        {"x" : 550, "y" : 450, "width" : 100, "higth" : 100, "buttonType" : 2, "buttonId" : 36, "textureNumber" : 0, "state" : 0},
-        {"x" : 750, "y" : 450, "width" : 100, "higth" : 100, "buttonType" : 2, "buttonId" : 2, "textureNumber" : 2, "state" : 0},
-        {"x" : 95, "y" : 670, "width" : 250, "higth" : 45, "buttonType" : 2, "buttonId" : 35, "textureNumber" : 6, "state" : 0}
-    ],
-    "maxValue" : {
-        "maxLanguage" : 4,
-        "maxPieceGraphic" : 4,
-        "maxGameType" : 6,
-        "MaxNextPieces" : 5
-
-    },
-    "pseudobutton" : [
-        "changer de joueur",
-        "change player",
-        "cambiar de jugador",
-        "Wechselspieler"
-    ],
-    "pause" : [
-        ["Pause", "Pressez", "Echap"],
-        ["Pause", "Press", "Escape"],
-        ["Pausa", "Prensa", "Escapar"],
-        ["Pause", "Drücken Sie", "Flucht"]
-        ],
-    "save" : [
-        "sauver",
-        "save",
-        "salvar",
-        "spare"
-        ],
-    "quit" : [
-        "Quitter",
-        "Quit",
-        "dejar",
-        "verlassen"
-        ],
-    "welcome" : [
-        "Bienvenue, ",
-        "Welcome, ",
-        "Bienvenido, ",
-        "Willkommen, "
-    ],
-    "single" : [
-        "Simple",
-        "Single",
-        "único",
-        "Single"
-        ],
-    "double" : [
-        "Double",
-        "Double",
-        "Doble",
-        "Doppelt"
-        ],
-    "triple" : [
-        "Triple",
-        "Triple",
-        "Triple",
-        "Dreifach"
-        ],
-    "tetris" : [
-        "Tetris",
-        "Tetris",
-        "Tetris",
-        "Tetris"
-        ],
-    "gameIndicator" : {
-        "score" : ["Score", "Score", "Puntuación", "Ergebnis"],
-        "lines" : ["Lignes", "Lines", "lìneas", "lignen"],
-        "time" : ["Temps", "Time", "tiempo", "Zeit"]
-        },
-    "setupSelector" : {
-        "enhanced" : [
-            ["original", "etendu"],
-            ["original", "extended"],
-            ["original", "extendido"],
-            ["original", "erweitert"]
-            ],
-        "sevenBag" : [
-            ["aleatoire", "sac"],
-            ["random", "bag"],
-            ["aleatorio", "bolsa"],
-            ["random", "bag"]
-            ],
-        "shadow" : [
-            ["non", "oui"],
-            ["no", "yes"],
-            ["no", "si"],
-            ["nein", "ya"]
-            ],
-        "superRotationSystem" : [
-            ["Original", "Rotation intelligente"],
-            ["Original", "Smart Rotation"],
-            ["Original", "Rotacion inteligente"],
-            ["Original", "Intelligente rotation"]
-            ],
-        "nextPiece" : [
-            ["non", "oui"],
-            ["no", "yes"],
-            ["no", "si"],
-            ["nein", "ya"]
-            ],
-        "nextPiecesNumber" : ["1", "2", "3", "4"],
-        "music" : [
-            ["non", "oui"],
-            ["no", "yes"],
-            ["no", "si"],
-            ["nein", "ya"]
-            ],
-        "musicVolume" : 100,
-        "sound" : [
-            ["muet", "oui"],
-            ["mute", "yes"],
-            ["mudo", "si"],
-            ["stumm", "ya"]
-            ],
-        "soundVolume" : 100,
-        "gameType" : [
-            ["marathon", "sprint", "40 lignes", "fantome", "inclusion", "sous pression"],
-            ["marathon", "sprint", "40 lines", "phantom", "inclusion", "under preasure"],
-            ["maratòn", "sprint", "40 lìneas", "fantasma", "inclusiòn", "sous pression"],
-            ["marathon", "sprint", "40 lignen", "phantom", "aufnahmen", "sous pression"]
-            ],
-        "hold" : [
-            ["non", "oui"],
-            ["no", "yes"],
-            ["no", "si"],
-            ["nein", "ya"]
-            ],
-        "lockout" : [
-            ["non", "oui"],
-            ["no", "yes"],
-            ["no", "si"],
-            ["nein", "ya"]
-            ],
-        "language" : ["francais", "english", "español", "deutsch"],
-        },
-        "paramtersTitles" : {
-            "title" :               ["Parametres", "Parameters" ,"Parámetros" , "Parameters"],
-            "language" :            ["Langue", "Language" ,"Idioma" , "Sprache"],
-            "pieceGraphic" :        ["Visuel des pieces", "Piece graphic" ,"Gráfico de pieza" , "Stück Grafik"],
-            "gameType" :            ["Mode de jeu", "Game mode" ,"Modo de juego" , "Spielmodus"],
-            "enhanced" :            ["Nombre de pieces", "Pieces number" ,"Número de piezas" , "Stückzahl"],
-            "sevenBag" :            ["Mode aleatoire", "Random mode" ,"Modo aleatorio" , "Zufallsmodus"],
-            "superRotationSystem" : ["Mode rotation", "Rotate mode" ,"Modo de rotación" , "Modus drehen"],
-            "shadow" :              ["Piece fantome", "Phantom piece" ,"Pieza fantasma" , "Phantomstück"],
-            "hold" :                ["Piece retenue", "Hold piece" ,"Sostener pieza" , "Stück halten"],
-            "lockout" :             ["delais avant verrouillage", "delay before lockout" ,"retraso antes del bloqueo" , "Verzögerung vor der Sperrung"],
-            "nextPiece" :           ["Pieces suivantes", "Next pieces" ,"próximas piezas" , "nächste Stücke"],
-            "nextPiecesNumber" :    ["nombre de pieces suivantes", "Next pieces number" ,"Número de piezas siguientes" , "Nummer der nächsten Stücke"],
-            "music" :               ["Musique", "Music" ,"Música" , "Musik"],
-            "musicVolume" :         ["volume musique", "Music volume" ,"Volumen de la música" , "Musiklautstärke"],
-            "sound" :               ["Bruitages", "Sounds" ,"Sonidos" , "Geräusche"],
-            "soundVolume" :         ["volume bruitage", "Sound volume" ,"Volumen de sonido" , "Lautstärke"]
-            }
+	"maxValue" : 
+	{
+		"MaxNextPieces" : 5,
+		"maxGameType" : 6,
+		"maxLanguage" : 4,
+		"maxPieceGraphic" : 5
+	},
+	"outOfPause" : 
+	[
+		"Pressez une touche pour jouer\n ESC pour quitter",
+		"Press a key to play\n ESC to exit",
+		"Presione una tecla para jugar\n ESC para salir",
+		"Dr\ufffdcken Sie eine Taste\n um ESC zum Beenden abzuspielen"
+	],
+	"paramtersTitles" : 
+	{
+		"enhanced" : 
+		[
+			"Nombre de pieces",
+			"Pieces number",
+			"N\ufffdmero de piezas",
+			"St\ufffdckzahl"
+		],
+		"gameType" : 
+		[
+			"Mode de jeu",
+			"Game mode",
+			"Modo de juego",
+			"Spielmodus"
+		],
+		"hold" : 
+		[
+			"Piece retenue",
+			"Hold piece",
+			"Sostener pieza",
+			"St\ufffdck halten"
+		],
+		"language" : 
+		[
+			"Langue",
+			"Language",
+			"Idioma",
+			"Sprache"
+		],
+		"lockout" : 
+		[
+			"delais avant verrouillage",
+			"delay before lockout",
+			"retraso antes del bloqueo",
+			"Verz\ufffdgerung vor der Sperrung"
+		],
+		"music" : 
+		[
+			"Musique",
+			"Music",
+			"M\ufffdsica",
+			"Musik"
+		],
+		"musicVolume" : 
+		[
+			"volume musique",
+			"Music volume",
+			"Volumen de la m\ufffdsica",
+			"Musiklautst\ufffdrke"
+		],
+		"nextPiece" : 
+		[
+			"Pieces suivantes",
+			"Next pieces",
+			"pr\ufffdximas piezas",
+			"n\ufffdchste St\ufffdcke"
+		],
+		"nextPiecesNumber" : 
+		[
+			"nombre de pieces suivantes",
+			"Next pieces number",
+			"N\ufffdmero de piezas siguientes",
+			"Nummer der n\ufffdchsten St\ufffdcke"
+		],
+		"pieceGraphic" : 
+		[
+			"Visuel des pieces",
+			"Piece graphic",
+			"Gr\ufffdfico de pieza",
+			"St\ufffdck Grafik"
+		],
+		"sevenBag" : 
+		[
+			"Mode aleatoire",
+			"Random mode",
+			"Modo aleatorio",
+			"Zufallsmodus"
+		],
+		"shadow" : 
+		[
+			"Piece fantome",
+			"Phantom piece",
+			"Pieza fantasma",
+			"Phantomst\ufffdck"
+		],
+		"sound" : 
+		[
+			"Bruitages",
+			"Sounds",
+			"Sonidos",
+			"Ger\ufffdusche"
+		],
+		"soundVolume" : 
+		[
+			"volume bruitage",
+			"Sound volume",
+			"Volumen de sonido",
+			"Lautst\ufffdrke"
+		],
+		"startLevel" : 
+		[
+			"niveau debut partie",
+			"level at the beginning of the game",
+			"Level zu Beginn des Spiels",
+			"nivel al principio del juego"
+		],
+		"superRotationSystem" : 
+		[
+			"Mode rotation",
+			"Rotate mode",
+			"Modo de rotaci\ufffdn",
+			"Modus drehen"
+		],
+		"title" : 
+		[
+			"Parametres",
+			"Parameters",
+			"Par\ufffdmetros",
+			"Parameters"
+		]
+	},
+	"pause" : 
+	[
+		"Pause",
+		"Pause",
+		"Pausa",
+		"Pause"
+	],
+	"playButton" : 
+	[
+		{
+			"buttonId" : 0,
+			"buttonType" : 0,
+			"higth" : 100,
+			"state" : 0,
+			"textureNumber" : 0,
+			"width" : 100,
+			"x" : 150,
+			"y" : 450
+		},
+		{
+			"buttonId" : 1,
+			"buttonType" : 2,
+			"higth" : 100,
+			"state" : 0,
+			"textureNumber" : 1,
+			"width" : 100,
+			"x" : 350,
+			"y" : 450
+		},
+		{
+			"buttonId" : 2,
+			"buttonType" : 2,
+			"higth" : 100,
+			"state" : 0,
+			"textureNumber" : 2,
+			"width" : 100,
+			"x" : 750,
+			"y" : 450
+		},
+		{
+			"buttonId" : 35,
+			"buttonType" : 2,
+			"higth" : 45,
+			"state" : 0,
+			"textureNumber" : 6,
+			"width" : 250,
+			"x" : 95,
+			"y" : 670
+		},
+		{
+			"buttonId" : 38,
+			"buttonType" : 2,
+			"higth" : 100,
+			"state" : 0,
+			"textureNumber" : 1,
+			"width" : 100,
+			"x" : 550,
+			"y" : 450
+		}
+	],
+	"pseudobutton" : 
+	[
+		"changer de joueur",
+		"change player",
+		"cambiar de jugador",
+		"Wechselspieler"
+	],
+	"quit" : 
+	[
+		"Quitter",
+		"Quit",
+		"dejar",
+		"verlassen"
+	],
+	"save" : 
+	[
+		"sauver",
+		"save",
+		"salvar",
+		"spare"
+	],
+	"setUpButtons" : 
+	[
+		{
+			"buttonId" : 3,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 3,
+			"width" : 30,
+			"x" : 550,
+			"y" : 110
+		},
+		{
+			"buttonId" : 4,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 4,
+			"width" : 30,
+			"x" : 950,
+			"y" : 110
+		},
+		{
+			"buttonId" : 5,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 3,
+			"width" : 30,
+			"x" : 550,
+			"y" : 150
+		},
+		{
+			"buttonId" : 6,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 4,
+			"width" : 30,
+			"x" : 950,
+			"y" : 150
+		},
+		{
+			"buttonId" : 7,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 3,
+			"width" : 30,
+			"x" : 550,
+			"y" : 190
+		},
+		{
+			"buttonId" : 8,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 4,
+			"width" : 30,
+			"x" : 950,
+			"y" : 190
+		},
+		{
+			"buttonId" : 9,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 3,
+			"width" : 30,
+			"x" : 550,
+			"y" : 270
+		},
+		{
+			"buttonId" : 10,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 4,
+			"width" : 30,
+			"x" : 950,
+			"y" : 270
+		},
+		{
+			"buttonId" : 11,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 3,
+			"width" : 30,
+			"x" : 550,
+			"y" : 310
+		},
+		{
+			"buttonId" : 12,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 4,
+			"width" : 30,
+			"x" : 950,
+			"y" : 310
+		},
+		{
+			"buttonId" : 13,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 3,
+			"width" : 30,
+			"x" : 550,
+			"y" : 350
+		},
+		{
+			"buttonId" : 14,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 4,
+			"width" : 30,
+			"x" : 950,
+			"y" : 350
+		},
+		{
+			"buttonId" : 15,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 3,
+			"width" : 30,
+			"x" : 550,
+			"y" : 390
+		},
+		{
+			"buttonId" : 16,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 4,
+			"width" : 30,
+			"x" : 950,
+			"y" : 390
+		},
+		{
+			"buttonId" : 17,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 3,
+			"width" : 30,
+			"x" : 550,
+			"y" : 430
+		},
+		{
+			"buttonId" : 18,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 4,
+			"width" : 30,
+			"x" : 950,
+			"y" : 430
+		},
+		{
+			"buttonId" : 19,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 3,
+			"width" : 30,
+			"x" : 550,
+			"y" : 470
+		},
+		{
+			"buttonId" : 20,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 4,
+			"width" : 30,
+			"x" : 950,
+			"y" : 470
+		},
+		{
+			"buttonId" : 21,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 3,
+			"width" : 30,
+			"x" : 550,
+			"y" : 510
+		},
+		{
+			"buttonId" : 22,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 4,
+			"width" : 30,
+			"x" : 950,
+			"y" : 510
+		},
+		{
+			"buttonId" : 23,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 3,
+			"width" : 30,
+			"x" : 550,
+			"y" : 550
+		},
+		{
+			"buttonId" : 24,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 4,
+			"width" : 30,
+			"x" : 950,
+			"y" : 550
+		},
+		{
+			"buttonId" : 25,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 3,
+			"width" : 30,
+			"x" : 550,
+			"y" : 590
+		},
+		{
+			"buttonId" : 26,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 4,
+			"width" : 30,
+			"x" : 950,
+			"y" : 590
+		},
+		{
+			"buttonId" : 27,
+			"buttonType" : 1,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 3,
+			"width" : 30,
+			"x" : 550,
+			"y" : 630
+		},
+		{
+			"buttonId" : 28,
+			"buttonType" : 1,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 4,
+			"width" : 30,
+			"x" : 950,
+			"y" : 630
+		},
+		{
+			"buttonId" : 29,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 3,
+			"width" : 30,
+			"x" : 550,
+			"y" : 670
+		},
+		{
+			"buttonId" : 30,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 4,
+			"width" : 30,
+			"x" : 950,
+			"y" : 670
+		},
+		{
+			"buttonId" : 31,
+			"buttonType" : 1,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 3,
+			"width" : 30,
+			"x" : 550,
+			"y" : 710
+		},
+		{
+			"buttonId" : 32,
+			"buttonType" : 1,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 4,
+			"width" : 30,
+			"x" : 950,
+			"y" : 710
+		},
+		{
+			"buttonId" : 33,
+			"buttonType" : 2,
+			"higth" : 50,
+			"state" : 0,
+			"textureNumber" : 5,
+			"width" : 205,
+			"x" : 45,
+			"y" : 20
+		},
+		{
+			"buttonId" : 34,
+			"buttonType" : 2,
+			"higth" : 50,
+			"state" : 0,
+			"textureNumber" : 5,
+			"width" : 205,
+			"x" : 780,
+			"y" : 20
+		},
+		{
+			"buttonId" : 36,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 3,
+			"width" : 30,
+			"x" : 550,
+			"y" : 230
+		},
+		{
+			"buttonId" : 37,
+			"buttonType" : 2,
+			"higth" : 30,
+			"state" : 0,
+			"textureNumber" : 4,
+			"width" : 30,
+			"x" : 950,
+			"y" : 230
+		}
+	],
+	"setupSelector" : 
+	{
+		"enhanced" : 
+		[
+			[
+				"original",
+				"etendu"
+			],
+			[
+				"original",
+				"extended"
+			],
+			[
+				"original",
+				"extendido"
+			],
+			[
+				"original",
+				"erweitert"
+			]
+		],
+		"gameType" : 
+		[
+			[
+				"marathon",
+				"sprint",
+				"40 lignes",
+				"fantome",
+				"inclusion",
+				"sous pression"
+			],
+			[
+				"marathon",
+				"sprint",
+				"40 lines",
+				"phantom",
+				"inclusion",
+				"under preasure"
+			],
+			[
+				"marat\ufffdn",
+				"sprint",
+				"40 l\ufffdneas",
+				"fantasma",
+				"inclusi\ufffdn",
+				"sous pression"
+			],
+			[
+				"marathon",
+				"sprint",
+				"40 lignen",
+				"phantom",
+				"aufnahmen",
+				"sous pression"
+			]
+		],
+		"hold" : 
+		[
+			[
+				"non",
+				"oui"
+			],
+			[
+				"no",
+				"yes"
+			],
+			[
+				"no",
+				"si"
+			],
+			[
+				"nein",
+				"ya"
+			]
+		],
+		"language" : 
+		[
+			"francais",
+			"english",
+			"espa\ufffdol",
+			"deutsch"
+		],
+		"lockout" : 
+		[
+			[
+				"non",
+				"oui"
+			],
+			[
+				"no",
+				"yes"
+			],
+			[
+				"no",
+				"si"
+			],
+			[
+				"nein",
+				"ya"
+			]
+		],
+		"music" : 
+		[
+			[
+				"non",
+				"oui"
+			],
+			[
+				"no",
+				"yes"
+			],
+			[
+				"no",
+				"si"
+			],
+			[
+				"nein",
+				"ya"
+			]
+		],
+		"musicVolume" : 100,
+		"nextPiece" : 
+		[
+			[
+				"non",
+				"oui"
+			],
+			[
+				"no",
+				"yes"
+			],
+			[
+				"no",
+				"si"
+			],
+			[
+				"nein",
+				"ya"
+			]
+		],
+		"nextPiecesNumber" : 
+		[
+			"1",
+			"2",
+			"3",
+			"4"
+		],
+		"sevenBag" : 
+		[
+			[
+				"aleatoire",
+				"sac"
+			],
+			[
+				"random",
+				"bag"
+			],
+			[
+				"aleatorio",
+				"bolsa"
+			],
+			[
+				"random",
+				"bag"
+			]
+		],
+		"shadow" : 
+		[
+			[
+				"non",
+				"oui"
+			],
+			[
+				"no",
+				"yes"
+			],
+			[
+				"no",
+				"si"
+			],
+			[
+				"nein",
+				"ya"
+			]
+		],
+		"sound" : 
+		[
+			[
+				"muet",
+				"oui"
+			],
+			[
+				"mute",
+				"yes"
+			],
+			[
+				"mudo",
+				"si"
+			],
+			[
+				"stumm",
+				"ya"
+			]
+		],
+		"soundVolume" : 100,
+		"superRotationSystem" : 
+		[
+			[
+				"Original",
+				"Rotation intelligente"
+			],
+			[
+				"Original",
+				"Smart Rotation"
+			],
+			[
+				"Original",
+				"Rotacion inteligente"
+			],
+			[
+				"Original",
+				"Intelligente rotation"
+			]
+		]
+	},
+	"welcome" : 
+	[
+		"Bienvenue, ",
+		"Welcome, ",
+		"Bienvenido, ",
+		"Willkommen, "
+	]
 }

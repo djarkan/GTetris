@@ -1,6 +1,6 @@
-#include "screenmanagement.h"
+#include "screenmanagement.hpp"
 
-manageScreen::manageScreen(): m_window(sf::VideoMode(1024, 768), "G_Tetris v0.1", sf::Style::Close)
+manageScreen::manageScreen(): m_window(sf::VideoMode(1024, 768), "G_Tetris v0.8", sf::Style::Close)
 {
 
 }
@@ -138,15 +138,15 @@ void manageScreen::drawNextPieces(bool enhanced, int nextPiecesNumber, int piece
     ++offset;
     if(!enhanced && (piecePositonInTheBag + offset) > 6)
             offset = 5;
-    for(int i = 2; i <= nextPiecesNumber; ++i) {
+    for(auto i = 2; i <= nextPiecesNumber; ++i) {
         if(!enhanced && (piecePositonInTheBag + offset) > 6)
             offset = 4 + i;
         pieceToDraw = random.getPieceAtPosition(piecePositonInTheBag + offset);
         ++offset;
-        sf::IntRect sourceRectangle(pieceToDraw * 32,pieceGraphic * 32,30,30);
+        sourceRectangle.left = pieceToDraw * 32;
         destination.x = 774;
         destination.y = 110;
-        destination.y += (100 * i);
+        destination.y += (100 * static_cast<float>(i));
         adjustxy(pieceToDraw, destination);
         drawPiece(sourceRectangle, destination, thePieces, pieceToDraw, 0, alpha);                                             // draw the next piece
     }
@@ -208,7 +208,7 @@ void manageScreen::rawRenderCopy(const sf::IntRect& sourceRectangle, const sf::V
 void manageScreen::drawCurrentPiece(Piece& currentPiece, thePieces& thePieces, const int pieceGraphic, const sf::Uint8 alpha)
 {
     sf::IntRect sourceRectangle(currentPiece.current * 32,pieceGraphic * 32,30,30);
-    sf::Vector2f destination(362 + ((float)currentPiece.x * 30), 10 + ((float)currentPiece.y * 30));
+    sf::Vector2f destination(362 + static_cast<float>(currentPiece.x * 30), 10 + static_cast<float>(currentPiece.y * 30));
     drawPiece(sourceRectangle, destination, thePieces, currentPiece.current, currentPiece.rotation, alpha);
 }
 
@@ -242,14 +242,11 @@ void manageScreen::drawTheBoard(board& board, const int pieceGraphic)
     }
 }
 
-void manageScreen::shiftedLinesAnimation(pattern& pattern, board& board, int pieceGraphic)
+void manageScreen::shiftedLinesAnimation(pattern& pattern, board& board, int pieceGraphic,sf::Uint8 alpha)
 {
-    sf::Uint8 alpha{250};
-
-    for(int k = 0; k < 48; k++) {
         sf::IntRect sourceRectangle(0,pieceGraphic * 32,30,30);
         for(int i = 0; i < pattern.nbLines; i++) {
-            sf::Vector2f destination(362,(float)(pattern.linesY[i] * 30) + 10);
+            sf::Vector2f destination(362,static_cast<float>((pattern.linesY[i] * 30) + 10));
             for(int j = 0; j < 10; j++) {
                 sourceRectangle.left = 11 * 32;
                 rawRenderCopy(sourceRectangle, destination, alpha);
@@ -258,30 +255,76 @@ void manageScreen::shiftedLinesAnimation(pattern& pattern, board& board, int pie
                 rawRenderCopy(sourceRectangle, destination, alpha);
                 destination.x += 30;
             }
+    }
+}
+
+void manageScreen::drawPatternLabelAnimation(pattern& pattern)
+{
+    if(pattern.tetris){ displayText("TETRIS", 60, sf::Color::White, 430, 220); }
+    if(pattern.ClearBoard){ displayText("CLEAR", 60, sf::Color::White, 445, 220); }
+    if(pattern.Tspin){
+        displayText("Tspin", 60, sf::Color::White, 445, 220);
+    }
+    float offset{80};
+    if(pattern.backToBack > 0 || pattern.combo) { offset = 0; }
+    if(pattern.TspinSingle) {
+        displayText("Tspin", 60, sf::Color::White, 445, 140 + offset);
+        displayText("Single", 60, sf::Color::White, 435, 220 + offset);
+    }
+    if(pattern.TspinDouble) {
+        displayText("Tspin", 60, sf::Color::White, 445, 140 + offset);
+        displayText("Double", 60, sf::Color::White, 435, 220 + offset);
+    }
+    if(pattern.TspinTriple){
+        displayText("Tspin", 60, sf::Color::White, 445, 140 + offset);
+        displayText("Triple", 60, sf::Color::White, 435, 220 + offset);
+    }
+    if(pattern.combo > 0){ offset = 0; }
+    else { offset = 80; }
+    if(pattern.miniTspin){
+        displayText("mini Tspin", 60, sf::Color::White, 380, 220);
+    }
+        if(pattern.miniTspinSingle) {
+        displayText("mini Tspin", 60, sf::Color::White, 380, 140 + offset);
+        displayText("Single", 60, sf::Color::White, 435, 220 + offset);
+    }
+    if(pattern.miniTspinDouble) {
+        displayText("mini Tspin", 60, sf::Color::White, 380, 140 + offset);
+        displayText("Double", 60, sf::Color::White, 435, 220 + offset);
+    }
+    if(pattern.backToBack > 0){
+        displayText("Back to Back", 50, sf::Color::White, 380, 300);
+        if(pattern.backToBack > 1){
+            std::string comboNumber = "X " + std::to_string(pattern.backToBack);
+            displayText(comboNumber, 72, sf::Color::White, 465, 360);
         }
-        alpha -= 5;
-
-if(pattern.backToBack > 0){
-    displayText("BACK TO", 72, sf::Color::White, 405, 300);
-    displayText("BACK !!", 72, sf::Color::White, 405, 380);
-    if(pattern.backToBack > 1){
-        std::string comboNumber = "X " + std::to_string(pattern.backToBack);
-        displayText(comboNumber, 72, sf::Color::White, 465, 460);
+    }
+    if(pattern.combo > 0 && pattern.backToBack < 1){
+        if(!pattern.miniTspin || !pattern.miniTspinSingle || !pattern.miniTspinDouble || !pattern.Tspin || !pattern.TspinSingle || !pattern.TspinDouble ||
+           !pattern.TspinTriple || !pattern.tetris || !pattern.ClearBoard) {
+               offset = -80;
+        }
+        displayText("COMBO", 50, sf::Color::White, 455, 300+ offset);
+        if(pattern.combo > 1){
+            std::string comboNumber = "X " + std::to_string(pattern.combo);
+            displayText(comboNumber, 72, sf::Color::White, 465, 360+ offset);
+        }
     }
 }
 
-if(pattern.combo > 0 && pattern.backToBack < 1){
-    displayText("COMBO !!", 72, sf::Color::White, 390, 300);
-    if(pattern.combo > 1){
-        std::string comboNumber = "X " + std::to_string(pattern.combo);
-        displayText(comboNumber, 72, sf::Color::White, 465, 380);
-    }
-}
-
+void manageScreen::drawPatternAnimation(pattern& pattern, board& board, int pieceGraphic)
+{
+    sf::Uint8 alpha{250};
+    for(int k = 0; k < 48; k++) {
+        shiftedLinesAnimation(pattern, board, pieceGraphic, alpha);
+        drawPatternLabelAnimation(pattern);
         render();
-   //     sf::sleep(sf::milliseconds(4));
+        sf::sleep(sf::milliseconds(8));
+        alpha -= 5;
     }
+    render();
 }
+
 
 void manageScreen::loadFontFile(const std::string title)
 {
@@ -305,15 +348,15 @@ void manageScreen::displayText(const std::string textToDisplay, const int sizeTe
 void manageScreen::printIndicators(const int level, const int score, const int nbLines, std::string timeElapsed)
 {
 	std::string temp = std::to_string(level);
-	displayText(temp, 24, sf::Color::White, 250 - (((float)temp.size() - 1) * 12), 460);
+	displayText(temp, 24, sf::Color::White, 250 - ((static_cast<float>(temp.size() - 1) * 12)), 460);
 	temp = std::to_string(score);
-	displayText(temp, 24, sf::Color::White, 250 - (((float)temp.size() - 1) * 12), 500);
+	displayText(temp, 24, sf::Color::White, 250 - ((static_cast<float>(temp.size() - 1) * 12)), 500);
 	temp = std::to_string(nbLines);
-	displayText(temp, 24, sf::Color::White, 250 - (((float)temp.size() - 1) * 12), 540);
-	displayText(timeElapsed, 24, sf::Color::White, 260 - (((float)timeElapsed.size() - 1) * 12), 580);
+	displayText(temp, 24, sf::Color::White, 250 - ((static_cast<float>(temp.size() - 1) * 12)), 540);
+	displayText(timeElapsed, 24, sf::Color::White, 260 - ((static_cast<float>(timeElapsed.size() - 1) * 12)), 580);
 }
 
-void manageScreen::drawButton(const int x, const int y, const int width, const int higth, const int textureNumber, const int buttonState)
+void manageScreen::drawButton(const float x, const float y, const int width, const int higth, const int textureNumber, const int buttonState)
 {
     sf::IntRect sourceRectangle(0 + (width * buttonState), 250 + (100 * textureNumber), width, higth); //100 = width, higth of biggest button
     sf::Vector2f destination(x, y);
@@ -334,5 +377,35 @@ void manageScreen::drawBlock( int blockNumber)
     sf::Vector2f destination (750,150);
 
     rawRenderCopy(sourceRectangle, destination, 255);
+}
+
+void manageScreen::drawScoreList(const std::array<std::pair<std::string, int> , 20>& scoreArray,const int ranking, const int gameMode )  ////// ALIGNEMENT SCORE PAR LA DROITE       NUMEROTATION 1-20 ALIGNEE PAR LA DOITE      30 LINES C'EST UN TEMPS PAS UN SCORE
+{
+    clear();
+    displayText("Meilleurs scores", 40, sf::Color::Red, 350, 15);
+    float offset{0};
+    int rank{1};
+    sf::Color color;
+    for(auto item : scoreArray){
+        if(rank == ranking){ color = sf::Color(0xAAAAFFFF); }
+        else { color = sf::Color::White; }
+        displayText(item.first, 22, color, 250, 90 + offset);
+        std::string label{""};
+        if(gameMode == 2){
+            label = convertTimeToStringMinuteSecondMilisec(static_cast<sf::Int32>(item.second));
+            displayText(label, 22, color,650, 90 + offset);
+        }
+        else{
+            std::string score = std::to_string(item.second);
+            int stringLength = score.length();
+            for(auto i = 0; i < 11 - stringLength; ++i){ label += " "; }
+            label += score;
+            displayText(label, 22, color,650, 90 + offset);
+        }
+        offset += 30;
+        rank++;
+    }
+    displayText("Pressez Espace", 40, sf::Color::Red, 365, 700);
+    render();
 }
 

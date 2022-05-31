@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="tetris_extended" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/tetris_extended" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-Wnon-virtual-dtor" />
+					<Add option="-Wshadow" />
+					<Add option="-Winit-self" />
+					<Add option="-Wredundant-decls" />
+					<Add option="-Wcast-align" />
+					<Add option="-Wundef" />
+					<Add option="-Wfloat-equal" />
+					<Add option="-Winline" />
+					<Add option="-Wunreachable-code" />
+					<Add option="-Wmissing-declarations" />
+					<Add option="-Wmissing-include-dirs" />
+					<Add option="-Wzero-as-null-pointer-constant" />
+					<Add option="-Wmain" />
+					<Add option="-pedantic-errors" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
+					<Add option="-std=c++1z" />
+					<Add option="-g" />
+					<Add directory="C:/Program Files/SFML/SFML-2.5.1-cb/include" />
+				</Compiler>
+				<Linker>
+					<Add library="C:/Program Files/SFML/SFML-2.5.1-cb/lib/libsfml-network-d.a" />
+					<Add library="C:/Program Files/SFML/SFML-2.5.1-cb/lib/libsfml-audio-d.a" />
+					<Add library="C:/Program Files/SFML/SFML-2.5.1-cb/lib/libsfml-graphics-d.a" />
+					<Add library="C:/Program Files/SFML/SFML-2.5.1-cb/lib/libsfml-window-d.a" />
+					<Add library="C:/Program Files/SFML/SFML-2.5.1-cb/lib/libsfml-system-d.a" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/tetris_extended" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="7-bag.cpp" />
+		<Unit filename="7-bag.hpp" />
+		<Unit filename="board.cpp" />
+		<Unit filename="board.hpp" />
+		<Unit filename="button.cpp" />
+		<Unit filename="button.hpp" />
+		<Unit filename="eventreader.cpp" />
+		<Unit filename="eventreader.hpp" />
+		<Unit filename="game.cpp" />
+		<Unit filename="game.hpp" />
+		<Unit filename="jsoncpp.cpp" />
+		<Unit filename="jsonfile.cpp" />
+		<Unit filename="jsonfile.hpp" />
+		<Unit filename="main.cpp" />
+		<Unit filename="menu.cpp" />
+		<Unit filename="menu.hpp" />
+		<Unit filename="mouseevent.cpp" />
+		<Unit filename="mouseevent.hpp" />
+		<Unit filename="music.cpp" />
+		<Unit filename="music.hpp" />
+		<Unit filename="pieces.cpp" />
+		<Unit filename="pieces.hpp" />
+		<Unit filename="player.cpp" />
+		<Unit filename="player.hpp" />
+		<Unit filename="scorelist.cpp" />
+		<Unit filename="scorelist.hpp" />
+		<Unit filename="screenmanagement.cpp" />
+		<Unit filename="screenmanagement.hpp" />
+		<Unit filename="setup.hpp" />
+		<Unit filename="sound.cpp" />
+		<Unit filename="sound.hpp" />
+		<Unit filename="sources/generics/random/randomInt.cpp" />
+		<Unit filename="sources/generics/random/randomInt.hpp" />
+		<Unit filename="srs.cpp" />
+		<Unit filename="srs.hpp" />
+		<Unit filename="time.cpp" />
+		<Unit filename="time.hpp" />
+		<Unit filename="timer.cpp" />
+		<Unit filename="timer.hpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

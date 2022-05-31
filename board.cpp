@@ -1,7 +1,4 @@
-#include "board.h"
-#include <algorithm>
-
-#include <iostream>
+#include "board.hpp"
 
 board::board()
 {
@@ -60,58 +57,15 @@ bool board::testMovement(int virtualX, int virtualY, int virtualRotation, int pi
     return true;
 }
 
-void board::superRotationSystem(Piece& currentPiece, int virtualRotation, thePieces& thePieces)
-{
-    int offset{1};
-    if(currentPiece.rotation == 1 || currentPiece.rotation == 3) {                    // SRS point 1 & 2
-        if(currentPiece.current == 2) {
-            if(testMovement(currentPiece.x - 1, currentPiece.y, currentPiece.rotation, currentPiece.current, thePieces) == false && currentPiece.rotation == 1)
-                offset = 2;
-            else
-                if(!testMovement(currentPiece.x + 1, currentPiece.y, currentPiece.rotation, currentPiece.current, thePieces) && currentPiece.rotation == 3)
-                    offset = 2;
-        }
-        if(testMovement(currentPiece.x + offset, currentPiece.y, virtualRotation, currentPiece.current, thePieces)) {
-            currentPiece.x += offset;
-            currentPiece.rotation = virtualRotation;
-            return;
-        }
-        else
-            if(testMovement(currentPiece.x - offset, currentPiece.y, virtualRotation, currentPiece.current, thePieces)) {
-                currentPiece.x -= offset;
-                currentPiece.rotation = virtualRotation;
-                return;
-            }
-            else {                                                                     // SRS point 4 & 5
-                if(currentPiece.current == 2) { offset = 3; }
-                else { offset = 2; }
-                if(testMovement(currentPiece.x, currentPiece.y - offset, virtualRotation, currentPiece.current, thePieces)) {
-                    currentPiece.y -= offset;
-                    currentPiece.rotation = virtualRotation;
-                    return;
-                }
-            }
-    }
-    else
-        if(currentPiece.rotation == 0 || currentPiece.rotation == 2) {                   // SRS point 3
-            if(currentPiece.current == 2 && currentPiece.rotation == 2) { offset = 2; }
-            if(testMovement(currentPiece.x, currentPiece.y - offset, virtualRotation, currentPiece.current, thePieces)) {
-                currentPiece.y -= offset;
-                currentPiece.rotation = virtualRotation;
-                return;
-            }
-        }
-}
-
 void board::copyPieceInBoard(Piece& currentPiece, thePieces& thePieces)
 {
-    int boardBock{-1};
+    int boardBlock{-1};
 
     for(auto i = 0; i < 4; i++)
         for(auto j = 0; j < 4; j++) {
-            boardBock = thePieces.getBlock(currentPiece.current, currentPiece.rotation, j, i);
-            if(boardBock > -1)
-                m_matrice[((currentPiece.y + i) * 10) + currentPiece.x + j] = boardBock;
+            boardBlock = thePieces.getBlock(currentPiece.current, currentPiece.rotation, j, i);
+            if(boardBlock > -1)
+                m_matrice[((currentPiece.y + i) * 10) + currentPiece.x + j] = boardBlock;
         }
 }
 
@@ -239,13 +193,12 @@ std::cout << "Tspin: " << pattern.Tspin << std::endl << "miniTspin: " << pattern
         }
     }
 	pattern.TspinSearch = false;
-	return pattern.Tspin || pattern.miniTspin || pattern.TspinSingle ||  pattern.TspinDouble || pattern.TspinTriple
-	|| pattern.miniTspinSingle || pattern.miniTspinDouble;
+	return pattern.Tspin || pattern.miniTspin || pattern.TspinSingle ||  pattern.TspinDouble || pattern.TspinTriple	|| pattern.miniTspinSingle || pattern.miniTspinDouble;
 }
 
 void board::IsThereClearBoard(pattern& pattern)
 {
-    for(int i = 229; i >= 0; i--)
+    for(auto i = 229; i >= 0; i--)
         if(m_matrice[i] != 11)
            return;
     pattern.ClearBoard = true;
@@ -253,9 +206,9 @@ void board::IsThereClearBoard(pattern& pattern)
 
 void board::shiftBlocksAfterLines(const pattern& pattern)
 {
-    for(int h = 0; h < pattern.nbLines; h++)
-        for(int j = 0; j < 10; j++)
-            for(int i = pattern.linesY[h]; i > 0; i--)
+    for(auto h = 0; h < pattern.nbLines; h++)
+        for(auto j = 0; j < 10; j++)
+            for(auto i = pattern.linesY[h]; i > 0; i--)
                 m_matrice[(i * 10) + j] = m_matrice[((i - 1) * 10) + j];
 }
 
@@ -277,21 +230,18 @@ void board::clearPattern(pattern& pattern)
     pattern.miniTspinDouble = false;
 }
 
-void board::insertBricks(randomizer& random)
+void board::insertBricks()
 {
-    for(int i = 1; i < 23; i++) {
-        for(int j = 0; j < 10; j++) {
+    for(auto i = 1; i < 23; i++) {
+        for(auto j = 0; j < 10; j++) {
             m_matrice[j + (i * 10)] = m_matrice[j + (i * 10) + 10];
         }
     }
-    for(int i = 0; i < 10; i++) {
+    for(auto i = 0; i < 10; i++) {
         m_matrice[220 + i] = 11;
     }
-    int number = random.randomNumber(5, 9);
-    for(int i = 0; i < number; i++) {
-        m_matrice[220 + random.randomNumber(0, 9)] = 12;
+    randomInt randomInt;
+    for(auto i = 0; i <= 9; i++) {
+        m_matrice[220 + randomInt.randomInteger(0, 9)] = 12;
     }
-
 }
-
-

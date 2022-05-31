@@ -1,18 +1,18 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "screenmanagement.h"
-#include "7-bag.h"
-#include "eventreader.h"
-#include "board.h"
-#include "pieces.h"
-#include "game.h"
+#include "screenmanagement.hpp"
+#include "7-bag.hpp"
+#include "eventreader.hpp"
+#include "board.hpp"
+#include "pieces.hpp"
+#include "game.hpp"
                                                                                             //Screen dimension constants
 const unsigned int SCREEN_WIDTH = 1024;
 const unsigned int SCREEN_HEIGHT = 768;
 const int playGroundWidth = 300;
 const int playGroundheigth = 600;
 
-int main( int argc, char* args[] )
+int main( )
 {
 
 

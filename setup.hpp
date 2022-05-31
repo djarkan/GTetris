@@ -16,10 +16,11 @@ struct setup {
 	bool nextPiece;                                      // viewing the next piece ON/OFF
 	int nextPiecesNumber;                                // number of next pieces viewable 0 up to 5
 	bool music;                                          // play music ON/OFF
-	int musicVolume;                                     // music volume 0-100
+	float musicVolume;                                     // music volume 0-100
 	bool sound;                                          // game sound ON/OFF
-	int soundVolume;                                     // game sound 0-100
+	float soundVolume;                                     // game sound 0-100
 	std::string pseudo;                                  // player's name
+	int startLevel;                                      //level to start a party
 };
 
 #endif

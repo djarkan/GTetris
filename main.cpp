@@ -1,18 +1,20 @@
-#include <iostream>
 #include "menu.hpp"
-
+#include <SFML/Window/WindowStyle.hpp>
+#include "jsonfile.hpp"
 
 int main()
 {
-    menu menu;
-    if(!menu.initMenu()) {
-        std::cout << "pb lecture fichiers json.\n";
-        return -1;
+    jsonFile setupFile;
+    if(setupFile.loadJsonFile("setup.json")) {
+        sf::Uint32 style;
+        if(setupFile.m_Root["setUp"].get("windowed",1).asBool()) { style = sf::Style::Close; }
+        else { style = sf::Style::Fullscreen; }
+        menu menu(style);
+        if(!menu.initMenu()) {
+            menu.errorMessage();
+            return -1;
+        }
+        menu.playMenu();
+        return 0;
     }
-
-    menu.screen.loadBitmapFile("graphics\\graphics.png");
-    menu.screen.loadFontFile("font\\oneslot.ttf");
-
-    menu.playMenu();
-    return 0;
 }

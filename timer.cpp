@@ -1,11 +1,14 @@
 #include "timer.hpp"
 
-timer::timer(){
+timer::timer()
+{
+    m_pausedTimerDuration = 0;
 }
 
 timer::timer(sf::Int32 timerDuration)
 {
     m_timerDuration = timerDuration;
+    m_pausedTimerDuration = 0;
 }
 
 timer::~timer(){

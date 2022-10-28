@@ -6,7 +6,7 @@
 struct setup {
     int language;                                        // 0: french, 1 : english, 2: spanish, 3: german
     int pieceGraphic;                                    // graphics types : 0 to x
-    int gameType;                                        // 0 : marathon  1: sprint  2 limited time  ...
+    int gameType;                                        // 0 : marathon  1: sprint  2: 40 lines  3: phantom 4: inclusion 5: under preasure
 	bool enhanced;                                       // 11 or 7 pieces game
 	bool sevenBag;                                       // randow method : 7-bag or random
 	bool superRotationSystem;                            // system de ration avancee ON/OFF
@@ -21,6 +21,7 @@ struct setup {
 	float soundVolume;                                     // game sound 0-100
 	std::string pseudo;                                  // player's name
 	int startLevel;                                      //level to start a party
+	bool windowed;
 };
 
 #endif

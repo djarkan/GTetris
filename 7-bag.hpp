@@ -7,7 +7,7 @@
 #include <iostream>
 #include <array>
 #include <SFML/Graphics.hpp>
-#include <C:\Users\Djarkan\Documents\C++\codeblocks\tetris_extended\sources\generics\random\randomint.hpp>
+#include "randomint.hpp"
 
 class randomizer{
 public:

@@ -1,5 +1,4 @@
 #include "game.hpp"
-#include "menu.hpp"
                                                                                             //Screen dimension constants
 const unsigned int SCREEN_WIDTH = 1024;
 const unsigned int SCREEN_HEIGHT = 768;
@@ -25,13 +24,9 @@ void game::rotateRight(Piece &currentPiece, board &board, thePieces &thePieces, 
     int testNumber{0};
     std::pair<int, int> offsetCoordToTest;
     do {
-        if(currentPiece.current == 2) { offsetCoordToTest = srs.getoffsetRightRotationI(virtualRotation, testNumber); }
-        else { offsetCoordToTest = srs.getoffsetRightRotation(virtualRotation, testNumber); }
-std::cout << "offset: (" << offsetCoordToTest.first << " , " << offsetCoordToTest.second << ")" << std::endl;
+        if(currentPiece.current == 2) { offsetCoordToTest = srs.getoffsetRightRotationI(currentPiece.rotation, testNumber); }
+        else { offsetCoordToTest = srs.getoffsetRightRotation(currentPiece.rotation, testNumber); }
         rotationOK = board.testMovement(offsetCoordToTest.first + currentPiece.x, offsetCoordToTest.second + currentPiece.y, virtualRotation, currentPiece.current, thePieces);
-std::cout << "rotation OK ? " ;
-if(rotationOK) { std::cout << "oui" << std::endl; }
-else  { std::cout << "non" << std::endl; }
         if(rotationOK) {
             currentPiece.x += offsetCoordToTest.first;
             currentPiece.y += offsetCoordToTest.second;
@@ -50,19 +45,15 @@ else  { std::cout << "non" << std::endl; }
 void game::rotateLeft(Piece &currentPiece, board &board, thePieces &thePieces, setup &setup, pattern &pattern)
 {
 	int virtualRotation = currentPiece.rotation;
-	if (virtualRotation == 3) { virtualRotation = 0; }
-	else { virtualRotation++; }
+	if (virtualRotation == 0) { virtualRotation = 3; }
+	else { virtualRotation--; }
     bool rotationOK{false};
     int testNumber{0};
     std::pair<int, int> offsetCoordToTest;
     do {
-        if(currentPiece.current == 2) { offsetCoordToTest = srs.getoffsetLeftRotationI(virtualRotation, testNumber); }
-        else { offsetCoordToTest = srs.getoffsetLeftRotation(virtualRotation, testNumber); }
-std::cout << "offset: (" << offsetCoordToTest.first << " , " << offsetCoordToTest.second << ")" << std::endl;
+        if(currentPiece.current == 2) { offsetCoordToTest = srs.getoffsetLeftRotationI(currentPiece.rotation, testNumber); }
+        else { offsetCoordToTest = srs.getoffsetLeftRotation(currentPiece.rotation, testNumber); }
         rotationOK = board.testMovement(offsetCoordToTest.first + currentPiece.x, offsetCoordToTest.second + currentPiece.y, virtualRotation, currentPiece.current, thePieces);
-std::cout << "rotation OK ? " ;
-if(rotationOK) { std::cout << "oui" << std::endl; }
-else  { std::cout << "non" << std::endl; }
         if(rotationOK) {
             currentPiece.x += offsetCoordToTest.first;
             currentPiece.y += offsetCoordToTest.second;
@@ -104,32 +95,38 @@ void game::setShadowPiecePosition(Piece &currentPiece, Piece &shadowPiece, board
 		shadowPiece.y++;
 }
 
-void game::drawTheFrame(bool allowDrawAll, manageScreen &screen, board &board, setup &setup, thePieces &thePieces, int holdedPiece, Piece &currentPiece, Piece &shadowPiece, randomizer &random, int piecePositonInTheBag, inGameFlags &inGameFlags, std::string elapsedTime)
+void game::drawTheFrame(bool allowDrawAll, manageScreen &screen, board &board, setup &setup, thePieces &thePieces, Piece &currentPiece, Piece &shadowPiece, randomizer &random, std::string elapsedTime, bool countTdownPending)
 {
-    screen.clear();
-	screen.drawPlayGround("NIVEAU", "SCORE", "LIGNES", "TEMPS");
+	screen.drawPlayGround(m_gameTtranslation.m_Root["level"][setup.language].asString(),
+                          m_gameTtranslation.m_Root["score"][setup.language].asString(),
+                          m_gameTtranslation.m_Root["lines"][setup.language].asString(),
+                          m_gameTtranslation.m_Root["time"][setup.language].asString(),
+                          m_gameTtranslation.m_Root["hold"][setup.language].asString(),
+                          m_gameTtranslation.m_Root["nextPiece"][setup.language].asString());
 	if(allowDrawAll){
         screen.drawTheBoard(board, setup.pieceGraphic);
-        if (setup.nextPiece)
-            screen.drawNextPieces(setup.enhanced, setup.nextPiecesNumber, piecePositonInTheBag, setup.pieceGraphic, random, thePieces, 255);
-        if (holdedPiece > -1)
-            screen.drawPieceToHold(holdedPiece, setup.pieceGraphic, thePieces, 255);
-        screen.drawCurrentPiece(currentPiece, thePieces, setup.pieceGraphic, 255);
-        if (setup.shadow)
-            screen.drawCurrentPiece(shadowPiece, thePieces, setup.pieceGraphic, 64);
+        if(!countTdownPending) {
+            if (setup.nextPiece)
+                screen.drawNextPieces(setup.enhanced, setup.nextPiecesNumber, inGameFlags.piecePositonInTheBag, setup.pieceGraphic, random, thePieces, 255);
+            if (inGameFlags.holdedPiece > -1)
+                screen.drawPieceToHold(inGameFlags.holdedPiece, setup.pieceGraphic, thePieces, 255);
+            screen.drawCurrentPiece(currentPiece, thePieces, setup.pieceGraphic, 255);
+            if (setup.shadow)
+                screen.drawCurrentPiece(shadowPiece, thePieces, setup.pieceGraphic, 64);
+        }
 	}
 	else { screen.drawEmptyBoard(setup.pieceGraphic); }
 	screen.printIndicators(inGameFlags.level, inGameFlags.score, inGameFlags.nbLines, elapsedTime);
-	screen.render();
 	if(setup.gameType == 3 && allowDrawAll){ sf::sleep(sf::seconds(1)); }
+
 }
 
-void game::holdPiece(randomizer &random, setup &setup, Piece &currentPiece, int &holdedPiece, int &piecePositonInTheBag)
+void game::holdPiece(randomizer &random, setup &setup, Piece &currentPiece, int &holdedPiece)
 {
     if(holdedPiece < 0) {
         holdedPiece = currentPiece.current;                                             // if hold is empty hold is the current piece
-        piecePositonInTheBag = random.incrementPiecePositonInTheBag(setup.enhanced, piecePositonInTheBag, setup.sevenBag);
-        currentPiece.current = random.getPieceAtPosition(piecePositonInTheBag);
+        inGameFlags.piecePositonInTheBag = random.incrementPiecePositonInTheBag(setup.enhanced, inGameFlags.piecePositonInTheBag, setup.sevenBag);
+        currentPiece.current = random.getPieceAtPosition(inGameFlags.piecePositonInTheBag);
     }
     else {
         int swapper = holdedPiece;                                                      // swap hold and current piece
@@ -138,18 +135,18 @@ void game::holdPiece(randomizer &random, setup &setup, Piece &currentPiece, int 
     }
 }
 
-void game::lockoutPiece(board &board, pattern &pattern, manageScreen &screen, setup &setup, inGameFlags &inGameFlags, Piece &currentPiece, randomizer &random, thePieces &thePieces, timer &fallingPieceTimer, sf::Int32& underPreasureTime, sound& gameSound)
+void game::lockoutPiece(board &board, pattern &pattern, manageScreen &screen, setup &setup, Piece &currentPiece, randomizer &random, thePieces &thePieces, timer &fallingPieceTimer, sf::Int32& underPreasureTime, sound& gameSound, statistics& playerStats)
 {
     board.copyPieceInBoard(currentPiece, thePieces);
     if(board.patternSearch(pattern, currentPiece)) {
+        playerStats.addPatternsToStats(pattern);
         screen.drawTheBoard(board, setup.pieceGraphic);
         screen.drawPatternAnimation(pattern, board, setup.pieceGraphic);
         board.shiftBlocksAfterLines(pattern);
-        board.IsThereClearBoard(pattern);
         if(pattern.nbLines > 0){
             if(setup.gameType == 5) { underPreasureTime += pattern.nbLines * 4000; }
             inGameFlags.nbLines += pattern.nbLines;
-            if(isLevelUp(inGameFlags.level, inGameFlags.nbLines)){
+            if(isLevelUp(inGameFlags.level, inGameFlags.nbLines)  && inGameFlags.level < 9 && (setup.gameType != 1 && setup.gameType != 2)){
                 ++inGameFlags.level;
                 fallingPieceTimer.setTimerDuration(calculateFallingPieceTimerDuration(inGameFlags.level));
                 gameSound.playSound(4);
@@ -167,10 +164,9 @@ void game::lockoutPiece(board &board, pattern &pattern, manageScreen &screen, se
         inGameFlags.gameOver = true;
 }
 
-void game::launchParty(manageScreen &screen, setup &setup, sound& gameSound)
+void game::launchParty(manageScreen &screen, setup &setup, sound& gameSound, statistics& playerStats)
 {
         randomizer random;
-        inGameFlags inGameFlags;
         inGameFlags.level = setup.startLevel;
         inGameFlags.fisrtShuffle = true;
         while(inGameFlags.fisrtShuffle) {
@@ -190,22 +186,30 @@ void game::launchParty(manageScreen &screen, setup &setup, sound& gameSound)
         board.putNewPieceInBoard(currentPiece, thePieces);
         inGameFlags.gameOver = false;
         pattern pattern;
-        eventReader eventReader;
+//        eventReader eventReader;
+        if(!m_gameTtranslation.loadJsonFile("language\\play.json"))
+        {
+            errorMessage(screen, setup.language);
+            return;
+        }
+        countDown(allowDrawAll, screen, board, setup, thePieces, currentPiece, shadowPiece, random, gameSound);
         timer fallingPieceTimer(calculateFallingPieceTimerDuration(inGameFlags.level));
         fallingPieceTimer.startTimer();
+        timer lockoutTimer(500);
+        bool beginLockoutTimer{false};
         sf::Clock timePlayed;
         sf::Time timeElapsed;
         sf::Int32 elapsedTime;
+        sf::Int32 elapsedTimePause = 0;
         timer underPreasureTimer(1000);
         sf::Int32 underPreasureTime{15000};
         if(setup.gameType == 5) {
-            underPreasureTimer.restartTimer();
+            underPreasureTimer.startTimer();
         }
         else { timePlayed.restart(); }
         timer inclusionTimer(25000);
         if(setup.gameType == 4) { inclusionTimer.startTimer(); }
         eventReader::gameControl gameEvent;
-        gameSound.playSound(6);
         while(!inGameFlags.gameOver && !inGameFlags.goalReached) {
             gameEvent = eventReader.getEvent(screen.m_window);
             int hardDropHigthFall{0};
@@ -223,11 +227,6 @@ void game::launchParty(manageScreen &screen, setup &setup, sound& gameSound)
                         currentPiece.y++;
                         gameSound.playSound(2);
                     }
-                    else
-                        if(setup.lockout)
-                            inGameFlags.lockedout = true;   // SI LOCKOUT DISABLE TESTER SI PEUT DESCENDRE -> SI NON PASSE A PIECE SUIVANTE
-                        else
-                            inGameFlags.lockedout = true;         // lancer le timer du lockout
                     ++inGameFlags.score;
                     break;
                 case eventReader::gameControl::hardDrop:                    // hard drop
@@ -237,74 +236,93 @@ void game::launchParty(manageScreen &screen, setup &setup, sound& gameSound)
                     gameSound.playSound(0);
                     break;
                 case eventReader::gameControl::shiftLeft:              // move left
-                    if(board.testMovement(currentPiece.x - 1, currentPiece.y, currentPiece.rotation, currentPiece.current, thePieces))
+                    if(board.testMovement(currentPiece.x - 1, currentPiece.y, currentPiece.rotation, currentPiece.current, thePieces)) {
                         currentPiece.x--;
+                        gameSound.playSound(2);
+                    }
                     break;
                 case eventReader::gameControl::shiftRight:             // move right
-                    if(board.testMovement(currentPiece.x + 1, currentPiece.y, currentPiece.rotation, currentPiece.current, thePieces))
+                    if(board.testMovement(currentPiece.x + 1, currentPiece.y, currentPiece.rotation, currentPiece.current, thePieces)) {
                         currentPiece.x++;
+                        gameSound.playSound(2);
+                    }
                     break;
                 case eventReader::gameControl::holdPiece:            // hold
                     if(!inGameFlags.holded && setup.hold) {
                         allowDrawAll = true;
                         inGameFlags.holded = true;
-                        holdPiece(random, setup, currentPiece, inGameFlags.holdedPiece, inGameFlags.piecePositonInTheBag);
+                        holdPiece(random, setup, currentPiece, inGameFlags.holdedPiece);
                         if(!board.putNewPieceInBoard(currentPiece, thePieces))
                             inGameFlags.gameOver = true;
                     }
                     break;
-                case eventReader::gameControl::pause :
-                    static sf::Time timeElapsedPlayed;
-                    static sf::Int32 elapsedTimePlayed;
-                    static std::string timeString;
-                    while(eventReader.getEvent(screen.m_window) != eventReader::gameControl::pause) {
-                        screen.clear();
-                        screen.drawPlayGround("NIVEAU", "SCORE", "LIGNES", "TEMPS");
-                        screen.drawEmptyBoard(setup.pieceGraphic);
-                        screen.displayText("Pause", 72, sf::Color::White, 435, 250);
-                        screen.displayText("Pressez", 72, sf::Color::White, 400, 355);
-                        screen.displayText("Escape", 72, sf::Color::White, 415, 470);
-                        if(setup.gameType == 5){
-                            if(underPreasureTimer.isTimeElapsed()) {
-                                if(underPreasureTime > 0)  {
-                                    underPreasureTime -= 1000;
-                                    underPreasureTimer.restartTimer();
-                                }
-                            }
-                            timeString = convertTimeToStringMinuteSecond(underPreasureTime);
-                        }
-                        else {
-                            timeElapsedPlayed = timePlayed.getElapsedTime();
-                            elapsedTimePlayed = timeElapsedPlayed.asMilliseconds();
-                            timeString = convertTimeToStringMinuteSecond(elapsedTimePlayed);
-                        }
-                        screen.printIndicators(inGameFlags.level, inGameFlags.score, inGameFlags.nbLines, timeString);
-                        screen.render();                   // pause
-                    }
+                case eventReader::gameControl::pause :  {                  // pause
+                    std::string timeString;
+                    sf::Clock timePaused;
+                    timePaused.restart();
+                    if(setup.gameType == 5){ underPreasureTimer.pauseTimer(); }
+                    if(setup.gameType == 4){ inclusionTimer.pauseTimer(); }
+                    screen.clear();
+                    screen.drawPlayGround(m_gameTtranslation.m_Root["level"][setup.language].asString(),
+                                            m_gameTtranslation.m_Root["score"][setup.language].asString(),
+                                            m_gameTtranslation.m_Root["lines"][setup.language].asString(),
+                                            m_gameTtranslation.m_Root["time"][setup.language].asString(),
+                                            m_gameTtranslation.m_Root["hold"][setup.language].asString(),
+                                            m_gameTtranslation.m_Root["nextPiece"][setup.language].asString());
+                    screen.drawEmptyBoard(setup.pieceGraphic);
+                    std::string label = m_gameTtranslation.m_Root["pause"][setup.language].asString();
+                    float x = 512 - ((label.size() / 2.f) * 31);
+                    screen.displayText(label, 72, sf::Color::White, x, 250);
+                    label = m_gameTtranslation.m_Root["press"][setup.language].asString();
+                    x = 512 - ((label.size() / 2.f) * 31);
+                        screen.displayText(label, 72, sf::Color::White, x, 355);
+                    label = m_gameTtranslation.m_Root["escape"][setup.language].asString();
+                    x = 512 - ((label.size() / 2.f) * 31);
+                    screen.displayText(label, 72, sf::Color::White, x, 470);
+                    timeElapsed = timePlayed.getElapsedTime();
+                    elapsedTime = timeElapsed.asMilliseconds() - elapsedTimePause;
+                    timeString = convertTimeToStringMinuteSecond(elapsedTime);
+                    screen.printIndicators(inGameFlags.level, inGameFlags.score, inGameFlags.nbLines, timeString);
+                    screen.render();
+                    while(eventReader.getEvent(screen.m_window) != eventReader::gameControl::pause) { ; }
                     screen.drawTheBoard(board,  setup.pieceGraphic);
+                    if(setup.gameType == 5){ underPreasureTimer.restartTimer(); }
+                    if(setup.gameType == 4){ inclusionTimer.restartTimer(); }
+                    sf::Time pausedTime = timePaused.getElapsedTime();
+                    elapsedTimePause += pausedTime.asMilliseconds();
+                    countDown(allowDrawAll, screen, board, setup, thePieces, currentPiece, shadowPiece, random, gameSound);
                     break;
+                }
                 case eventReader::gameControl::none:
                     break;
                 default:
                     break;
+
             }
             bool canShiftLower = board.testMovement(currentPiece.x, currentPiece.y + 1, currentPiece.rotation, currentPiece.current, thePieces);
-            if(!setup.lockout && !canShiftLower) {
+            if(setup.lockout && canShiftLower) { lockoutTimer.startTimer(); }
+            if(!setup.lockout && !canShiftLower) { inGameFlags.lockedout = true; }
+            if(setup.lockout && !canShiftLower && !beginLockoutTimer)  {
+                beginLockoutTimer = true;
+                lockoutTimer.startTimer();
+            }
+            if(fallingPieceTimer.isTimeElapsed()  && canShiftLower) {
+                ++currentPiece.y;
+                fallingPieceTimer.startTimer();
+            }
+
+            if(lockoutTimer.isTimeElapsed()) {
                 inGameFlags.lockedout = true;
                 fallingPieceTimer.startTimer();
             }
-            if(fallingPieceTimer.isTimeElapsed()) {
-                if(canShiftLower){ ++currentPiece.y; }
-                else { inGameFlags.lockedout = true; }
-                fallingPieceTimer.startTimer();
-            }
-            if(inGameFlags.lockedout) {
-                lockoutPiece(board, pattern, screen, setup, inGameFlags, currentPiece, random, thePieces,fallingPieceTimer, underPreasureTime, gameSound);
+            if(inGameFlags.lockedout == true) {
+                beginLockoutTimer = false;
+                lockoutPiece(board, pattern, screen, setup, currentPiece, random, thePieces,fallingPieceTimer, underPreasureTime, gameSound, playerStats);
                 allowDrawAll = true;
             }
             setShadowPiecePosition(currentPiece, shadowPiece, board, thePieces);
             timeElapsed = timePlayed.getElapsedTime();
-            elapsedTime = timeElapsed.asMilliseconds();
+            elapsedTime = timeElapsed.asMilliseconds() - elapsedTimePause;
             std::string timeStr = convertTimeToStringMinuteSecond(elapsedTime);
             if(timeStr == "03:00" && setup.gameType == 1){
                 inGameFlags.goalReached = true;
@@ -324,12 +342,14 @@ void game::launchParty(manageScreen &screen, setup &setup, sound& gameSound)
                 }
                 timeStr = convertTimeToStringMinuteSecond(underPreasureTime);
             }
-            drawTheFrame(allowDrawAll, screen, board, setup, thePieces, inGameFlags.holdedPiece, currentPiece, shadowPiece, random, inGameFlags.piecePositonInTheBag, inGameFlags, timeStr);
+            screen.clear();
+            drawTheFrame(allowDrawAll, screen, board, setup, thePieces, currentPiece, shadowPiece, random, timeStr, false);
+            screen.render();
             if(setup.gameType == 3) { allowDrawAll = false; }
         }
         gameSound.playSound(6);
         inGameFlags.holdedPiece = -1;
-        endOfParty(screen, eventReader, inGameFlags.gameOver);
+        endOfParty(screen, inGameFlags.gameOver, setup);
         scoreList scoreList;
         scoreList.buildScoreList(setup.gameType, setup.enhanced);
         if(setup.gameType == 2 && !inGameFlags.gameOver) {
@@ -338,19 +358,37 @@ void game::launchParty(manageScreen &screen, setup &setup, sound& gameSound)
         if(setup.gameType == 2 && inGameFlags.gameOver) { return; }
         if(scoreList.isScoreEnterInScoreList(inGameFlags.score,setup.gameType)){
             int ranking = scoreList.enterScoreInList(setup.pseudo, inGameFlags.score, setup.gameType, setup.enhanced);
-            screen.drawScoreList(scoreList.m_scoreArray, ranking, setup.gameType);
+            screen.drawScoreList(scoreList.m_scoreArray,
+                                 ranking,
+                                 setup.gameType,
+                                 m_gameTtranslation.m_Root["bestscore"][setup.language].asString(),
+                                 m_gameTtranslation.m_Root["pressspace"][setup.language].asString());
             while(!eventReader.getSpace(screen.m_window)){}
         }
 }
 
-void game::endOfParty(manageScreen &screen, eventReader &eventReader, bool gameOver)
+void game::endOfParty(manageScreen &screen, bool gameOver, setup& setup)
 {
         screen.render();
-        if(gameOver) { screen.displayText("PERDU", 60 , sf::Color::White, 445, 320); }
-        else { screen.displayText("FINI", 60, sf::Color::White, 455, 320); }
-        screen.displayText("Pressez Espace", 35, sf::Color::White, 400, 390);
+        std::string label;
+        if(gameOver) {
+            label = m_gameTtranslation.m_Root["gameover"][setup.language].asString();
+            float x = 512 - ((label.size() / 2.f) * 31);
+            screen.displayText(label, 72, sf::Color::White, x, 250);
+        }
+        else {
+            label = m_gameTtranslation.m_Root["ended"][setup.language].asString();
+            float x = 512 - ((label.size() / 2.f) * 31);
+            screen.displayText(label, 72, sf::Color::White, x, 250);
+        }
+        label = m_gameTtranslation.m_Root["press"][setup.language].asString();
+        float x = 512 - ((label.size() / 2.f) * 31);
+        screen.displayText(label, 72, sf::Color::White, x, 355);
+        label = m_gameTtranslation.m_Root["escape"][setup.language].asString();
+        x = 512 - ((label.size() / 2.f) * 31);
+        screen.displayText(label, 72, sf::Color::White, x, 470);
         screen.render();
-        while(!eventReader.getSpace(screen.m_window)){}
+        while(!eventReader.getEscape(screen.m_window)){}
 }
 
 sf::Int32 game::calculateFallingPieceTimerDuration(const int level)
@@ -371,7 +409,7 @@ int game::calculateScore(const pattern &pattern, int score, const int level)
                     (pattern.miniTspinDouble * level *400) +
                     (pattern.Tspin * level *400) + (pattern.TspinSingle * level *800) +
                     (pattern.TspinDouble * level *1200) + (pattern.TspinTriple * level *1600)) +
-                    (50 * (pattern.combo - 1) * level);
+                    (50 * (pattern.combo - 1) * level) + pattern.ClearBoard * level * 300 ;
     if(pattern.backToBack > 1){
         return score + scoreAction + (static_cast<int>(scoreAction * 0.5));
     }
@@ -380,7 +418,7 @@ int game::calculateScore(const pattern &pattern, int score, const int level)
     }
 }
 
-void game::clearInGameFlags(inGameFlags &inGameFlags)
+void game::clearInGameFlags()
 {
 	inGameFlags.lockedout = false;
     inGameFlags.holded = false;
@@ -393,4 +431,31 @@ void game::clearInGameFlags(inGameFlags &inGameFlags)
     inGameFlags.nbLines = 0;
 	inGameFlags.score = 0 ;
 	inGameFlags.goalReached = false;
+}
+
+void game::countDown(bool allowDrawAll, manageScreen &screen, board &board, setup &setup, thePieces &thePieces, Piece &currentPiece, Piece &shadowPiece, randomizer &random, sound& gameSound)
+{
+    timer countDonwTimer(1000);
+    countDonwTimer.startTimer();
+    int seconds{3};
+    gameSound.playSound(8);
+    do {
+        screen.clear();
+        drawTheFrame(allowDrawAll, screen, board, setup, thePieces, currentPiece, shadowPiece, random, "00:00",true);
+        screen.drawCircles();
+        screen.displayText(std::to_string(seconds), 100, sf::Color::White, 490, 325);
+        screen.render();
+        while(!countDonwTimer.isTimeElapsed()) {  }
+        --seconds;
+        countDonwTimer.restartTimer();
+        if(seconds > 0) { gameSound.playSound(8); }
+        else { gameSound.playSound(6); }
+    }
+    while(seconds > 0);
+}
+
+void game::errorMessage(manageScreen &screen, int language)
+{
+    screen.errorMessage(m_gameTtranslation.m_Root["error"][language].asString(), m_gameTtranslation.m_Root["reinstall"][language].asString(), m_gameTtranslation.m_Root["pressspace"][language].asString());
+    while(!eventReader.getSpace(screen.m_window)) ;
 }

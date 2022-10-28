@@ -1,24 +1,24 @@
 #include "scorelist.hpp"
-#include <iostream>
-#include <algorithm>
 
 scoreList::scoreList()
 {
 }
 
-void scoreList::buildScoreList(const int gameMode, const bool enhanced)
+bool scoreList::buildScoreList(const int gameMode, const bool enhanced)
 {
-    m_jsonSocreList.loadJsonFile("score.json");
-    std::string gameName = getGameName(gameMode, enhanced);
-    for(auto i = 0; i < 20; ++i){
-     m_scoreArray[i].first = m_jsonSocreList.m_Root["score"][gameName]["pseudo"][i].asString();
-     m_scoreArray[i].second = m_jsonSocreList.m_Root["score"][gameName]["score"][i].asInt();
+    if(m_jsonSocreList.loadJsonFile("score.json")) {
+        std::string gameName = getGameName(gameMode, enhanced);
+        for(auto i = 0; i < 20; ++i){
+         m_scoreArray[i].first = m_jsonSocreList.m_Root["score"][gameName]["pseudo"][i].asString();
+         m_scoreArray[i].second = m_jsonSocreList.m_Root["score"][gameName]["score"][i].asInt();
+        }
+        return true;
     }
+    else { return false; }
 }
 
 void scoreList::saveScoreList()
 {
-    /////////////////////////////////////////////////////////mettre l'array dans le json file avant la save
     m_jsonSocreList.saveJsonFile("score.json");
 }
 
@@ -88,9 +88,3 @@ std::string scoreList::getGameName(const int gameMode, const bool enhanced)
     return gameName;
 }
 
-void scoreList::viewScoreArray()
-{
-    for(auto i = 0; i < 20; ++i){
-        std::cout << m_scoreArray[i].first << "  --------------   "  << m_scoreArray[i].second << std::endl;
-    }
-}

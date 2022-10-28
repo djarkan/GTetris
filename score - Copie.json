@@ -1,0 +1,137 @@
+{
+    "score":
+    {
+        "marathon":
+        {
+            "pseudo":
+            [
+                "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan"
+            ],
+            "score":
+            [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "sprint":
+        {
+            "pseudo":
+            [
+                "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan"
+            ],
+            "score":
+            [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "30lines":
+        {
+            "pseudo":
+            [
+                "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan"
+            ],
+            "score":
+            [
+                599999, 599999, 599999, 599999, 599999, 599999, 599999, 599999, 599999, 599999, 599999, 599999, 599999, 599999, 599999, 599999, 599999, 599999, 599999, 599999
+            ]
+        },
+        "phantom":
+        {
+            "pseudo":
+            [
+                "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan"
+            ],
+            "score":
+            [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "inclusion":
+        {
+            "pseudo":
+            [
+                "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan"
+            ],
+            "score":
+            [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "underpreasure":
+        {
+            "pseudo":
+            [
+                "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan"
+            ],
+            "score":
+            [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "marathonextended":
+        {
+            "pseudo":
+            [
+                "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan"
+            ],
+            "score":
+            [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "sprintextended":
+        {
+            "pseudo":
+            [
+                "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan"
+            ],
+            "score":
+            [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "30linesextended":
+        {
+            "pseudo":
+            [
+                "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan"
+            ],
+            "score":
+            [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "phantomextended":
+        {
+            "pseudo":
+            [
+                "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan"
+            ],
+            "score":
+            [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "inclusionextended":
+        {
+            "pseudo":
+            [
+                "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan"
+            ],
+            "score":
+            [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "underpreasureextended":
+        {
+            "pseudo":
+            [
+                "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan", "Djarkan"
+            ],
+            "score":
+            [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        }
+    }
+}

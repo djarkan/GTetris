@@ -2,12 +2,12 @@
 	"setUp" : 
 	{
 		"enhanced" : false,
-		"gameType" : 2,
+		"gameType" : 0,
 		"hold" : true,
 		"language" : 0,
 		"lockout" : true,
 		"music" : false,
-		"musicVolume" : 15.0,
+		"musicVolume" : 61.0,
 		"nextPiece" : true,
 		"nextPiecesNumber" : 5,
 		"pieceGraphic" : 0,
@@ -15,8 +15,9 @@
 		"sevenBag" : true,
 		"shadow" : true,
 		"sound" : true,
-		"soundVolume" : 22.0,
+		"soundVolume" : 14.0,
 		"startLevel" : 1,
-		"superRotationSystem" : true
+		"superRotationSystem" : true,
+		"windowed" : true
 	}
 }

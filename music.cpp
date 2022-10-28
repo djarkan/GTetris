@@ -17,9 +17,11 @@ void music::setMusicLoop(bool loop)
 
 bool music::initMusic()
 {
-    bool flag = loadSong("A Theme.flac");
-    setMusicLoop(true);
-    return flag;
+    if(loadSong("music\\A Theme.flac")) {
+        setMusicLoop(true);
+        return true;
+    }
+    else { return false; }
 }
 
 void music::playSong()

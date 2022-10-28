@@ -1,20 +1,37 @@
 #include "menu.hpp"
 #include "scorelist.hpp"
+
 menu::menu()
 {
 
 }
 
+menu::menu(sf::Uint32 style) : m_style{style}, screen(m_style)
+{
+}
+
 bool menu::initMenu()
 {
-    bool flag1 = m_jsonConfig.loadJsonFile("config.json");
-    bool flag2 = m_jsonSetup.loadJsonFile("setup.json");
-    gameSound.initSounds();
-    gameMusic.initMusic();
-    setSetUp();
-    setSoundVolume(m_setup.soundVolume);
-    setMusicVolume(m_setup.musicVolume);
-    return flag1 | flag2;
+    bool flag = m_jsonConfig.loadJsonFile("config.json");
+    flag &= m_menuLabels.loadJsonFile("language\\menu.json");
+    flag &= m_jsonSetup.loadJsonFile("setup.json");
+    if(flag) { setSetUp(); }
+//    style = sf::Style::Fullscreen;
+//    manageScreen(style);
+    flag &= screen.loadBitmapFile("graphics\\graphics.png");
+    flag &= screen.loadBitmapCursor("graphics\\cursor.png");
+    myCursor.loadFromPixels(screen.myCursor.getPixelsPtr(), {40,40}, {0,0});
+    screen.m_window.setMouseCursor(myCursor);
+    flag &= screen.loadFontFile("font\\oneslot.ttf");
+    flag &= gameSound.initSounds();
+    if(!flag) { setSoundVolume(m_setup.soundVolume); }
+    flag &= gameMusic.initMusic();
+    if(flag) { setMusicVolume(m_setup.musicVolume); }
+    if(!playerStats.loadPlayerStats("statistics\\" + m_setup.pseudo + ".json")) {
+        playerStats.createPlayerStats("statistics\\" + m_setup.pseudo + ".json");              ;
+    }
+    flag =  m_gameTtranslation.loadJsonFile("language\\play.json");
+    return flag;
 }
 
 void menu::saveJsonSetup(const std::string fileName)
@@ -81,141 +98,147 @@ int menu::checkButtonsAction()
 bool menu::launchAction(int buttonID)
 {
     switch(buttonID){
-            case 0:
-                game.launchParty(screen, m_setup, gameSound);
+            case 0:                                                             // launch the game
+                {
+                game game;
+                screen.m_window.setMouseCursorVisible(false);
+                game.launchParty(screen, m_setup, gameSound, playerStats);
+                playerStats.savePlayerStats("statistics\\" + m_setup.pseudo + ".json");
                 loadButtons("playButton");
+                screen.m_window.setMouseCursorVisible(true);
+                }
                 break;
-            case 1:
+            case 1:                                                             // launch parameters options
                 gameSound.playSound(3);
                 parametersMenu();
                 loadButtons("playButton");
                 break;
-            case 2:
+            case 2:                                                             // exit from the game
                 gameMusic.stopSong();
                 return false;
                 break;
-            case 3:
+            case 3:                                                             //change language
                 if(m_setup.language == 0) { m_setup.language = m_jsonConfig.m_Root["maxValue"]["maxLanguage"].asInt() -1; }
                 else { --m_setup.language; }
                 gameSound.playSound(1);
                 break;
-            case 4:
+            case 4:                                                             //change language
                 if(m_setup.language == m_jsonConfig.m_Root["maxValue"]["maxLanguage"].asInt() -1) { m_setup.language = 0; }
                 else { ++m_setup.language; }
                 gameSound.playSound(1);
                 break;
-            case 5:
+            case 5:                                                             // choose piece texture
                 if(m_setup.pieceGraphic == 0) { m_setup.pieceGraphic = m_jsonConfig.m_Root["maxValue"]["maxPieceGraphic"].asInt() -1; }
                 else {--m_setup.pieceGraphic; }
                 gameSound.playSound(1);
                 break;
-            case 6:
+            case 6:                                                             // choose piece texture
                 if(m_setup.pieceGraphic == m_jsonConfig.m_Root["maxValue"]["maxPieceGraphic"].asInt() -1) { m_setup.pieceGraphic = 0; }
                 else { ++m_setup.pieceGraphic; }
                 gameSound.playSound(1);
                 break;
-            case 7:
+            case 7:                                                             // choose game mode
                 if(m_setup.gameType == 0) { m_setup.gameType = m_jsonConfig.m_Root["maxValue"]["maxGameType"].asInt() -1; }
                 else {--m_setup.gameType; }
                 gameSound.playSound(1);
                 break;
-            case 8:
+            case 8:                                                             // choose game mode
                 if(m_setup.gameType == m_jsonConfig.m_Root["maxValue"]["maxGameType"].asInt() -1) { m_setup.gameType = 0; }
                 else { ++m_setup.gameType; }
                 gameSound.playSound(1);
                 break;
-            case 9:
+            case 9:                                                             // choose pieces number
             case 10:
                 m_setup.enhanced = !m_setup.enhanced;
                 gameSound.playSound(1);
                 break;
-            case 11:
+            case 11:                                                            // choose system rotation
             case 12:
                 m_setup.superRotationSystem = !m_setup.superRotationSystem;
                 gameSound.playSound(1);
                 break;
-            case 13:
+            case 13:                                                            // choose shadow piece or not
             case 14:
                 m_setup.shadow = !m_setup.shadow;
                 gameSound.playSound(1);
                 break;
-            case 15:
+            case 15:                                                            // enable hold 1 piece
             case 16:
                 m_setup.hold = !m_setup.hold;
                 gameSound.playSound(1);
                 break;
-            case 17:
+            case 17:                                                            // choose if delay before locking the current piece
             case 18:
                 m_setup.lockout = !m_setup.lockout;
                 gameSound.playSound(1);
                 break;
-            case 19:
+            case 19:                                                            // choose pieces randomization
             case 20:
                 m_setup.sevenBag = !m_setup.sevenBag;
                 gameSound.playSound(1);
                 break;
-            case 21:
+            case 21:                                                            // choose to see next pieces or not
             case 22:
                 m_setup.nextPiece = !m_setup.nextPiece;
                 gameSound.playSound(1);
                 break;
-            case 23:
+            case 23:                                                            // choose next piece number to see
                 if(m_setup.nextPiecesNumber == 0) { m_setup.nextPiecesNumber = m_jsonConfig.m_Root["maxValue"]["MaxNextPieces"].asInt(); }
                 else { --m_setup.nextPiecesNumber; }
                 gameSound.playSound(1);
                 break;
-            case 24:
+            case 24:                                                            // choose next piece number to see
                 if(m_setup.nextPiecesNumber == m_jsonConfig.m_Root["maxValue"]["MaxNextPieces"].asInt()) { m_setup.nextPiecesNumber = 0; }
                 else { ++m_setup.nextPiecesNumber; }
                 gameSound.playSound(1);
                 break;
-            case 25:
+            case 25:                                                            // enable music or not
             case 26:
                 m_setup.music = !m_setup.music;
                 if(m_setup.music) { gameMusic.playSong(); }
                 else { gameMusic.stopSong(); }
                 gameSound.playSound(1);
                 break;
-            case 27:
+            case 27:                                                            // choose music volume
                 if(m_setup.musicVolume > 0) { --m_setup.musicVolume; }
                 sf::sleep(sf::milliseconds(40));
                 gameMusic.setMusicVolume(m_setup.musicVolume);
                 gameSound.playSound(1);
                 break;
-            case 28:
+            case 28:                                                            // choose music volume
                 if(m_setup.musicVolume < 100) { ++m_setup.musicVolume; }
                 sf::sleep(sf::milliseconds(40));
                 gameMusic.setMusicVolume(m_setup.musicVolume);
                 gameSound.playSound(1);
                 break;
-            case 29:
+            case 29:                                                            // enable sound or not
             case 30:
                 m_setup.sound = !m_setup.sound;
                 setSoundVolume(m_setup.soundVolume);
                 gameSound.playSound(1);
                 break;
-            case 31:
+            case 31:                                                            // choose sound volume
                 if(m_setup.soundVolume > 0) { --m_setup.soundVolume; }
                 sf::sleep(sf::milliseconds(40));
                 setSoundVolume(m_setup.soundVolume);
                 gameSound.playSound(1);
                 break;
-            case 32:
+            case 32:                                                            // choose sound volume
                 if(m_setup.soundVolume < 100) { ++m_setup.soundVolume; }
                 sf::sleep(sf::milliseconds(40));
                 setSoundVolume(m_setup.soundVolume);
                 gameSound.playSound(1);
                 break;
-            case 33:
-                gameSound.playSound(2);
+            case 33:                                                            // exit from parameters option
+                gameSound.playSound(7);
                 return false;
                 break;
-            case 34:
+            case 34:                                                            // save parameters
                 saveSetUp();
-                gameSound.playSound(2);
+                gameSound.playSound(7);
                 break;
-            case 35:
-                gameSound.playSound(2);
+            case 35:                                                            // set player's name
+                gameSound.playSound(7);
                 static std::string oldPseudo = m_setup.pseudo;
                 static timer cursorTimer(500);
                 cursorTimer.startTimer();
@@ -226,46 +249,101 @@ bool menu::launchAction(int buttonID)
                 while(readingPseudoChar)
                 {
                     readingPseudoChar = eventReader.pseudoChar(screen.m_window, m_setup.pseudo, m_setup.language);
+                    while (m_setup.pseudo.size() > 25) { m_setup.pseudo.pop_back(); }
                     screen.clear();
                     setPlayMenu();
                     drawAllButtons();
-                    std::string label = m_jsonConfig.m_Root["pseudobutton"][m_setup.language].asString();
-                    screen.displayText(label, 24, sf::Color::White, 250 - ((static_cast<float>(label.size()) * 14) / 2), 677);
-                    label = m_jsonConfig.m_Root["welcome"][m_setup.language].asString() + m_setup.pseudo;
-                    screen.displayText(label, 32, sf::Color::White, 115, 625);
+                    setPlayMenu();
+                    std::string label = m_menuLabels.m_Root["quit"][m_setup.language].asString();
+                    screen.displayText(label, 28, sf::Color::Black,  880 - ((static_cast<float>(label.size()) / 2.f) * 12), 555);
+                    label = m_menuLabels.m_Root["playerstats"][m_setup.language].asString();
+                    screen.displayText(label, 28, sf::Color::Black, 520 - ((static_cast<float>(label.size()) / 2.f) * 12), 650);
+                    label = m_menuLabels.m_Root["play"][m_setup.language].asString();
+                    screen.displayText(label, 28, sf::Color::Black,  145 - ((static_cast<float>(label.size()) / 2.f) * 12), 555);
+                    label = m_menuLabels.m_Root["help"][m_setup.language].asString();
+                    screen.displayText(label, 28, sf::Color::Black,  760 - ((static_cast<float>(label.size()) / 2.f) * 12), 650);
+                    label = m_menuLabels.m_Root["score"][m_setup.language].asString();
+                    screen.displayText(label, 28, sf::Color::Black, 635 - ((static_cast<float>(label.size()) / 2.f) * 12), 555);
+                    label = m_menuLabels.m_Root["settings"][m_setup.language].asString();
+                    screen.displayText(label, 28, sf::Color::Black, 390 - ((static_cast<float>(label.size()) / 2.f) * 12), 555);
+                    label = m_menuLabels.m_Root["pseudobutton"][m_setup.language].asString();
+                    screen.displayText(label, 26, sf::Color::Black, 280 - ((static_cast<float>(label.size()) / 2.f) * 11), 650);
+                    label = m_menuLabels.m_Root["welcome"][m_setup.language].asString() + m_setup.pseudo;
+                    screen.displayText(label, 32, sf::Color::White, 70, 490);
                     if(cursorTimer.isTimeElapsed()){
                         if(cursorColor == sf::Color::White)
                             { cursorColor = sf::Color::Black; }
                         else { cursorColor = sf::Color::White; }
                         cursorTimer.startTimer();
                     }
-                    screen.drawRectangle(115 + ((static_cast<float>(label.size()) + 1) * 13.2f), 628 , 3, 32, cursorColor);
+                    screen.drawRectangle(70 + (static_cast<float>(label.size() * 13.5)), 490 , 3, 32, cursorColor);
                     screen.render();
                 }
                 if(m_setup.pseudo == "") { m_setup.pseudo = oldPseudo; }
                 m_jsonSetup.m_Root["setUp"]["pseudo"] = m_setup.pseudo;
                 savePseudo();
+                if(!playerStats.loadPlayerStats("statistics\\" + m_setup.pseudo + ".json")) {
+                   playerStats.createPlayerStats("statistics\\" + m_setup.pseudo + ".json");              ;
+                }
                 break;
-            case 36:
+            case 36:                                                            // set start level
                 if(m_setup.startLevel > 1) { --m_setup.startLevel; }
-                else { m_setup.startLevel = 15; }
+                else { m_setup.startLevel = 9; }
                 sf::sleep(sf::milliseconds(40));
                 gameSound.playSound(1);
                 break;
-            case 37:
-                if(m_setup.startLevel < 15) { ++m_setup.startLevel; }
+            case 37: {                                                           // set start level
+                if(m_setup.startLevel < 9) { ++m_setup.startLevel; }
                 else { m_setup.startLevel = 1; }
                 sf::sleep(sf::milliseconds(40));
                 gameSound.playSound(1);
+            }
                 break;
-            case 38:
+            case 38:  {                                                          // display score list
                 scoreList scoreList;
                 scoreList.buildScoreList(m_setup.gameType, m_setup.enhanced);
-                screen.drawScoreList(scoreList.m_scoreArray, 0, m_setup.gameType);
+                screen.drawScoreList(scoreList.m_scoreArray, 0, m_setup.gameType,
+                                     m_menuLabels.m_Root["bestscore"][m_setup.language].asString(),
+                                     m_menuLabels.m_Root["pressspace"][m_setup.language].asString());
                 while(!eventReader.getSpace(screen.m_window)) {}
+            }
                 break;
-//            default:
-//                break;
+            case 39:                                                              // display player's statistics
+                displayPlayerStats();
+                break;
+            case 40:                                                              // display help menu
+                if(help.loadHelpText()) {
+                    gameSound.playSound(3);
+                    helpMenu();
+                    gameSound.playSound(3);
+                }
+                else { errorMessage(); }
+                break;
+            case 41:  {                                                            // help go left
+                    --helpPage;
+                    if(helpPage < 0) { helpPage = 5; }
+                    gameSound.playSound(1);
+                    help.displayHelpPage(screen, helpPage, m_setup.language); //gameSound);
+                    drawAllButtons();
+            }
+                break;
+            case 42: {                                                             // help go right
+                    ++helpPage;
+                    if(helpPage > 5) { helpPage = 0; }
+                    gameSound.playSound(1);
+                    help.displayHelpPage(screen, helpPage, m_setup.language); //gameSound);
+                    drawAllButtons();
+            }
+                break;
+            case 43:                                                              // quit help
+                loadButtons("playButton");
+                return false;
+                break;
+            case 44:                                                            // enable sound or not
+            case 45:
+                m_setup.windowed = !m_setup.windowed;
+                gameSound.playSound(1);
+            default: ;
         }
     return true;
 }
@@ -297,10 +375,23 @@ void menu::playMenu()
         screen.clear();
         iPlay = launchAction(checkButtonsAction());
         setPlayMenu();
-        std::string label = m_jsonConfig.m_Root["pseudobutton"][m_setup.language].asString();
-        screen.displayText(label, 24, sf::Color::White, 250 - ((static_cast<float>(label.size()) * 14) / 2), 677);
-        label = m_jsonConfig.m_Root["welcome"][m_setup.language].asString() + m_setup.pseudo;
-        screen.displayText(label, 32, sf::Color::White, 115, 625);
+        std::string label = m_menuLabels.m_Root["quit"][m_setup.language].asString();
+        screen.displayText(label, 28, sf::Color::Black,  880 - ((static_cast<float>(label.size()) / 2.f) * 12), 555);
+        label = m_menuLabels.m_Root["playerstats"][m_setup.language].asString();
+        screen.displayText(label, 28, sf::Color::Black, 520 - ((static_cast<float>(label.size()) / 2.f) * 12), 650);
+        label = m_menuLabels.m_Root["play"][m_setup.language].asString();
+        screen.displayText(label, 28, sf::Color::Black,  145 - ((static_cast<float>(label.size()) / 2.f) * 12), 555);
+        label = m_menuLabels.m_Root["help"][m_setup.language].asString();
+        screen.displayText(label, 28, sf::Color::Black,  760 - ((static_cast<float>(label.size()) / 2.f) * 12), 650);
+        label = m_menuLabels.m_Root["score"][m_setup.language].asString();
+        screen.displayText(label, 28, sf::Color::Black, 635 - ((static_cast<float>(label.size()) / 2.f) * 12), 555);
+        label = m_menuLabels.m_Root["settings"][m_setup.language].asString();
+        screen.displayText(label, 28, sf::Color::Black, 390 - ((static_cast<float>(label.size()) / 2.f) * 12), 555);
+        label = m_menuLabels.m_Root["pseudobutton"][m_setup.language].asString();
+        screen.displayText(label, 26, sf::Color::Black, 280 - ((static_cast<float>(label.size()) / 2.f) * 11), 650);
+        label = m_menuLabels.m_Root["welcome"][m_setup.language].asString() + m_setup.pseudo;
+        screen.displayText(label, 32, sf::Color::White, 70, 490);
+        screen.displayText("v1.0", 16, sf::Color::White, 980 , 745);
         screen.render();
     }
 }
@@ -325,6 +416,7 @@ void menu::setSetUp()
     setLocale(m_setup.language);
     m_setup.pseudo = m_jsonSetup.m_Root["setUp"].get("pseudo","").asString();
     m_setup.startLevel = m_jsonSetup.m_Root["setUp"].get("startLevel",1).asInt();
+    m_setup.windowed = m_jsonSetup.m_Root["setUp"].get("windowed",1).asBool();
 }
 
 void menu::savePseudo()
@@ -352,80 +444,126 @@ void menu::saveSetUp()
     m_jsonSetup.m_Root["setUp"]["soundVolume"] = m_setup.soundVolume;
     m_jsonSetup.m_Root["setUp"]["superRotationSystem"] = m_setup.superRotationSystem;
     m_jsonSetup.m_Root["setUp"]["startLevel"] = m_setup.startLevel;
+    m_jsonSetup.m_Root["setUp"]["windowed"] = m_setup.windowed;
     saveJsonSetup("setup.json");
 }
 
 void menu::printParameters()
 {
-    std::string label = m_jsonConfig.m_Root["setupSelector"]["language"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 770 - ((static_cast<float>(label.size()) * 14) / 2), 102);
-    label = m_jsonConfig.m_Root["setupSelector"]["gameType"][m_setup.language][m_setup.gameType].asString();
-    screen.displayText(label, 32, sf::Color::White, 770 - ((static_cast<float>(label.size()) * 14) / 2), 182);
+    std::string label = m_menuLabels.m_Root["setupSelector"]["language"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 750 - ((static_cast<float>(label.size()) * 14) / 2), 125);
+    label = m_menuLabels.m_Root["setupSelector"]["gameType"][m_setup.language][m_setup.gameType].asString();
+    screen.displayText(label, 32, sf::Color::White, 750 - ((static_cast<float>(label.size()) * 14) / 2), 205);
     label = std::to_string(m_setup.startLevel);
-    screen.displayText(label, 32, sf::Color::White, 770 - ((static_cast<float>(label.size()) * 14) / 2), 222);
-    label = m_jsonConfig.m_Root["setupSelector"]["enhanced"][m_setup.language][m_setup.enhanced].asString();
-    screen.displayText(label, 32, sf::Color::White, 770 - ((static_cast<float>(label.size()) * 14) / 2), 262);
-    label = m_jsonConfig.m_Root["setupSelector"]["superRotationSystem"][m_setup.language][m_setup.superRotationSystem].asString();
-    screen.displayText(label, 32, sf::Color::White, 770 - ((static_cast<float>(label.size()) * 14) / 2), 302);
-    label = m_jsonConfig.m_Root["setupSelector"]["shadow"][m_setup.language][m_setup.shadow].asString();
-    screen.displayText(label, 32, sf::Color::White, 770 - ((static_cast<float>(label.size()) * 14) / 2), 342);
-    label = m_jsonConfig.m_Root["setupSelector"]["hold"][m_setup.language][m_setup.hold].asString();
-    screen.displayText(label, 32, sf::Color::White, 770 - ((static_cast<float>(label.size()) * 14) / 2), 382);
-    label = m_jsonConfig.m_Root["setupSelector"]["lockout"][m_setup.language][m_setup.lockout].asString();
-    screen.displayText(label, 32, sf::Color::White, 770 - ((static_cast<float>(label.size()) * 14) / 2), 422);
-    label = m_jsonConfig.m_Root["setupSelector"]["sevenBag"][m_setup.language][m_setup.sevenBag].asString();
-    screen.displayText(label, 32, sf::Color::White, 770 - ((static_cast<float>(label.size()) * 14) / 2), 462);
-    label = m_jsonConfig.m_Root["setupSelector"]["nextPiece"][m_setup.language][m_setup.nextPiece].asString();
-    screen.displayText(label, 32, sf::Color::White, 770 - ((static_cast<float>(label.size()) * 14) / 2), 502);
+    screen.displayText(label, 32, sf::Color::White, 750 - ((static_cast<float>(label.size()) * 14) / 2), 245);
+    label = m_menuLabels.m_Root["setupSelector"]["enhanced"][m_setup.language][m_setup.enhanced].asString();
+    screen.displayText(label, 32, sf::Color::White, 750 - ((static_cast<float>(label.size()) * 14) / 2), 285);
+    label = m_menuLabels.m_Root["setupSelector"]["superRotationSystem"][m_setup.language][m_setup.superRotationSystem].asString();
+    screen.displayText(label, 32, sf::Color::White, 750 - ((static_cast<float>(label.size()) * 14) / 2), 325);
+    label = m_menuLabels.m_Root["setupSelector"]["shadow"][m_setup.language][m_setup.shadow].asString();
+    screen.displayText(label, 32, sf::Color::White, 750 - ((static_cast<float>(label.size()) * 14) / 2), 365);
+    label = m_menuLabels.m_Root["setupSelector"]["hold"][m_setup.language][m_setup.hold].asString();
+    screen.displayText(label, 32, sf::Color::White, 750 - ((static_cast<float>(label.size()) * 14) / 2), 405);
+    label = m_menuLabels.m_Root["setupSelector"]["lockout"][m_setup.language][m_setup.lockout].asString();
+    screen.displayText(label, 32, sf::Color::White, 750 - ((static_cast<float>(label.size()) * 14) / 2), 445);
+    label = m_menuLabels.m_Root["setupSelector"]["sevenBag"][m_setup.language][m_setup.sevenBag].asString();
+    screen.displayText(label, 32, sf::Color::White, 750 - ((static_cast<float>(label.size()) * 14) / 2), 485);
+    label = m_menuLabels.m_Root["setupSelector"]["nextPiece"][m_setup.language][m_setup.nextPiece].asString();
+    screen.displayText(label, 32, sf::Color::White, 750 - ((static_cast<float>(label.size()) * 14) / 2), 525);
     label = std::to_string(m_setup.nextPiecesNumber);
-    screen.displayText(label, 32, sf::Color::White, 770 - ((static_cast<float>(label.size()) * 14) / 2), 542);
-    label = m_jsonConfig.m_Root["setupSelector"]["music"][m_setup.language][m_setup.music].asString();
-    screen.displayText(label, 32, sf::Color::White, 770 - ((static_cast<float>(label.size()) * 14) / 2), 582);
+    screen.displayText(label, 32, sf::Color::White, 750 - ((static_cast<float>(label.size()) * 14) / 2), 565);
+    label = m_menuLabels.m_Root["setupSelector"]["music"][m_setup.language][m_setup.music].asString();
+    screen.displayText(label, 32, sf::Color::White, 750 - ((static_cast<float>(label.size()) * 14) / 2), 605);
     label = std::to_string(static_cast<int>(m_setup.musicVolume));
-    screen.displayText(label, 32, sf::Color::White, 770 - ((static_cast<float>(label.size()) * 14) / 2), 622);
-    label = m_jsonConfig.m_Root["setupSelector"]["sound"][m_setup.language][m_setup.sound].asString();
-    screen.displayText(label, 32, sf::Color::White, 770 - ((static_cast<float>(label.size()) * 14) / 2), 662);
+    screen.displayText(label, 32, sf::Color::White, 750 - ((static_cast<float>(label.size()) * 14) / 2), 645);
+    label = m_menuLabels.m_Root["setupSelector"]["sound"][m_setup.language][m_setup.sound].asString();
+    screen.displayText(label, 32, sf::Color::White, 750 - ((static_cast<float>(label.size()) * 14) / 2), 685);
     label = std::to_string(static_cast<int>(m_setup.soundVolume));
-    screen.displayText(label, 32, sf::Color::White, 770 - ((static_cast<float>(label.size()) * 14) / 2), 702);
+    screen.displayText(label, 32, sf::Color::White, 750 - ((static_cast<float>(label.size()) * 14) / 2), 725);
+    label = m_menuLabels.m_Root["setupSelector"]["windowed"][m_setup.language][m_setup.windowed].asString();
+    screen.displayText(label, 32, sf::Color::White, 750 - ((static_cast<float>(label.size()) * 14) / 2), 85);
     screen.drawBlock(m_setup.pieceGraphic);
 }
 
 void menu::printLabels()
 {
-    screen.displayText(m_jsonConfig.m_Root["paramtersTitles"]["title"][m_setup.language].asString(), 64, sf::Color::White, 350, 5);
-    std::string label = m_jsonConfig.m_Root["paramtersTitles"]["language"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 102);
-    label = m_jsonConfig.m_Root["paramtersTitles"]["pieceGraphic"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 142);
-    label = m_jsonConfig.m_Root["paramtersTitles"]["gameType"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 182);
-    label = m_jsonConfig.m_Root["paramtersTitles"]["startLevel"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 222);
-    label = m_jsonConfig.m_Root["paramtersTitles"]["enhanced"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 262);
-    label = m_jsonConfig.m_Root["paramtersTitles"]["superRotationSystem"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 302);
-    label = m_jsonConfig.m_Root["paramtersTitles"]["shadow"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 342);
-    label = m_jsonConfig.m_Root["paramtersTitles"]["hold"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 382);
-    label = m_jsonConfig.m_Root["paramtersTitles"]["lockout"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 17), 422);
-    label = m_jsonConfig.m_Root["paramtersTitles"]["sevenBag"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 462);
-    label = m_jsonConfig.m_Root["paramtersTitles"]["nextPiece"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 502);
-    label = m_jsonConfig.m_Root["paramtersTitles"]["nextPiecesNumber"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 542);
-    label = m_jsonConfig.m_Root["paramtersTitles"]["music"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 582);
-    label = m_jsonConfig.m_Root["paramtersTitles"]["musicVolume"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 622);
-    label = m_jsonConfig.m_Root["paramtersTitles"]["sound"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 662);
-    label = m_jsonConfig.m_Root["paramtersTitles"]["soundVolume"][m_setup.language].asString();
-    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 702);
+    std::string label = m_menuLabels.m_Root["paramtersTitles"]["title"][m_setup.language].asString();
+    screen.displayText(label, 56, sf::Color::White, 512 - (((static_cast<float>(label.size()) - 7) * 22) / 2.f), 2);
+    label = m_menuLabels.m_Root["paramtersTitles"]["language"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 125);
+    label = m_menuLabels.m_Root["paramtersTitles"]["pieceGraphic"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 165);
+    label = m_menuLabels.m_Root["paramtersTitles"]["gameType"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 205);
+    label = m_menuLabels.m_Root["paramtersTitles"]["startLevel"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 245);
+    label = m_menuLabels.m_Root["paramtersTitles"]["enhanced"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 285);
+    label = m_menuLabels.m_Root["paramtersTitles"]["superRotationSystem"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 325);
+    label = m_menuLabels.m_Root["paramtersTitles"]["shadow"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 365);
+    label = m_menuLabels.m_Root["paramtersTitles"]["hold"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 405);
+    label = m_menuLabels.m_Root["paramtersTitles"]["lockout"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 17), 445);
+    label = m_menuLabels.m_Root["paramtersTitles"]["sevenBag"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 485);
+    label = m_menuLabels.m_Root["paramtersTitles"]["nextPiece"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 525);
+    label = m_menuLabels.m_Root["paramtersTitles"]["nextPiecesNumber"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 565);
+    label = m_menuLabels.m_Root["paramtersTitles"]["music"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 605);
+    label = m_menuLabels.m_Root["paramtersTitles"]["musicVolume"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 645);
+    label = m_menuLabels.m_Root["paramtersTitles"]["sound"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 685);
+    label = m_menuLabels.m_Root["paramtersTitles"]["soundVolume"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 725);
+    label = m_menuLabels.m_Root["paramtersTitles"]["windowed"][m_setup.language].asString();
+    screen.displayText(label, 32, sf::Color::White, 275 - ((static_cast<float>(label.size()) / 2) * 14), 85);
 }
+
+void menu::displayPlayerStats()
+{
+    screen.clear();
+    std::string label = m_menuLabels.m_Root["playerstats2"][m_setup.language].asString();
+    screen.displayText(label, 40, sf::Color::White, 512 - (((label.size() -7)  * 16) / 2.f), 50);
+    float y{120};
+    for(auto i=0; i < 13; i++) {
+        label = m_menuLabels.m_Root["pattern"][i][m_setup.language].asString();
+        screen.displayText(label, 32, sf::Color::White, 260, y += 40);
+    }
+    y = 120;
+    label = std::to_string(playerStats.m_singleline);
+    screen.displayText(label, 32, sf::Color::White, 770 - (label.size() * 13), y += 40);
+    label = std::to_string(playerStats.m_tetris);
+    screen.displayText(label, 32, sf::Color::White, 770 - (label.size() * 13), y += 40);
+    label = std::to_string(playerStats.m_Tspin);
+    screen.displayText(label, 32, sf::Color::White, 770 - (label.size() * 13), y += 40);
+    label = std::to_string(playerStats.m_Tspinsingle);
+    screen.displayText(label, 32, sf::Color::White, 770 - (label.size() * 13), y += 40);
+    label = std::to_string(playerStats.m_Tspindouble);
+    screen.displayText(label, 32, sf::Color::White, 770 - (label.size() * 13), y += 40);
+    label = std::to_string(playerStats.m_Tspintriple);
+    screen.displayText(label, 32, sf::Color::White, 770 - (label.size() * 14), y += 40);
+    label = std::to_string(playerStats.m_miniTspin);
+    screen.displayText(label, 32, sf::Color::White, 770 - (label.size() * 13), y += 40);
+    label = std::to_string(playerStats.m_miniTspinsingle);
+    screen.displayText(label, 32, sf::Color::White, 770 - (label.size() * 13), y += 40);
+    label = std::to_string(playerStats.m_miniTspindouble);
+    screen.displayText(label, 32, sf::Color::White, 770 - (label.size() * 13), y += 40);
+    label = std::to_string(playerStats.m_clearBoard);
+    screen.displayText(label, 32, sf::Color::White, 770 - (label.size() * 13), y += 40);
+    label = std::to_string(playerStats.m_backToBack);
+    screen.displayText(label, 32, sf::Color::White, 770 - (label.size() * 13), y += 40);
+    label = m_menuLabels.m_Root["pressspace"][m_setup.language].asString();
+    screen.displayText(label, 40, sf::Color::White, 512 - ((label.size() * 16) / 2.f), 650);
+    screen.render();
+    while(!eventReader.getSpace(screen.m_window)) {}
+}
+
 void menu::parametersMenu()
 {
     bool stayInMenu{true};
@@ -436,10 +574,20 @@ void menu::parametersMenu()
         printParameters();
         stayInMenu = launchAction(checkButtonsAction());
         drawAllButtons();
-        std::string label = m_jsonConfig.m_Root["quit"][m_setup.language].asString();
-        screen.displayText(label, 28, sf::Color::Black,  135 - ((static_cast<float>(label.size()) / 2) * 12), 26);
-        label = m_jsonConfig.m_Root["save"][m_setup.language].asString();
-        screen.displayText(label, 28, sf::Color::Black, 875 - ((static_cast<float>(label.size()) / 2) * 12), 26);
+        screen.render();
+    }
+}
+
+void menu::helpMenu()
+{
+    bool stayInHelp{true};
+    loadButtons("helpButtons");
+    helpPage = 0;
+    while(stayInHelp == true) {
+        screen.clear();
+        help.displayHelpPage(screen, helpPage, m_setup.language); //gameSound);
+        stayInHelp = launchAction(checkButtonsAction());
+        drawAllButtons();
         screen.render();
     }
 }
@@ -462,4 +610,10 @@ void menu::setLocale(int language)
         default:
             break;
     }
+}
+
+void menu::errorMessage()
+{
+    screen.errorMessage(m_menuLabels.m_Root["error"][m_setup.language].asString(), m_menuLabels.m_Root["reinstall"][m_setup.language].asString(), m_menuLabels.m_Root["pressspace"][m_setup.language].asString());
+    while(!eventReader.getSpace(screen.m_window)) ;
 }

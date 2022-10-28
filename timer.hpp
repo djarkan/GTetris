@@ -15,9 +15,10 @@ class timer
         bool isTimeElapsed();
         void setTimerDuration(sf::Int32 timerDuration);
 
+        sf::Int32 m_timerDuration;
+
     private:
         sf::Clock clock;
-        sf::Int32 m_timerDuration;
         sf::Int32 m_pausedTimerDuration;
 };
 

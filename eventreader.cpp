@@ -5,10 +5,21 @@
 
 eventReader::eventReader()
 {
+    m_joystickID = isJoypadConnected();
+    m_repeatLimitaionTimer.m_timerDuration = 150;
 }
 
-eventReader::~eventReader()
+int eventReader::isJoypadConnected()
 {
+    sf::Joystick::update();
+    for(auto joystckID = 0; joystckID < 8; joystckID++) {
+        if (sf::Joystick::isConnected(joystckID)) {
+            sf::Joystick::update();
+            unsigned int buttonCount = sf::Joystick::getButtonCount(joystckID);
+            if(buttonCount > 10) { return joystckID; }
+        }
+    }
+    return -1;
 }
 
 eventReader::gameControl eventReader::getEvent(sf::RenderWindow &window)
@@ -25,10 +36,6 @@ eventReader::gameControl eventReader::getEvent(sf::RenderWindow &window)
 					case sf::Keyboard::Numpad2:
 						return gameControl::softDrop;
 						break;
-					case sf::Keyboard::Space:
-					case sf::Keyboard::Numpad8:
-						return gameControl::hardDrop;
-						break;
                     case sf::Keyboard::Left:
 					case sf::Keyboard::Numpad4:
 						return gameControl::shiftLeft;
@@ -36,12 +43,6 @@ eventReader::gameControl eventReader::getEvent(sf::RenderWindow &window)
                     case sf::Keyboard::Right:
 					case sf::Keyboard::Numpad6:
 						return gameControl::shiftRight;
-						break;
-                    case sf::Keyboard::RShift:
-                    case sf::Keyboard::LShift:
-                    case sf::Keyboard::C:
-                    case sf::Keyboard::Numpad0:
-						return gameControl::holdPiece;
 						break;
                     default:
 						return gameControl::none;
@@ -63,6 +64,16 @@ eventReader::gameControl eventReader::getEvent(sf::RenderWindow &window)
                     case sf::Keyboard::Z:
 						return gameControl::rotateLeft;
 						break;
+                    case sf::Keyboard::RShift:
+                    case sf::Keyboard::LShift:
+                    case sf::Keyboard::C:
+                    case sf::Keyboard::Numpad0:
+						return gameControl::holdPiece;
+						break;
+                    case sf::Keyboard::Space:
+					case sf::Keyboard::Numpad8:
+						return gameControl::hardDrop;
+						break;
                     case sf::Keyboard::F1:
                     case sf::Keyboard::Escape:
 						return gameControl::pause;
@@ -81,6 +92,41 @@ eventReader::gameControl eventReader::getEvent(sf::RenderWindow &window)
                     return gameControl::leftMouseButtonReleased;
                 }
                 break;
+            case sf::Event::JoystickMoved:
+                if(m_event.joystickMove.axis == sf::Joystick::Axis::PovX && m_event.joystickMove.position == 100 && m_event.joystickMove.joystickId == m_joystickID) {
+                    m_repeatLimitaionTimer.startTimer();
+                    return gameControl::shiftRight;
+                }
+                if(m_event.joystickMove.axis == sf::Joystick::Axis::PovX && m_event.joystickMove.position == -100 && m_event.joystickMove.joystickId == m_joystickID) {
+                    m_repeatLimitaionTimer.startTimer();
+                    return gameControl::shiftLeft;
+                }
+                if(m_event.joystickMove.axis == sf::Joystick::Axis::PovY && m_event.joystickMove.position == 100 && m_event.joystickMove.joystickId == m_joystickID) {
+                    m_repeatLimitaionTimer.startTimer();
+                    return gameControl::hardDrop;
+                }
+                if(m_event.joystickMove.axis == sf::Joystick::Axis::PovY && m_event.joystickMove.position == -100 && m_event.joystickMove.joystickId == m_joystickID) {
+                    m_repeatLimitaionTimer.startTimer();
+                    return gameControl::softDrop;
+                }
+                break;
+            case sf::Event::JoystickButtonReleased :
+                switch(m_event.joystickButton.button) {
+                    case 1 :
+                        if(m_event.joystickButton.joystickId == m_joystickID) { return gameControl::rotateLeft; }
+                        break;
+                    case 2 :
+                        if(m_event.joystickButton.joystickId == m_joystickID) { return gameControl::rotateRight; }
+                        break;
+                    case 4:
+                    case 5 :
+                        if(m_event.joystickButton.joystickId == m_joystickID) { return gameControl::holdPiece; }
+                        break;
+                    case 9 :
+                        if(m_event.joystickButton.joystickId == m_joystickID) { return gameControl::pause; }
+                        break;
+                }
+                break;
             default:
                 if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
                     return gameControl::leftMouseButtonHeld;
@@ -89,6 +135,21 @@ eventReader::gameControl eventReader::getEvent(sf::RenderWindow &window)
                     return gameControl::none;
                 }
                 break;
+        }
+    }
+    if(m_repeatLimitaionTimer.isTimeElapsed()) {
+        sf::Joystick::update();
+        if(sf::Joystick::getAxisPosition(m_joystickID, sf::Joystick::PovX) == 100)  {
+            m_repeatLimitaionTimer.startTimer();
+            return gameControl::shiftRight;
+        }
+        if(sf::Joystick::getAxisPosition(m_joystickID, sf::Joystick::PovX) == -100)  {
+            m_repeatLimitaionTimer.startTimer();
+            return gameControl::shiftLeft;
+        }
+        if(sf::Joystick::getAxisPosition(m_joystickID, sf::Joystick::PovY) == -100)  {
+            m_repeatLimitaionTimer.startTimer();
+            return gameControl::softDrop;
         }
     }
 	return gameControl::none;
@@ -662,13 +723,35 @@ bool eventReader::getSpace(sf::RenderWindow &window)
                 case sf::Event::KeyReleased:
                     switch (m_event.key.code) {
                         case 57 :
-                            m_event.key.code = sf::Keyboard::K;
                             return true;
                             break;
                         default:
                             return false;
                             break;
                     }
+                case sf::Event::JoystickButtonReleased :
+                    if (m_event.joystickButton.button == 0 && m_event.joystickButton.joystickId == m_joystickID) { return true; }
+                    break;
+            }
+    }
+}
+
+bool eventReader::getEscape(sf::RenderWindow &window)
+{
+    while(window.pollEvent(m_event)) {
+            switch (m_event.type) {
+                case sf::Event::KeyReleased:
+                    switch (m_event.key.code) {
+                        case 36 :
+                            return true;
+                            break;
+                        default:
+                            return false;
+                            break;
+                    }
+                 case sf::Event::JoystickButtonReleased :
+                    if (m_event.joystickButton.button == 3 && m_event.joystickButton.joystickId == m_joystickID) { return true; }
+                    break;
             }
     }
 }

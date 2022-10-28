@@ -1,6 +1,11 @@
 #include "screenmanagement.hpp"
 
-manageScreen::manageScreen(): m_window(sf::VideoMode(1024, 768), "G_Tetris v0.8", sf::Style::Close)
+manageScreen::manageScreen(): m_window(sf::VideoMode(1024, 768), "G_Tetris v 1.0", sf::Style::Close)
+{
+
+}
+
+manageScreen::manageScreen(sf::Uint32 Style): m_window(sf::VideoMode(1024, 768), "G_Tetris v 1.0", Style)
 {
 
 }
@@ -25,7 +30,56 @@ void manageScreen::clear()
 	m_window.clear();
 }
 
-void manageScreen::drawPlayGround(std::string levelLabel, std::string  scoreLabel, std::string lineLabel, std::string timeLabel)
+bool manageScreen::loadBitmapFile(const std::string title)
+{
+    if(m_graphics.loadFromFile(title)) {
+        m_graphics.createMaskFromColor(sf::Color(0xAAAA22FF));
+        sf::IntRect surfaceImage(0,0,1024,2500);
+        m_texturePiece.loadFromImage(m_graphics, surfaceImage);
+        return true;
+    }
+    else { return false; }
+}
+
+bool manageScreen::loadBitmapCursor(const std::string title)
+{
+    if(myCursor.loadFromFile(title)) {
+        myCursor.createMaskFromColor(sf::Color(0xAAAA22FF));
+        return true;
+    }
+    else { return false; }
+}
+
+bool manageScreen::loadFontFile(const std::string title)
+{
+    if (m_font.loadFromFile(title)) {
+        m_text.setFont(m_font);
+        return true;
+    }
+    else { return false; }
+}
+
+void manageScreen::drawCircles()
+{
+    float radius{60};
+    float x{452};
+    float y {335};
+    sf::Color color{0x0000BBFF};
+
+    for(auto i = 0; i < 8; ++i) {
+        sf::CircleShape circle;
+        circle.setRadius(radius);
+        circle.setFillColor(color);
+        circle.setPosition(x,y);
+        m_window.draw(circle);
+        radius -= 10;
+        x += 10;
+        y +=10;
+        color += static_cast<sf::Color>(0x00000FFF);
+    }
+}
+
+void manageScreen::drawPlayGround(std::string levelLabel, std::string  scoreLabel, std::string lineLabel, std::string timeLabel, std::string holdLabel, std::string nextLabel)
 {														//Draw boards (playung area, hold, next
     drawBoardArea();
     draw5NxetArea();
@@ -35,6 +89,8 @@ void manageScreen::drawPlayGround(std::string levelLabel, std::string  scoreLabe
     displayText(scoreLabel, 24, sf::Color::White, 55, 500);
     displayText(lineLabel, 24, sf::Color::White, 55, 540);
     displayText(timeLabel, 24, sf::Color::White, 55, 580);
+    displayText(holdLabel, 40, sf::Color(0xAAAAAAFF), 175 - ((static_cast<float>(holdLabel.size()) * 12) / 2.f), 3);
+    displayText(nextLabel, 40, sf::Color(0xAAAAAAFF), 840 - ((static_cast<float>(nextLabel.size()) * 12) / 2.f), 3);
 }
 void manageScreen::drawBoardArea()
 {
@@ -93,14 +149,6 @@ void manageScreen::drawRectangle(const float x, const float y, const float h, co
     m_window.draw(rectangle);
 }
 
-void manageScreen::loadBitmapFile(const std::string title)
-{
-    if (!m_texturePiece.loadFromFile(title)) {
-        std::cout << "erreur chargement du fichier: " << title << std::endl << "Veuillez réinstaller le programme." << std::endl;
-        m_window.close();
-    }
-}
-
 void manageScreen::drawEmptyBoard(const int pieceGraphic)
 {
     sf::IntRect  sourceRectangle(11 * 32,pieceGraphic * 32,30,30);
@@ -123,18 +171,10 @@ void manageScreen::drawNextPieces(bool enhanced, int nextPiecesNumber, int piece
     if(!enhanced && (piecePositonInTheBag + offset) > 6)
         offset = 5;
     int pieceToDraw = random.getPieceAtPosition(piecePositonInTheBag + offset);
-    rectangle.setPosition(764, 70);
-    rectangle.setSize(sf::Vector2f(180, 110));
-    rectangle.setFillColor(sf::Color(sf::Color::Black));
-    m_window.draw(rectangle);
     sf::IntRect sourceRectangle(pieceToDraw * 32,pieceGraphic * 32,30,30);
     sf::Vector2f destination(774,100);                                                                     // clear next piece zone
     adjustxy(pieceToDraw, destination);
-    drawPiece(sourceRectangle, destination, thePieces, pieceToDraw, 0, alpha);
-    rectangle.setPosition(764, 260);
-    rectangle.setSize(sf::Vector2f(180, 440));
-    rectangle.setFillColor(sf::Color(sf::Color::Black));
-    m_window.draw(rectangle);                                                                   // draw the next piece
+    drawPiece(sourceRectangle, destination, thePieces, pieceToDraw, 0, alpha);                                                                 // draw the next piece
     ++offset;
     if(!enhanced && (piecePositonInTheBag + offset) > 6)
             offset = 5;
@@ -258,56 +298,56 @@ void manageScreen::shiftedLinesAnimation(pattern& pattern, board& board, int pie
     }
 }
 
-void manageScreen::drawPatternLabelAnimation(pattern& pattern)
+void manageScreen::drawPatternLabelAnimation(pattern& pattern, sf::Uint8 alpha)
 {
-    if(pattern.tetris){ displayText("TETRIS", 60, sf::Color::White, 430, 220); }
-    if(pattern.ClearBoard){ displayText("CLEAR", 60, sf::Color::White, 445, 220); }
+    if(pattern.tetris){ displayText("TETRIS", 60, sf::Color(254, 254, 254, alpha), 430, 220); }
+    if(pattern.ClearBoard){ displayText("CLEAR", 60, sf::Color(254, 254, 254, alpha), 445, 220); }
     if(pattern.Tspin){
-        displayText("Tspin", 60, sf::Color::White, 445, 220);
+        displayText("Tspin", 60, sf::Color(254, 254, 254, alpha), 445, 220);
     }
     float offset{80};
     if(pattern.backToBack > 0 || pattern.combo) { offset = 0; }
     if(pattern.TspinSingle) {
-        displayText("Tspin", 60, sf::Color::White, 445, 140 + offset);
-        displayText("Single", 60, sf::Color::White, 435, 220 + offset);
+        displayText("Tspin", 60, sf::Color(254, 254, 254, alpha), 445, 140 + offset);
+        displayText("Single", 60, sf::Color(254, 254, 254, alpha), 435, 220 + offset);
     }
     if(pattern.TspinDouble) {
-        displayText("Tspin", 60, sf::Color::White, 445, 140 + offset);
-        displayText("Double", 60, sf::Color::White, 435, 220 + offset);
+        displayText("Tspin", 60, sf::Color(254, 254, 254, alpha), 445, 140 + offset);
+        displayText("Double", 60, sf::Color(254, 254, 254, alpha), 435, 220 + offset);
     }
     if(pattern.TspinTriple){
-        displayText("Tspin", 60, sf::Color::White, 445, 140 + offset);
-        displayText("Triple", 60, sf::Color::White, 435, 220 + offset);
+        displayText("Tspin", 60, sf::Color(254, 254, 254, alpha), 445, 140 + offset);
+        displayText("Triple", 60, sf::Color(254, 254, 254, alpha), 435, 220 + offset);
     }
     if(pattern.combo > 0){ offset = 0; }
     else { offset = 80; }
     if(pattern.miniTspin){
-        displayText("mini Tspin", 60, sf::Color::White, 380, 220);
+        displayText("mini Tspin", 60, sf::Color(254, 254, 254, alpha), 380, 220);
     }
         if(pattern.miniTspinSingle) {
-        displayText("mini Tspin", 60, sf::Color::White, 380, 140 + offset);
-        displayText("Single", 60, sf::Color::White, 435, 220 + offset);
+        displayText("mini Tspin", 60, sf::Color(254, 254, 254, alpha), 380, 140 + offset);
+        displayText("Single", 60, sf::Color(254, 254, 254, alpha), 435, 220 + offset);
     }
     if(pattern.miniTspinDouble) {
-        displayText("mini Tspin", 60, sf::Color::White, 380, 140 + offset);
-        displayText("Double", 60, sf::Color::White, 435, 220 + offset);
+        displayText("mini Tspin", 60, sf::Color(254, 254, 254, alpha), 380, 140 + offset);
+        displayText("Double", 60, sf::Color(254, 254, 254, alpha), 435, 220 + offset);
     }
     if(pattern.backToBack > 0){
-        displayText("Back to Back", 50, sf::Color::White, 380, 300);
+        displayText("Back to Back", 50, sf::Color(254, 254, 254, alpha), 380, 300);
         if(pattern.backToBack > 1){
             std::string comboNumber = "X " + std::to_string(pattern.backToBack);
-            displayText(comboNumber, 72, sf::Color::White, 465, 360);
+            displayText(comboNumber, 72, sf::Color(254, 254, 254, alpha), 465, 360);
         }
     }
     if(pattern.combo > 0 && pattern.backToBack < 1){
-        if(!pattern.miniTspin || !pattern.miniTspinSingle || !pattern.miniTspinDouble || !pattern.Tspin || !pattern.TspinSingle || !pattern.TspinDouble ||
-           !pattern.TspinTriple || !pattern.tetris || !pattern.ClearBoard) {
+        if(!pattern.miniTspin && !pattern.miniTspinSingle && !pattern.miniTspinDouble && !pattern.Tspin && !pattern.TspinSingle && !pattern.TspinDouble &&
+           !pattern.TspinTriple && !pattern.tetris && !pattern.ClearBoard) {
                offset = -80;
         }
-        displayText("COMBO", 50, sf::Color::White, 455, 300+ offset);
+        displayText("COMBO", 50, sf::Color(254, 254, 254, alpha), 455, 300 + offset);
         if(pattern.combo > 1){
             std::string comboNumber = "X " + std::to_string(pattern.combo);
-            displayText(comboNumber, 72, sf::Color::White, 465, 360+ offset);
+            displayText(comboNumber, 72, sf::Color(254, 254, 254, alpha), 465, 360 + offset);
         }
     }
 }
@@ -317,25 +357,222 @@ void manageScreen::drawPatternAnimation(pattern& pattern, board& board, int piec
     sf::Uint8 alpha{250};
     for(int k = 0; k < 48; k++) {
         shiftedLinesAnimation(pattern, board, pieceGraphic, alpha);
-        drawPatternLabelAnimation(pattern);
+        drawPatternLabelAnimation(pattern, static_cast<sf::Uint8>(255 - alpha));
         render();
         sf::sleep(sf::milliseconds(8));
-        alpha -= 5;
+        alpha = static_cast<sf::Uint8>(alpha - 5);
     }
     render();
 }
 
-
-void manageScreen::loadFontFile(const std::string title)
+void manageScreen::printChar(float& x, const float y, const int charSize, const char printedChar)
 {
-    if (!m_font.loadFromFile(title)) {
-        std::cout << "erreur chargement du fichier: " << title << std::endl << "Veuillez réinstaller le programme." << std::endl;
-        m_window.close();
-    }
-    m_text.setFont(m_font);
+    m_text.setString(printedChar);
+    m_text.setPosition(x, y);
+    m_window.draw(m_text);
+    x +=  m_text.getCharacterSize() * 0.4;
 }
 
-void manageScreen::displayText(const std::string textToDisplay, const int sizeText, const sf::Color color, const float x, const float y)
+void manageScreen::displayText(const std::string textToDisplay, const int sizeText, const sf::Color color, float x, float y)
+{
+    float oldY = y;
+    float oldx = x;
+    m_text.setStyle(sf::Text::Regular);
+    m_text.setCharacterSize(sizeText);
+    m_text.setFillColor(color);
+    m_text.setPosition(x, y);
+    for(unsigned int i = 0; i < textToDisplay.size(); ++i) {
+        if(textToDisplay[i] != '[') {
+            if(textToDisplay[i] == '\n') {
+                x = oldx;
+                y += m_text.getCharacterSize() + 4;
+                m_text.setPosition(x, y);
+            }
+            else { printChar(x, y , sizeText,textToDisplay[i]); }
+        }
+        else {                                                                                                           // enter in a boudary
+            ++i;
+            char letter = textToDisplay[i];
+            bool addStyle;                                                                                               // add or remove text style
+            sf::Uint32 style = m_text.getStyle();
+            if(letter != '/') { addStyle = true; }
+            else {
+                    addStyle =  false;
+                    ++i;
+                    letter = textToDisplay[i];
+            }
+            if(letter == 'r' || letter == 'b' || letter == 'i' || letter == 'u' || letter == 't') {
+                if(textToDisplay[i + 1] == ']') {
+                    switch (letter) {
+                        case 'r':                                                                                        // regular : remove all styles [r] or [/r]  only one is enough
+                            m_text.setStyle(style& 0b00000000);
+                            m_text.setCharacterSize(sizeText);
+                            m_text.setFillColor(color);
+                            break;
+                        case 'b':                                                                                        // bold
+                            if(addStyle) { m_text.setStyle(style | sf::Text::Bold); }
+                            else { m_text.setStyle(style & 0b11111110); }
+                            break;
+                        case 'i':                                                                                        // italic
+                            if(addStyle) { m_text.setStyle(style | sf::Text::Italic); }
+                            else { m_text.setStyle(style & 0b11111101); }
+                            break;
+                        case 'u':                                                                                        // underlined
+                            if(addStyle) { m_text.setStyle(style | sf::Text::Underlined); }
+                            else { m_text.setStyle(style & 0b11111011); }
+                            break;
+                        case 't':                                                                                       // StrikeThrough
+                            if(addStyle) { m_text.setStyle(style | sf::Text::StrikeThrough); }
+                            else { m_text.setStyle(style & 0b11110111); }
+                            break;
+                        default:
+                            break;
+                    }
+                    ++i;
+                }
+                else {
+                    if(addStyle) {
+                        printChar(x, y , sizeText,textToDisplay[i - 1]);
+                        printChar(x, y , sizeText,textToDisplay[i]);
+                    }
+                    else {
+                        printChar(x, y , sizeText,textToDisplay[i - 2]);
+                        printChar(x, y , sizeText,textToDisplay[i - 1]);
+                        printChar(x, y , sizeText,textToDisplay[i]);
+                    }
+                }
+            }
+            else {
+                if(letter == 's' or letter == 'c') {
+                    if(addStyle && textToDisplay[i + 1] == ']' || textToDisplay[i + 2] == ']' || textToDisplay[i + 3] == ']' || textToDisplay[i + 4] == ']' ) {
+                        std::string numberSize{""};
+                        ++i;
+                        int offset{0};
+                        bool isNumericDigit{true};
+                        bool boundary{true};
+                        int supposedSizeLength{0};
+                        while(textToDisplay[i + supposedSizeLength] != ']') { ++supposedSizeLength; }
+                        while(textToDisplay[i + offset] != ']' && offset < 3 && isNumericDigit && textToDisplay[i + offset] != ']') {
+                            if(std::isdigit(textToDisplay[i + offset])) {
+                                numberSize.push_back(textToDisplay[i + offset]);
+                                ++offset;
+                            }
+                            else { isNumericDigit = false; }
+                        }
+                        if(numberSize.size() == supposedSizeLength && supposedSizeLength > 0) {
+                            int number = std::stoi(numberSize);
+                            i += numberSize.size();
+                            if(letter == 's') {                                                                         // font size
+                                m_text.setCharacterSize(number);
+                                y = oldY;
+                                if(number > sizeText) { y -= (number - sizeText); }
+                                else { y += (sizeText - number);}
+                            }
+                            else { if(number <= 28) { m_text.setFillColor(selectColor(number)); }}                      // color
+                        }
+                        else {
+                            printChar(x, y , sizeText, textToDisplay[i - 2]);
+                            printChar(x, y , sizeText, textToDisplay[i - 1]);
+                            printChar(x, y , sizeText, textToDisplay[i]);
+                        }
+                    }
+                    else {
+                        if(textToDisplay[i + 1] == ']') {
+                            if(letter == 's'){
+                                y = oldY;
+                                m_text.setCharacterSize(sizeText);
+                            }
+                            else { m_text.setFillColor(color); }
+                            ++i;
+                        }
+                        else {
+                            printChar(x, y , sizeText, textToDisplay[i - 2]);
+                            printChar(x, y , sizeText, textToDisplay[i - 1]);
+                            printChar(x, y , sizeText, textToDisplay[i]);
+                        }
+                    }
+                }
+                else {
+                    std::string letters{"["};
+                    if(!addStyle) { letters.push_back(textToDisplay['/']); }
+                    letters.push_back(textToDisplay[i]);
+                    m_text.setString(letters);
+                    m_text.setPosition(x, y);
+                    m_window.draw(m_text);
+                    x +=  sizeText * (0.40 * letters.size());
+                }
+            }
+       }
+    }
+}
+
+sf::Color manageScreen::selectColor( int colorNb)
+{
+    switch (colorNb) {
+        case static_cast<int>(TextColor::Black):                                                // 0
+            return sf::Color::Black;
+        case static_cast<int>(TextColor::LightBrown):                                           // 1
+            return  static_cast<sf::Color>(0xE49467FF);
+        case static_cast<int>(TextColor::Brown):                                                // 2
+            return static_cast<sf::Color>(0xB97A56FF);
+        case static_cast<int>(TextColor::DarkBrown):                                            // 3
+            return static_cast<sf::Color>(0x805740FF);
+        case static_cast<int>(TextColor::LightRed):                                             // 4
+            return static_cast<sf::Color>(0xff343cFF);
+        case static_cast<int>(TextColor::Red):                                                  // 5
+            return static_cast<sf::Color>(0xe61a22FF);
+        case static_cast<int>(TextColor::DarkRed):                                              // 6
+            return static_cast<sf::Color>(0xeb01b21FF);
+        case static_cast<int>(TextColor::LightPink):                                            // 7
+            return static_cast<sf::Color>(0xffacc7FF);
+        case static_cast<int>(TextColor::Pink):                                                 // 8
+            return static_cast<sf::Color>(0xff8eb2FF);
+        case static_cast<int>(TextColor::DarkPink):                                             // 9
+            return static_cast<sf::Color>(0xff6496FF);
+        case static_cast<int>(TextColor::LightOrange):                                          // 10
+            return static_cast<sf::Color>(0xffa263FF);
+        case static_cast<int>(TextColor::Orange):                                               // 11
+            return static_cast<sf::Color>(0xff7f27FF);
+        case static_cast<int>(TextColor::DarkOrange):                                           // 12
+            return static_cast<sf::Color>(0xe67a2fFF);
+        case static_cast<int>(TextColor::LightYellow):                                          // 13
+            return static_cast<sf::Color>(0xfffbb0FF);
+        case static_cast<int>(TextColor::Yellow):                                               // 14
+            return static_cast<sf::Color>(0xfff200FF);
+        case static_cast<int>(TextColor::DarkYellow):                                           // 15
+            return static_cast<sf::Color>(0xd1c707FF);
+        case static_cast<int>(TextColor::LightBlue):                                            // 16
+            return static_cast<sf::Color>(0x4479ffFF);
+        case static_cast<int>(TextColor::Blue):                                                 // 17
+            return static_cast<sf::Color>(0x0048ffFF);
+        case static_cast<int>(TextColor::DarkBlue):                                             // 18
+            return static_cast<sf::Color>(0x0534abFF);
+        case static_cast<int>(TextColor::LightGreen):                                           // 19
+            return static_cast<sf::Color>(0x18df50FF);
+        case static_cast<int>(TextColor::Green):                                                // 20
+            return static_cast<sf::Color>(0x16b944FF);
+        case static_cast<int>(TextColor::DarkGreen):                                            // 21
+            return static_cast<sf::Color>(0x0a8b2eFF);
+        case static_cast<int>(TextColor::LightPurple):                                          // 22
+            return static_cast<sf::Color>(0xfb07ffFF);
+        case static_cast<int>(TextColor::Purple):                                               // 23
+            return static_cast<sf::Color>(0xcd2bcfFF) ;
+        case static_cast<int>(TextColor::DarkPurple):                                           // 24
+            return static_cast<sf::Color>(0xa120a3FF);
+        case static_cast<int>(TextColor::LightGrey):                                            // 25
+            return static_cast<sf::Color>(0xBBBBBBFF);
+        case static_cast<int>(TextColor::Grey):                                                 // 26
+            return static_cast<sf::Color>(0x999999FF);
+        case static_cast<int>(TextColor::DarkGrey):                                             // 27
+            return static_cast<sf::Color>(0x777777FF);
+        case static_cast<int>(TextColor::White):                                                // 28
+        default:
+            return sf::Color::White;
+    }
+    return sf::Color::White;
+}
+
+void manageScreen::simpleDisplayText(const std::string textToDisplay, const int sizeText, const sf::Color color, const float x, const float y)
 {
     m_text.setCharacterSize(sizeText);
     m_text.setFillColor(color);
@@ -374,38 +611,53 @@ void manageScreen::drawGameName()
 void manageScreen::drawBlock( int blockNumber)
 {
     sf::IntRect sourceRectangle(64, 0 + (blockNumber * 32), 30, 30);
-    sf::Vector2f destination (750,150);
+    sf::Vector2f destination (735,173);
 
     rawRenderCopy(sourceRectangle, destination, 255);
 }
 
-void manageScreen::drawScoreList(const std::array<std::pair<std::string, int> , 20>& scoreArray,const int ranking, const int gameMode )  ////// ALIGNEMENT SCORE PAR LA DROITE       NUMEROTATION 1-20 ALIGNEE PAR LA DOITE      30 LINES C'EST UN TEMPS PAS UN SCORE
+void manageScreen::drawScoreList(const std::array<std::pair<std::string, int> , 20>& scoreArray,const int ranking, const int gameMode, std::string label1, std::string label2)  ////// ALIGNEMENT SCORE PAR LA DROITE       NUMEROTATION 1-20 ALIGNEE PAR LA DOITE      30 LINES C'EST UN TEMPS PAS UN SCORE
 {
     clear();
-    displayText("Meilleurs scores", 40, sf::Color::Red, 350, 15);
+    displayText(label1, 40, sf::Color::White, 512 - (((label1.size() - 7) * 16) / 2.f), 15);
     float offset{0};
     int rank{1};
-    sf::Color color;
-    for(auto item : scoreArray){
-        if(rank == ranking){ color = sf::Color(0xAAAAFFFF); }
-        else { color = sf::Color::White; }
-        displayText(item.first, 22, color, 250, 90 + offset);
-        std::string label{""};
+    sf::Color color = sf::Color::White;
+    std::string colorStartBoundary{""};
+    for(auto i = 0; i < 20; ++i){
+        if(rank == ranking){
+            color = sf::Color(0xAAAAFFFF);
+            colorStartBoundary = "";
+        }
+        else {
+                if(i % 2) { colorStartBoundary = "[c25]"; }
+                else { colorStartBoundary = "[c28]"; }
+        }
+        displayText(colorStartBoundary + scoreArray[i].first, 22, color, 300, 90 + offset);
+        std::string label = "";
         if(gameMode == 2){
-            label = convertTimeToStringMinuteSecondMilisec(static_cast<sf::Int32>(item.second));
-            displayText(label, 22, color,650, 90 + offset);
+            label = colorStartBoundary + convertTimeToStringMinuteSecondMilisec(static_cast<sf::Int32>(scoreArray[i].second)) + " [/c]";
+            displayText(colorStartBoundary + label + " [/c]", 22, color,600, 90 + offset);
         }
         else{
-            std::string score = std::to_string(item.second);
+            std::string score = std::to_string(scoreArray[i].second);
             int stringLength = score.length();
             for(auto i = 0; i < 11 - stringLength; ++i){ label += " "; }
             label += score;
-            displayText(label, 22, color,650, 90 + offset);
+            displayText(colorStartBoundary + label + " [/c]", 22, color, 600, 90 + offset);
         }
         offset += 30;
         rank++;
     }
-    displayText("Pressez Espace", 40, sf::Color::Red, 365, 700);
+    displayText("[c28]" + label2 + " [/c]", 40, sf::Color::White, 512 - ((label2.size() * 16) / 2.f), 700);
     render();
 }
 
+void manageScreen::errorMessage(std::string error, std::string messageToDisplay, std::string pressSpace)
+{
+    clear();
+    displayText(error, 48, sf::Color::Red, 512 - ((static_cast<float>(error.size() * 19.2) / 2.f)), 250);
+    displayText(messageToDisplay, 32, sf::Color::White, 512 - ((static_cast<float>(messageToDisplay.size()) / 2.f) * 13), 370);
+    displayText(pressSpace, 32, sf::Color::White, 512 - ((static_cast<float>(pressSpace.size()) / 2.f) * 13), 460);
+    render();
+}

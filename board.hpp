@@ -6,28 +6,8 @@
 #include <algorithm>
 #include <iostream>
 #include "pieces.hpp"
-#include "sources\generics\random\randomint.hpp"
-
-
-struct pattern {
-    int nbLines{0};
-    bool singleLine = false;
-    bool doubleLine = false;
-    bool tripleLine = false;
-    bool tetris = false;
-    std::vector<int> linesY;
-    bool Tspin{false};
-    bool TspinSingle = false;
-    bool TspinDouble = false;
-    bool TspinTriple = false;
-    bool miniTspin{false};
-    bool miniTspinSingle = false;
-    bool miniTspinDouble = false;
-    bool TspinSearch{false};
-    bool ClearBoard{false};
-    int backToBack{-1};
-	int combo{-1};
-};
+#include "pattern.hpp"
+#include "randomint.hpp"
 
 class board{
 public:
@@ -41,7 +21,7 @@ public:
     bool patternSearch(pattern& pattern, Piece& currentPiece);
     void shiftBlocksAfterLines(const pattern& pattern);
     void clearPattern(pattern& pattern);
-    void IsThereClearBoard(pattern& pattern);
+    bool IsThereClearBoard(pattern& pattern);
     bool IsTherePattern(pattern& pattern);
     void insertBricks();
 

@@ -6,7 +6,6 @@
 #include "json\json.h"
 #include <vector>
 #include <string>
-#include <iostream>
 #include <fstream>
 #include <memory>
 #include<clocale>
@@ -20,11 +19,15 @@
 #include "eventreader.hpp"
 #include "sound.hpp"
 #include "music.hpp"
+#include "statistics.hpp"
+#include "help.hpp"
 
 class menu{
 
 public:
+
     menu();
+    menu(sf::Uint32 style);
     bool initMenu();
     void loadButtons(std::string buttonConfig);
     void drawAllButtons();
@@ -35,12 +38,19 @@ public:
     void saveSetUp();
     void savePseudo();
     void playMenu();
+    void displayPlayerStats();
+    void helpMenu();
+    void errorMessage();
 
     setup m_setup;
-    game game;
-    manageScreen screen;
+    sf::Uint32 m_style;
+    manageScreen screen;//(sf::Uint32 style);
     sound gameSound;
     music gameMusic;
+    statistics playerStats;
+    help help;
+    int helpPage{0};
+    jsonFile m_gameTtranslation;
     std::vector<std::unique_ptr<button>> m_buttonList;
 
 private:
@@ -53,14 +63,11 @@ private:
     void setMusicVolume(float musicVolume);
 
     jsonFile m_jsonConfig;
+    jsonFile m_menuLabels;
     jsonFile m_jsonSetup;
     mouseEvent mouseEvent;
     eventReader eventReader;
+    sf::Cursor myCursor;
 
 };
 #endif
-
-
-
-
-

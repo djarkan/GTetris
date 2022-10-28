@@ -1,7 +1,7 @@
 #ifndef    __button__
 #define    __button__
 
-#include <SFML/window/mouse.hpp>
+#include <SFML\window\mouse.hpp>
 #include "screenmanagement.hpp"
 #include "mouseevent.hpp"
 

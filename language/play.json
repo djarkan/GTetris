@@ -1,0 +1,108 @@
+{
+	"pressspace" :
+     	[
+        	"Pressez la barre espace",
+        	"Press space Bar",
+        	"presione la barra espaciadora",
+       	 	"Drücken Sie die Leertaste"
+   	 ],
+
+	"error" :
+	[
+		"Erreur lecture fichiers",
+		"Error readig files",
+		"Error al leer archivos",
+		"Fehler beim Lesen von Dateien"
+	],
+	"reinstall" :
+	[
+		"Veuillez réinstaller le jeu",
+		"Please reinstall the game",
+		"Por favor reinstala el juego",
+		"Bitte installieren Sie das Spiel neu"
+	],
+	"bestscore" :
+    	[
+        	"[u]Meileurs Scores[/u]",
+        	"[u]Highscores[/u][/c]",
+        	"[u]Puntuaciones altas[/u]",
+       	  	"[u]Highscores[/u]"
+    	],
+	"pause" :
+	[
+		"Pause",
+		"Pause",
+		"Pausa",
+		"Pause"
+	],
+	"press" :
+    	[
+        	"Pressez",
+        	"Press",
+        	"Prensa",
+        	"Drücken Sie"
+    	],
+    	"escape" :
+    	[
+        	"Echape",
+        	"Escape",
+        	"Escapar",
+        	"Flucht"
+    	],
+	"hold" :
+   	[
+   	     	"retenue",
+   	     	"Hold",
+   	     	"Sostener",
+   	     	"beibehalten"
+  	],
+  	"nextPiece" :
+  	[
+   	     	"suivante",
+   	     	"Next",
+   	     	"Próximas",
+  	      	"Nächste"
+ 	],
+   	"time" :
+   	[
+    	    	"Temps",
+    	    	"Time",
+    	    	"Tiempo",
+    	   	"Zeit"
+   	],
+    	"level" :
+   	[
+        	"Niveau",
+       	 	"Level",
+       	 	"Nivel",
+       	 	"Eben"
+    	],
+    	"score" :
+    	[
+        	"Score",
+        	"Score",
+        	"Puntaje",
+        	"Punktzahl"
+    	],
+    	"lines" :
+    	[
+        	"Lignes",
+        	"Lines",
+        	"líneas",
+        	"Linien"
+    	],
+    	"ended" :
+    	[
+        	"Fini",
+        	"Ended",
+        	"acabado",
+        	"fertig"
+    	],
+    	"gameover" :
+    	[
+        	"Perdu",
+        	"Game Over",
+        	"Juego terminado",
+        	"Spiel ist aus"
+    	],
+}

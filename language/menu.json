@@ -1,0 +1,549 @@
+{
+	"error" :
+	[
+		"Erreur lecture fichiers",
+		"Error readig files",
+		"Error al leer archivos",
+		"Fehler beim Lesen von Dateien"
+	],
+	"reinstall" :
+	[
+		"Veuillez réinstaller le jeu",
+		"Please reinstall the game",
+		"Por favor reinstala el juego",
+		"Bitte installieren Sie das Spiel neu"
+	],
+	"play" :
+	[
+		"Jouer",
+		"Play",
+		"Jugar",
+		"Spiel"
+	],
+	"settings" :
+	[
+		"Options",
+		"Settings",
+		"Ajustes",
+		"Einstellungen"
+	],
+	"score" :
+	[
+		"Scores",
+		"Scores",
+		"Puntuaciones",
+		"Partituren"
+	],
+	"help" :
+	[
+		"Aide",
+		"Help",
+		"Ayuda",
+		"Hilfe"
+	],
+	"welcome" :
+	[
+		"Bienvenue, ",
+		"Welcome, ",
+		"Bienvenido, ",
+		"Willkommen "
+	],
+	"pseudobutton" :
+	[
+		"Changer de joueur",
+		"Change player",
+		"cambiar de jugador",
+		"Wechselspieler"
+	],
+	"quit" :
+	[
+		"Quitter",
+		"Quit",
+		"dejar",
+		"Verlassen"
+	],
+	"save" :
+	[
+		"Sauver",
+		"Save",
+		"Salvar",
+		"Spare"
+	],
+    	"pressspace" :
+     	[
+          	"Pressez la barre espace",
+        	"Press space Bar",
+        	"Presione la barra espaciadora",
+        	"Drücken Sie die Leertaste"
+    	],
+	"playerstats" :
+    	[
+        	"Statistiques",
+        	"Achivements",
+        	"Logros",
+        	"Erfolge"
+    	],
+	"playerstats2" :
+    	[
+        	"[u]Statistiques[/u]",
+        	"[u]Achivements[/u]",
+        	"[u]Logros[/u]",
+        	"[u]Erfolge[/u]"
+    	],
+	"paramtersTitles" :
+	{
+		"enhanced" :
+		[
+			"Nombre de pièces",
+			"Pieces number",
+			"Número de piezas",
+			"Stückzahl"
+		],
+		"windowed" :
+		[
+			"Mode d'affichage",
+			"Display mode",
+			"Modo de visualización",
+			"Anzeigemodus"
+		],
+		"gameType" :
+		[
+			"Mode de jeu",
+			"Game mode",
+			"Modo de juego",
+			"Spielmodus"
+		],
+		"hold" :
+		[
+			"Pièce retenue",
+			"Hold piece",
+			"Sostener pieza",
+			"Stück halten"
+		],
+		"language" :
+		[
+			"Langue",
+			"Language",
+			"Idioma",
+			"Sprache"
+		],
+		"lockout" :
+		[
+			"Délais avant verrouillage",
+			"Delay before lockout",
+			"Retraso antes del bloqueo",
+			"Verzögerung vor Sperrung"
+		],
+		"music" :
+		[
+			"Musique",
+			"Music",
+			"Música",
+			"Musik"
+		],
+		"musicVolume" :
+		[
+			"Volume musique",
+			"Music volume",
+			"Volumen de la Música",
+			"Musiklautstärke"
+		],
+		"nextPiece" :
+		[
+			"Pièces suivantes",
+			"Next pieces",
+			"Próximas piezas",
+			"Nächste Stücke"
+		],
+		"nextPiecesNumber" :
+		[
+			"Nombre de pièces suivantes",
+			"Next pieces number",
+			"Número de piezas siguientes",
+			"Nächste Stückzahl"
+		],
+		"pieceGraphic" :
+		[
+			"Texture des pièces",
+			"Piece graphic",
+			"Pieza gráfica",
+			"Stück-Grafik"
+		],
+		"sevenBag" :
+		[
+			"Mode aléatoire",
+			"Random mode",
+			"Modo aleatorio",
+			"Zufallsmodus"
+		],
+		"shadow" :
+		[
+			"Piece fantôme",
+			"Phantom piece",
+			"Pieza fantasma",
+			"Phantomstück"
+		],
+		"sound" :
+		[
+			"Bruitages",
+			"Sounds",
+			"Sonidos",
+			"Geräusche"
+		],
+		"soundVolume" :
+		[
+			"Volume bruitage",
+			"Sound volume",
+			"Volumen de sonido",
+			"Geräuschelautstärke"
+		],
+		"startLevel" :
+		[
+			"Niveau de début partie",
+			"Starting level",
+			"Nivel al principio del juego",
+			"Level zu Beginn des Spiels"
+		],
+		"superRotationSystem" :
+		[
+			"Mode de rotation",
+			"Rotate mode",
+			"Modo de rotación",
+			"Modus drehen"
+		],
+		"title" :
+		[
+			"[u]Paramètres[/u]",
+			"[u]Parameters[/u]",
+			"[u]configuraciones[/u]",
+			"[u]Parameters[/u]"
+		]
+	},
+	"pause" :
+	[
+		"Pause",
+		"Pause",
+		"Pausa",
+		"Pause"
+	],
+	"bestscore" :
+    	[
+        	"[u]Meileurs Scores[/u]",
+        	"[u]Highscores[/u]",
+        	"[u]Puntuaciones altas[/u]",
+       	  	"[u]Highscores[/u]"
+    	],
+	"setupSelector" :
+	{
+		"enhanced" :
+		[
+			[
+				"original",
+				"etendu"
+			],
+			[
+				"original",
+				"extended"
+			],
+			[
+				"original",
+				"extendido"
+			],
+			[
+				"original",
+				"erweitert"
+			]
+		],
+		"windowed" :
+		[
+			[
+				"plein écran",
+				"fenêtré",
+			],
+			[
+				"fullscreen",
+				"windowed",
+			],
+			[
+				"Fenstermodus",
+				"modo ventana",
+			],
+			[
+				"ganzer Bildschirm",
+				"pantalla completa"
+			]
+		],
+		"gameType" :
+		[
+			[
+				"marathon",
+				"sprint",
+				"40 lignes",
+				"fantôme",
+				"inclusion",
+				"sous pression"
+			],
+			[
+				"marathon",
+				"sprint",
+				"40 lines",
+				"phantom",
+				"inclusion",
+				"under preasure"
+			],
+			[
+				"maratón",
+				"sprint",
+				"40 lineas",
+				"fantasma",
+				"inclusión",
+				"bajo presión"
+			],
+			[
+				"marathon",
+				"sprint",
+				"40 lignen",
+				"phantom",
+				"aufnahmen",
+				"unter Druck"
+			]
+		],
+		"hold" :
+		[
+			[
+				"non",
+				"oui"
+			],
+			[
+				"no",
+				"yes"
+			],
+			[
+				"no",
+				"si"
+			],
+			[
+				"nein",
+				"ya"
+			]
+		],
+		"language" :
+		[
+			"francais",
+			"english",
+			"español",
+			"deutsch"
+		],
+		"lockout" :
+		[
+			[
+				"non",
+				"oui"
+			],
+			[
+				"no",
+				"yes"
+			],
+			[
+				"no",
+				"si"
+			],
+			[
+				"nein",
+				"ya"
+			]
+		],
+		"music" :
+		[
+			[
+				"non",
+				"oui"
+			],
+			[
+				"no",
+				"yes"
+			],
+			[
+				"no",
+				"si"
+			],
+			[
+				"nein",
+				"ya"
+			]
+		],
+		"musicVolume" : 100,
+		"nextPiece" :
+		[
+			[
+				"non",
+				"oui"
+			],
+			[
+				"no",
+				"yes"
+			],
+			[
+				"no",
+				"si"
+			],
+			[
+				"nein",
+				"ya"
+			]
+		],
+		"nextPiecesNumber" :
+		[
+			"1",
+			"2",
+			"3",
+			"4"
+		],
+		"sevenBag" :
+		[
+			[
+				"aléatoire",
+				"équitable"
+			],
+			[
+				"random",
+				"fair"
+			],
+			[
+				"aleatorio",
+				"justa"
+			],
+			[
+				"random",
+				"messe"
+			]
+		],
+		"shadow" :
+		[
+			[
+				"non",
+				"oui"
+			],
+			[
+				"no",
+				"yes"
+			],
+			[
+				"no",
+				"si"
+			],
+			[
+				"nein",
+				"ya"
+			]
+		],
+		"sound" :
+		[
+			[
+				"muet",
+				"oui"
+			],
+			[
+				"mute",
+				"yes"
+			],
+			[
+				"mudo",
+				"si"
+			],
+			[
+				"stumm",
+				"ya"
+			]
+		],
+		"soundVolume" : 100,
+		"superRotationSystem" :
+		[
+			[
+				"Original",
+				"Rotation intelligente"
+			],
+			[
+				"Original",
+				"Smart Rotation"
+			],
+			[
+				"Original",
+				"Rotacion inteligente"
+			],
+			[
+				"Original",
+				"Intelligente rotation"
+			]
+		]
+	},
+	"pattern" :
+    	[
+		[
+            		"Lignes",
+            		"Lines",
+            		"Líneas",
+            		"Linien"
+        	],
+        	[
+            		"tetris",
+            		"tetris",
+            		"tetris",
+            		"tetris"
+        	],
+        	[
+           		"T-spin",
+            		"T-spin",
+            		"T-spin",
+            		"T-spin"
+        	],
+        	[
+            		"T-spin single",
+            		"T-spin single",
+            		"T-spin single",
+            		"T-spin single"
+        	],
+        	[
+            		"T-spin double",
+            		"T-spin double",
+            		"T-spin double",
+            		"T-spin double"
+        	],
+        	[
+            		"T-spin triple",
+            		"T-spin triple",
+            		"T-spin triple",
+            		"T-spin triple"
+        	],
+        	[
+            		"Mini T-spin",
+            		"Mini T-spin",
+            		"Mini T-spin",
+            		"Mini T-spin"
+        	],
+        	[
+            	"Mini T-spin single",
+            	"Mini T-spin single",
+            	"Mini T-spin single",
+            	"Mini T-spin single"
+        	],
+       	 	[
+            		"Mini T-spin double",
+            		"Mini T-spin double",
+            		"Mini T-spin double",
+            		"Mini T-spin double"
+        	],
+        	[
+            		"Clear",
+            		"Clear",
+            		"Clear",
+            		"Clear"
+        	],
+        	[
+            		"Back to back",
+            		"Back to back",
+            		"Back to back",
+            		"Back to back"
+        	]
+   	]
+}

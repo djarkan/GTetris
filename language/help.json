@@ -1,1 +1,108 @@
+{
+	"gameControl": 
+        [
+	   "                            [c25][s45][u]Commandes du jeu[/u][/s][/c]\n\n\n      [c25][u]Mouvements[/u][/c]                   [c25][u]Clavier[/u][/c]                    [c25][u]Joypad[/u][/c][/u]\n\n Déplacement à droite      flèche droite, numpad 6         flèche droite\n Déplacement à gauche      flèche gauche, numpad 4         flèche gauche\n  Déplacement en bas         flèche bas, numpad 2            flèche bas\n  Chute du tetramino        barre espace, numpad 8           flèche haut\n   Rotation droite        flèche haut, numpad 1,5,9         bouton droit\n   Rotation gauche            Ctrl, numpad 7,3              bouton gauche\n  Capture tetrimino          Shift, C, Numpad 0             bouton bas\n        Pause                      echape                   bouton haut\n   Pressez espace                  espace                   bouton gauche\n   Pressez echape                  echape                   bouton haut\n",
+	   "                            [c25][s45][u]Game controls[/u][/s][/c]\n\n       [c25][u]Movements[/u][/c]                   [c25][u]Keyboard[/u][/c]                   [c25][u]Joypad[/u][/c]\n\n      Move right             right arrow, numpad 6          right arrow\n      Move left              left arrow, numpad 4           left arrow\n      Move down              down arrow, numpad 2           down arrow\n    Drop tetramino            space bar, numpad 8            up arrow\n     Rotate right            up arrow, numpad 1,5,9         right button\n     Rotate left                Ctrl, numpad 7,3            left button\n  Capture tetrimino           Shift, C, Numpad 0            down button\n        Pause                        escape                  up button\n      Press space                    space                  left button\n      Press escape                   escape                  up button\n",
+	   "                          [c25][s45][u]Controles del juego[/u][/s][/c]\n\n    [c25][u]Movimientos[/u][/c]                  [c25][u]Teclado[/u][/c]                    [c25][u]Joypad[/u][/c]\n\n Mover a la derecha     flecha derecha, numérico 6        flecha derecha\n  Mover izquierda      flecha izquierda, numérico 4      flecha izquierda\n   Mover abajo          flecha abajo, numérico 2          flecha abajo\n Soltar tetramino      barra espaciadora, numérico 8      flecha arriba\n Girar a la derecha    flecha arriba, numérico 1,5,9       botón derecho\n Girar a la izquierda        Ctrl, numérico 7,3           botón izquierdo\n Capturar tetrimino         Shift, C, numérico 0           botón abajo\n       Pausa                      escapar                  botón arriba\n Presionar espacio                espacio                 botón izquierdo\n  Presione escape                 escape                  botón de arriba\n",
+	   "                            [c25][s45][u]Spielsteuerung[/u][/s][/c]\n\n      [c25][u]Bewegungen[/u][/c]                   [c25][u]Tastatur[/u][/c]                   [c25][u]Joypad[/u][/c]\n\n Nach rechts bewegen         RechtsPfeil, numpad 6          rechtspfeil\n   Geh nach links            links-Pfeil, numpad 4          Linkspfeil\n     Absteigen               unten-Pfeil, numpad 2          unten-Pfeil\n Tetramino fallen lassen     Leertaste, numpad 8            aufwärtspfeil \n Nach rechts drehen      pfeil nach oben, numpad 1,5,9      rechte Taste\n Nach links drehen              Ctrl, numpad 7,3            linke Taste\n Tetrimino erfassen           Shift, C, numpad 0          Taste nach unten\n       Pause                        Escape                taste nach oben\n  Leertaste drücken                Leertaste                linker Knopf\n  Escape drücken                    escape                taste nach oben\n"
+        ],
+	"gameMode": 
+        [
+           "                             [c25][s45][u]Modes de jeu[/u][/s][/c]\n\n [c25][u]MARATHON[/c][/u]\n Le mode de jeu traditionnel de Tetris. Les Tetriminos tombent en continu,\n jusqu'a la perte de la partie.\n [c25][u]SPRINT[/c][/u]\n Le joueur doit faire le meilleur score possible en 3 minutes.\n [c25][u]40 LIGNES[/c][/u]\n Le joueur doit atteindre les 40 lignes le plus rapidement possible.\n [c25][u]FANTOME[/c][/u]\n Le nouveau Tetrimino et l'aire de jeu sont déssinées pendant 1 secondes,\n puis sont effacées. Le placement du Tetrimino se fait en aveugle.\n [c25][u]INCLUSION[/c][/u]\n Toutes les 25 secondes, les Tetriminos dans l'aire de jeu sont remontées\n d'une ligne. La ligne du bas est remplie aléatoirement de briques.\n [c25][u]SOUS PRESSION[/c][/u]\n Le jeu est en contre la montre. Le joueur commence avec 15 secondes et à\n chaque ligne complétée, le joueur gagne 4 secondes.",
+	   "                              [c25][s45][u]Game modes[/u][/s][/c]\n\n [c25][u]MARATHON[/c][/u]\n The traditional game of Tetris. Tetriminos continuously fall until the game\n is lost.\n [c25][u]SPRINT[/c][/u]\n The player must make the highest score in 3 minutes.\n [c25][u]40 LINES[/c][/u]\n The player must reach 40 lines as quickly as possible.\n [c25][u]PHANTOM[/c][/u]\n The new Tetrimino and the playing area are drawn for 1 second, then both will\n be erased. Tetrimino placement is done in the black.\n [c25][u]INCLUSION[/c][/u]\n Every 25 seconds, Tetriminos in the playing area are moved up done line.\n The bottom row is randomly filled with bricks.\n [c25][u]UNDER PRESSURE[/c][/u]\n The game is against the clock. The player starts with 15 seconds. For each\n line made the player gains 4 seconds.",
+	   "                            [c25][s45][u]Modos de juego[/u][/s][/c]\n\n [c25][u]MARATÓN[/c][/u]\n El tradicional juego de Tetris. Los tetriminos caen continuamente hasta\n que se pierde el juego.\n [c25][u]SPRINT[/c][/u]\n El jugador debe hacer la puntuación más alta posible en 3 minutos.\n [c25][u]40 LÍNEAS[/c][/u]\n El jugador debe llegar a 40 líneas lo más rápido posible.\n [c25][u]FANTASMA[/c][/u]\n El nuevo Tetrimino y el área de juego se dibujan durante 1 segundo, luego\n se borran. La ubicación de los tetriminos es ciega.\n [c25][u]INCLUSIÓN[/c][/u]\n Cada 25 segundos, los tetriminos en el área de juego se mueven hacia\n arriba línea. La fila inferior se llena aleatoriamente con ladrillos.\n [c25][u]BAJO PRESIÓN[/c][/u]\n El juego es contrarreloj. El jugador comienza con 15 segundos. Por cada\n línea hecha, el jugador gana 4 segundos.",
+	   "                               [c25][s45][u]Spielmodi[/u][/s][/c]\n\n [c25][u]MARATHON[/c][/u]\n Das traditionelle Tetris-Spiel. Tetriminos fallen kontinuierlich, bis das\n Spiel verloren ist.\n [c25][u]SPRINT[/c][/u]\n Der Spieler muss in 3 Minuten die höchstmögliche Punktzahl erzielen.\n [c25][u]40 LINIEN[/c][/u]\n Der Spieler muss so schnell wie möglich 40 Linien erreichen.\n [c25][u]PHANTOM[/c][/u]\n Das neue Tetrimino und der Spielbereich werden 1 Sekunde lang gezeichnet,\n dann gelöscht. Die Platzierung der Tetriminos ist blind.\n [c25][u]INKLUSION[/c][/u]\n Alle 25 Sekunden werden die Tetriminos im Spielbereich nach oben verschoben\n derledigt. Die untere Reihe wird zufällig mit Steinen gefüllt.\n [c25][u]UNTER DRUCK[/c][/u]\n Das Spiel ist gegen die Uhr. Der Spieler beginnt mit 15 Sekunden. Für jede\n gemachte Linie erhält der Spieler 4 Sekunden."
+        ],
+	"parameters1":
+        [
+	   "                              [c25][s45][u]Paramètres[/u][/s][/c]\n\n [c25][u]Mode d'affichage[/u][/c]\n Choisissez de jouer en mode fenêtré ou en plein écran. Vous devez relancer\n le jeu.\n [c25][u]Langage[/u][/c]\n Choisissez de jouer en français, anglais, espagnol ou allemand.\n [c25][u]Texture tetramino[/c][/u]\n Les tetraminos peuvent être dessinés avec 5 textures différentes.\n [c25][u]Modes de jeu[/c][/u]\n Choisissez de jouer en marathon, sprint, 40 lignes, fantome, inclusion ou\n sous pression.\n [c25][u]Niveau de départ[/c][/u]\n Definissez le niveau de difficulté au lancement de la partie. Il y a\n 9 niveaux de difficulté.\n [c25][u]Nombre de Tetriminos[/c][/u]\n [i]Original[/i] est le standard de tetris. [i]Extended[/i] pour l'ajout des Tetriminos U,\n mini L, mini Tetrimino et la croix.\n",
+	   "                              [c25][s45][u]Parameters[/u][/s][/c]\n\n [c25][u]Display mode[/u][/c]\n Choose to play in windowed or fullscreen mode. You must restart the game.\n [c25][u]Language[/u][/c]\n Choose to play in French, English, Spanish and German.\n [c25][u]Tetamino Texture[/c][/u]\n Tetaminos can be drawn with 5 different textures.\n [c25][u]Game Modes[/c][/u]\n Choose to play Marathon, Sprint, 40 Lines, Ghost, inclusion or\n under pressure.\n [c25][u]Starting level[/c][/u]\n Set the difficulty level at the start of the game. There are 9 difficulty\n levels.\n [c25][u]Number of Tetriminos[/c][/u]\n [i]Original[/i] is tetris standard. [i]Extended[/i] for adding U, mini L, mini Tetrimino\n and the cross Tetrimino.\n",
+	   "                              [c25][s45][u]Parámetros[/u][/s][/c]\n\n [c25][u]Modo de visualización[/u][/c]\n Elija jugar en modo ventana o pantalla completa. Debes reiniciar el juego.\n [c25][u]Idioma[/u][/c]\n Elige jugar en francés, inglés, español y alemán.\n [c25][u]Tetamino Textura[/c][/u]\n Tetaminos se puede dibujar con 5 texturas diferentes.\n [c25][u]Modos de juego[/c][/u]\n Elige jugar Marathon, Sprint, 40 Lines, Ghost, inclusion\n or under presión.\n [c25][u]Nivel inicial[/c][/u]\n Establece el nivel de dificultad al comienzo del juego. Hay 9 niveles\n de dificultad.\n [c25][u]Número de piezas[/c][/u]\n El [i]original[/i] es el estándar de tetris. [i]Extendido[/i] para agregar U,mini L,\n mini pieza y las cruzadas.\n",
+	   "                               [c25][s45][u]Parameter[/u][/s][/c]\n\n [c25][u]AnzeigemodusWählen[/u][/c]\n Sie, ob Sie im Fenster- oder Vollbildmodus spielen möchten. Sie müssen das\n Spiel neu starten.\n [c25][u]Sprache[/u][/c]\n Wählen Sie, ob Sie auf Französisch, Englisch, Spanisch oder Deutsch spielen\n möchten.\n [c25][u]Tetamino-Textur[/c][/u]\n Tetaminos können mit 5 verschiedenen Texturen gezeichnet werden.\n [c25][u]Spielmodi[/c][/u]\n Wählen Sie Marathon, Sprint, 40 Lines, Ghost, Inclusion\n or Under Druck.\n [c25][u]Startlevel[/c][/u]\n Stellen Sie den Schwierigkeitsgrad zu Beginn des Spiels ein. Es gibt\n 9 Schwierigkeitsstufen.\n [c25][u]Anzahl der Teile[/c][/u]\n [i]Original[/i] ist Tetris-Standard. [i]Erweitert[/i] zum Hinzufügen von U, Mini-L,"
+        ],
+	"parameters2": 
+        [
+	   "                              [c25][s45][u]Paramètres[/u][/s][/c]\n\n [c25][u]Mode de rotation[/c][/u]\n Si possible, la rotation intelligence décale le Tetrimino pour effectuer la\n rotation. En original le joueur devra bouger le Tetrimino manuellement pour\n pouvoir effectuer la rotation.\n [c25][u]Tetrimino fantome[/c][/u]\n Le Tetrimino est dessinée en transparence en postion finale de sa descente.\n [c25][u]Tetrimino retenue[/c][/u]\n Le Tetrimino est enlevée de l'aire de jeu pour être stockée, et est remplacée\n par le Tetrimino suivante dans la liste. Le prochain Tetrimino retenue sera\n échangée par le Tetrimino déjà stockée.\n [u][c25]Délais avant vérrouillage[/c][/u]\n C'est la possibilité d'interaction avec le Tetrimino, lorsqu'elle se pose sur\n le sol ou un Tetrimino précédament jouée. Ce délais est de 0.5 seconde.\n ",
+	   "                              [c25][s45][u]Parameters[/u][/s][/c]\n\n [c25][u]Rotation mode[/c][/u]\n If possible, smart rotation shifts the Tetrimino to perform the spin. In the\n original, the player must move the Tetrimino manually to be able to perform\n the rotation.\n [c25][u]Phantom Tetrimino[/c][/u]\n The Tetrimino is drawn transparently in the final position of its descent.\n [c25][u]Tetrimino held[/c][/u]\n The Tetrimino is removed to be stored, and is replaced by the next Tetrimino\n in the list. The next selected Tetrimino will be exchanged with the\n already stored Tetrimino.\n Delay before locking \n This is the possibility of interaction with the Tetrimino, when it lands on\n the ground or a previously played Tetrimino. This delay is 0.5 seconds.\n [c25][u]Random mode[/c][/u]\n Choice of the appearance mode of the Tetriminos. [i]Random[/i] draws a Tetrimino\n randomly, while [i]fair[/i] makes each Tetrimino chosen as much as the others.\n",
+	   "                              [c25][s45][u]Parámetros[/u][/s][/c]\n\n [c25][u]Modo de rotación[/c][/u]\n Si es posible, la rotación inteligente cambia la parte para realizar la girar. En el original, el jugador tendrá que mover la pieza manualmente para\n poder realizar la rotación.\n [c25][u]Pieza fantasma[/c][/u]\n La pieza se dibuja de forma transparente en la posición final de su\n descenso.\n [c25][u]Parte retenida[/c][/u]\n La pieza se retira para ser almacenada, y es reemplazada por la pieza \n siguiente en la lista. La siguiente pieza seleccionada se intercambiará\n con la pieza ya almacenada.\n [c25][u]Retraso antes de bloquear[/c][/u]\n Esta es la posibilidad de interacción con la pieza, cuando aterriza en el\n suelo o en una pieza previamente jugada. Este retraso es de 0,5 segundos.\n [c25][u]Modo aleatorio[/c][/u]\n Elección del modo de aparición de las piezas. [i]Random[/i] dibuja una pieza al\n ",
+	   "                               [c25][s45][u]Parameter[/u][/s][/c]\n\n Mini-Münze und den Kreuzteilen.\n [c25][u]Rotationsmodus[/c][/u]\n Wenn möglich, verschiebt die Intelligenzrotation das Teil, um das auszuführen\n drehen. Im Original muss der Spieler die Figur manuell bewegen, um die\n Drehung ausführen zu können.\n [c25][u]Phantomfigur[/c][/u]\n Die Figur wird transparent in die Endposition ihres Abstiegs gezeichnet.\n [c25][u]Teil bleibt erhalten[/c][/u]\n Die Figur wird entfernt, um sie zu lagern, und wird durch das Stück nächste\n in der Liste ersetzt. Die nächste ausgewählte Figur wird gegen die bereits\n gespeicherte Figur ausgetauscht.\n [c25][u]Verzögerung vor dem Sperren[/c][/u]\n Dies ist die Möglichkeit der Interaktion mit der Figur, wenn sie auf dem\n Boden oder einer zuvor gespielten Figur landet. Diese Verzögerung beträgt\n 0,5 Sekunden.\n"
+        ],
+	"parameters3": 
+        [
+	   "                              [c25][s45][u]Paramètres[/u][/s][/c]\n\n [c25][u]Mode aléatoire[/c][/u]\n Choix du mode d'apparition des Tetriminos. Aléatoire tire un Tetrimino au\n hasard, alors que équitable fait que chaque Tetrimino est choisie autant que\n les autres.\n[c25][u]Tetriminos suivantes[/c][/u]\n choix de voir la, ou les Tetriminos à venir. Le nombre maximum de Tetriminos\n visibles est 5.\n [c25][u]Musique[/c][/u]\n Permet de jouer une musique pendant le jeu. Une seule est disponible et\n est répétée en boucle. Le volume est réglable.\n [c25][u]Bruitages[/c][/u]\n La partie peut se faire avec ou sans bruitage. Le volume est réglable.",
+	   "                              [c25][s45][u]Parameters[/u][/s][/c]\n\n [c25][u]Next Tetriminos[/u][/c]\n choose to see the next Tetrimino or Tetriminos. The maximum number of visible\n Tetriminos is 5.\n [c25][u]Music[/c][/u]\n Allows music to be played during the game. Only one is available and is\n repeated in a loop.\n The volume is adjustable.\n [c25][u]Sound effects[/c][/u]\n The game can be played with or without sound effects.\n The volume is adjustable.",
+	   "                              [c25][s45][u]Parámetros[/u][/s][/c]\n\n azar, mientras que [i]Fair[/i] hace que cada pieza sea elegida tanto como las\n demás.\n [c25][u]Siguientes piezas[/u][/c]\n elige ver la siguiente pieza o piezas. El número máximo de piezas\n visibles es 5.\n [c25][u]Música[/c][/u]\n Permite reproducir música durante el juego. Solo una está disponible y\n se repite en bucle.\n El volumen es ajustable.\n [c25][u]Efectos de sonido[/c][/u]\n El juego se puede jugar con o sin efectos de sonido.\n El volumen es ajustable.",
+	   "                                [c25][s45][u]Parameter[/u][/s][/c]\n\n [c25][u]Zufallsmodus[/c][/u]\n Wahl des Erscheinungsmodus der Teile. [i]Random[/i] zieht ein Stück nach dem\n Zufallsprinzip, während [i]fair[i/] jedes Stück genauso ausgewählt wird wie die\n anderen.\n [c25][u]Nächste Stücke[/u][/c]\n Wählen Sie, um das nächste Stück oder die nächsten Stücke anzuzeigen. Es\n können maximal 5 Stücke sichtbar sein.\n [c25][u]Musik[/c][/u]\n Erlaubt das Abspielen von Musik während des Spiels. Es ist nur eines\n verfügbar und wird in einer Schleife wiederholt.\n Die Lautstärke ist einstellbar.\n [c25][u]Soundeffekte[/c][/u]\n Das Spiel kann mit oder ohne Soundeffekte gespielt werden.\n Die Lautstärke ist einstellbar."
+        ],
+	"hold":
+	[
+	   	"Tetrimino retenue",
+		"Hold Tetrimino",
+		"Sostener pieza",
+		"Stück halten"
+	],
+	"pause":
+	[
+	   	"Pause",
+		"Pause",
+		"Pausa",
+		"Pause"
+	],
+	"rotationleft":
+	[
+	   	"Rotation gauche",
+		"Left rotation",
+		"Rotación izquierda",
+		"Linksdrehung"
+	],
+	"rotationright":
+	[
+	   	"Rotation gauche",
+		"Right Rotation",
+		"Rotación derecha",
+		"Rechtsdrehung"
+	],
+	"space":
+	[
+	   	"Pressez la barre espace",
+        	"Press space Bar",
+        	"presione la barra espaciadora",
+        	"Drücken Sie die Leertaste"
+	],
+	"escape":
+	[
+	   	"Pressez echape",
+        	"Press escape",
+        	"Prensa escapar",
+        	"Drücken Sie Flucht"
+	],
+	"moveleft":
+	[
+	   	"Déplacer à gauche",
+		"Move left",
+		"Mover a la izquierda",
+		"Geh nach links"
+	],
+	"moveright":
+	[
+	   	"Déplacer à droite",
+		"Move right",
+		"Mover a la derecha",
+		"Nach rechts bewegen"
+	],
+	"softdrop":
+	[
+	   	"Déplacer vers le bas",
+		"Soft drop",
+		"Mover hacia abajo",
+		"Sich abwärts bewegen"
+	],
+	"harddrop":
+	[
+	   	"Chute rapide",
+		"Hard drop",
+		"caída rápida",
+		"schneller Sturz"
+	],
 
+}
